@@ -15,10 +15,11 @@
 - connected to Db and run server
 
 # Create Schema and model
-- created models folder > User.js
+- created models folder > User.js & Products.js
 
 # Define Routes
 - created authRouter.js
+- created productRouter.js
 
 # Create Controllers
 - created register.js

@@ -6,7 +6,7 @@ export const sendEmail = async (email, otp) => {
     const { data } = await resend.emails.send({
       from: "onboarding@resend.dev", // domain name
       to: email,
-      subject: "OTP Verification - AI Job Portal",
+      subject: "OTP Verification - Fabricue",
       html: `
   <div style="background-color:#f4f6f8; padding:40px 0; font-family:Arial, sans-serif;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
@@ -49,7 +49,7 @@ export const sendEmail = async (email, otp) => {
       <!-- Footer -->
       <tr>
         <td style="background:#f9fafb; padding:20px; text-align:center; font-size:12px; color:#9ca3af;">
-          © ${new Date().getFullYear()} AI Job Portal. All rights reserved.
+          © ${new Date().getFullYear()} Fabricue. All rights reserved.
         </td>
       </tr>
 

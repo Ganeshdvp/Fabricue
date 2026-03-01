@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import { authRoute } from './routes/authRouter.js';
 import cookieParser from 'cookie-parser';
+import { productRoute } from './routes/productRouter.js';
 
 
 
@@ -20,6 +21,7 @@ app.use(cookieParser())
 
 // routes
 app.use('/user', authRoute);
+app.use('/product', productRoute);
 
 
 // Database connection
