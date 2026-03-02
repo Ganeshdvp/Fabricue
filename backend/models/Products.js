@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const productSchema = mongoose.Schema({
+    sellerId:{
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref: "User",
+    },
     name: {
         type: String,
         require: true,
@@ -42,7 +47,8 @@ const productSchema = mongoose.Schema({
     },
     colors: {
         type: [String],
-        trim: true
+        trim: true,
+        require: true
     },
      stock: {
         type: Number,
@@ -51,11 +57,13 @@ const productSchema = mongoose.Schema({
     },
     rating: {
         type: Number,
-        trim: true
+        trim: true,
+        default: 0
     },
     numReviews: {
         type: Number,
-        trim: true
+        trim: true,
+        default: 0
     },
     description: {
         type: String,
@@ -67,17 +75,13 @@ const productSchema = mongoose.Schema({
         require: true,
         trim: true
     },
-    isFeatured: {
-        type: Boolean,
-    },
     isNewArrival: {
         type: Boolean,
+        default: false
     },
-    tags: {
-        type: [String],
-        require: true
-    }
 }, {timestamps: true});
+
+productSchema.index({sellerId: 1});  // indexing
 
 const Product = mongoose.model("Product", productSchema);
 

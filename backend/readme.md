@@ -20,14 +20,29 @@
 # Define Routes
 - created authRouter.js
 - created productRouter.js
+- created crudProducts.js
 
 # Create Controllers
+
+-- Authentication --
 - created register.js
 - created login.js
 - created logout.js
 - created sendOtp.js
 - created verifyOtp.js
 - created changePassword.js
+
+-- GET Product --
+- created allProducts.js
+- created productById.js
+- created categoryProducts.js
+- created sortByPrice.js
+
+-- Admin Products --
+- created createProduct.js
+- created updateProduct.js
+- created deleteProduct.js
+- created sellerProducts.js
 
 # Create middlewares
 - created userAuth.js

@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 const Register = async(req, res)=>{
     try {
-        const { email, password, role } = req?.body;
+        const { fullName, email, password, role } = req?.body;
     
         // validate info
         RegisterVadlidation(req.body);
@@ -18,6 +18,7 @@ const Register = async(req, res)=>{
     
         // creating user model
         const newUser = new User({
+          fullName,
           email,
           password: hashPassword,
           role,

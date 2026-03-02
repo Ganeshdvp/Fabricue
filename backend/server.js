@@ -4,7 +4,7 @@ import connectDB from './config/db.js';
 import { authRoute } from './routes/authRouter.js';
 import cookieParser from 'cookie-parser';
 import { productRoute } from './routes/productRouter.js';
-
+import {CRUDProductsRoute} from './routes/crudProducts.js';
 
 
 // enable .env variables
@@ -22,6 +22,7 @@ app.use(cookieParser())
 // routes
 app.use('/user', authRoute);
 app.use('/product', productRoute);
+app.use('/admin/products', CRUDProductsRoute);
 
 
 // Database connection

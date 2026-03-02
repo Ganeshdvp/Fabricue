@@ -27,7 +27,7 @@ const UserAuth = async(req, res, next)=>{
     // asign the user!
     req.user = user;
     next();
-
+    
     }
     catch(err){
         res.status(500).json({message: err.message});
