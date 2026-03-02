@@ -5,6 +5,8 @@ import { authRoute } from './routes/authRouter.js';
 import cookieParser from 'cookie-parser';
 import { productRoute } from './routes/productRouter.js';
 import {CRUDProductsRoute} from './routes/crudProducts.js';
+import stockDetectionRouter from './routes/stockDetection.js';
+import CartRouter from './routes/cartRouter.js';
 
 
 // enable .env variables
@@ -23,6 +25,8 @@ app.use(cookieParser())
 app.use('/user', authRoute);
 app.use('/product', productRoute);
 app.use('/admin/products', CRUDProductsRoute);
+app.use('/stock', stockDetectionRouter);
+app.use('/cart', CartRouter)
 
 
 // Database connection

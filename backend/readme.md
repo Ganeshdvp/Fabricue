@@ -1,5 +1,8 @@
 # Fabricue Full Stack E-commerce Application
 
+# API Design
+
+
 # Installation Dependencies :-
 - npm init
 - npm i express nodemon dotenv mongoose validator bcrypto cookie-parser date-fns jsonwebtoken resend
@@ -15,12 +18,14 @@
 - connected to Db and run server
 
 # Create Schema and model
-- created models folder > User.js & Products.js
+- created models folder > User.js & Products.js & Carts.js
 
 # Define Routes
 - created authRouter.js
 - created productRouter.js
 - created crudProducts.js
+- created stockDetection.js
+- created cartRouter.js
 
 # Create Controllers
 
@@ -43,6 +48,14 @@
 - created updateProduct.js
 - created deleteProduct.js
 - created sellerProducts.js
+
+-- Stock Deduction --
+- created stockDetection.js
+
+-- Cart Items --
+- created addCart.js
+- created deleteItemCart.js
+- created allCartItems.js
 
 # Create middlewares
 - created userAuth.js
