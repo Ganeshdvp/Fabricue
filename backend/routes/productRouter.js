@@ -3,6 +3,7 @@ import getAllProducts from '../controllers/allProducts.js';
 import getProductById from '../controllers/productById.js';
 import getProductsByCategory from '../controllers/categoryProducts.js';
 import sortByPrice from '../controllers/sortByPrice.js';
+import searchProduct from '../controllers/searchProduct.js';
 
 export const productRoute = express.Router();
 
@@ -17,3 +18,6 @@ productRoute.get('/category/:category', getProductsByCategory);
 
 // sort products by price in category wise
 productRoute.post('/sort', sortByPrice);
+
+// search product
+productRoute.post('/search', searchProduct);

@@ -57,6 +57,9 @@
 - created deleteItemCart.js
 - created allCartItems.js
 
+-- Search with ai integrate --
+- created searchProduct.js
+
 # Create middlewares
 - created userAuth.js
 - created roleAuth.js
@@ -65,6 +68,7 @@
 # Create utils
 - created sendEmail.js 
 - created validations.js
+- created openAi.js
 
 # Security
 - used helmet for headers
