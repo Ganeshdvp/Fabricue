@@ -2,6 +2,37 @@
 
 # API Design
 
+-- Role-Based Authentication --
+- POST user/register
+- POST user/login
+- POST user/logout
+- POST user/send-otp
+- POST user/verify-otp
+- POST user/change-password
+
+-- Products --
+- GET product/
+- GET product/:id
+- GET product/category/:category
+- POST product/sort
+
+-- Admin CRUD Product --
+- POST admin/products/createProduct
+- PATCH admin/products/updateProduct/:id
+- DELETE admin/products/deleteProduct/:id
+- GET admin/products/allProducts
+
+-- Stock Reduction --
+- PATCH stock/reduce
+
+-- Cart --
+- GET cart/:type
+- POST cart/add/:type/:id
+- DELETE cart/remove/:id
+
+-- Search with Ai integrate --
+- POST product/:search
+
 
 # Installation Dependencies :-
 - npm init
