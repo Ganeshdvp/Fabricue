@@ -7,6 +7,9 @@ import { productRoute } from './routes/productRouter.js';
 import {CRUDProductsRoute} from './routes/crudProducts.js';
 import stockDetectionRouter from './routes/stockDetection.js';
 import CartRouter from './routes/cartRouter.js';
+import helmet from 'helmet';
+import { authLimit, productLimit, adminLimit, cartLimit } from './middlewares/rateLimiting.js';
+import { rateLimit } from 'express-rate-limit';
 
 
 // enable .env variables
@@ -15,6 +18,18 @@ dotenv.config();
 // main app
 const app = express();
 
+// headers middleware
+app.use(helmet());
+
+// if deployed it is important for rate limited
+app.set("trust proxy", 1);
+
+// global limit
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000
+}));
+
 // middlewares
 app.use(express.json());
 
@@ -22,11 +37,11 @@ app.use(express.json());
 app.use(cookieParser())
 
 // routes
-app.use('/user', authRoute);
-app.use('/product', productRoute);
-app.use('/admin/products', CRUDProductsRoute);
+app.use('/user', authLimit, authRoute);
+app.use('/product', productLimit, productRoute);
+app.use('/admin/products', adminLimit, CRUDProductsRoute);
 app.use('/stock', stockDetectionRouter);
-app.use('/cart', CartRouter)
+app.use('/cart', cartLimit, CartRouter)
 
 
 // Database connection

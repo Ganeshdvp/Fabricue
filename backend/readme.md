@@ -60,7 +60,14 @@
 # Create middlewares
 - created userAuth.js
 - created roleAuth.js
+- created rateLimiting.js
 
 # Create utils
 - created sendEmail.js 
 - created validations.js
+
+# Security
+- used helmet for headers
+   - npm i helmet
+- used rateLimit based on IP and Database
+   - npm i express-rate-limit

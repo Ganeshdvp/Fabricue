@@ -3,7 +3,9 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
+// rate limit
+const MAX_ATTEMPTS = 5;
+const LOCK_TIME = 15 * 60 * 1000;  // 15 minutes
 
 const Login = async(req, res)=>{
     try {
@@ -15,10 +17,30 @@ const Login = async(req, res)=>{
         // find user in db
         const user = await User.findOne({ email });
         if (!user) throw new Error("user not found!");
+
+        // rate limit by using credentials
+        if(user.isLocked()){
+          return res.status(403).json({message: 'Account locked. Try again later!'})
+        }
     
         // compare passwords
         const isPasswordValid = await bcrypt.compare(password, user?.password);
-        if (!isPasswordValid) throw new Error("invalid credentials!");
+        if (!isPasswordValid){
+          user.failedLoginAttempts += 1;
+          if(user.failedLoginAttempts >= MAX_ATTEMPTS){
+            user.lockUntil = Date.now() + LOCK_TIME;
+          }
+          await user.save();
+
+          return res.status(400).json({message: 'Invalid credentials'});
+
+        };
+
+          // reset rate limit
+          user.failedLoginAttempts = 0;
+          user.lockUntil = null;
+          await user.save();
+
     
         // create jwt
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_CODE, {
