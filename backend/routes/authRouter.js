@@ -18,10 +18,10 @@ authRoute.post("/register", Register);
 authRoute.post("/login", Login);
 
 // logout
-authRoute.post("/logout", userAuth, roleAuth("admin","user"), Logout);
+authRoute.post("/logout", userAuth, roleAuth("seller","user"), Logout);
 
 // change password
-authRoute.post("/change-password", userAuth, roleAuth("admin", "user"), ChangePassword);
+authRoute.post("/change-password", userAuth, roleAuth("seller", "user"), ChangePassword);
 
 // send otp
 authRoute.post('/send-otp', SendOtp);

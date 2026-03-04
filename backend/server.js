@@ -10,6 +10,7 @@ import CartRouter from './routes/cartRouter.js';
 import helmet from 'helmet';
 import { authLimit, productLimit, adminLimit, cartLimit } from './middlewares/rateLimiting.js';
 import { rateLimit } from 'express-rate-limit';
+import cors from 'cors'
 
 
 // enable .env variables
@@ -17,6 +18,12 @@ dotenv.config();
 
 // main app
 const app = express();
+
+// cors
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 // headers middleware
 app.use(helmet());

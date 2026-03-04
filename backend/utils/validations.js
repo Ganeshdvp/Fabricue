@@ -9,7 +9,7 @@ export const RegisterVadlidation = (req)=>{
     if(!validator.isStrongPassword(password)){
         throw new Error('your password is weak!');
     }
-    if(!["admin","user"].includes(role)){
+    if(!["seller","user"].includes(role)){
         throw new Error('role is not valid!');
     }
 }

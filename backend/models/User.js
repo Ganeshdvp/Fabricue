@@ -42,7 +42,7 @@ const userSchema = mongoose.Schema(
     role: {
       type: String,
       require: true,
-      enum: ["admin", "user"],
+      enum: ["seller", "user"],
     },
     failedLoginAttempts: {
       type: Number,

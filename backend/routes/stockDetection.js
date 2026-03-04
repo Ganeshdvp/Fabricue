@@ -6,7 +6,7 @@ import stockDetection from '../controllers/stockDetection.js';
 const stockDetectionRouter = express.Router();
 
 // reduction of stock (-)
-stockDetectionRouter.patch('/reduce/:id', UserAuth, roleAuth("admin", "user"), stockDetection);
+stockDetectionRouter.patch('/reduce/:id', UserAuth, roleAuth("seller", "user"), stockDetection);
 
 
 export default stockDetectionRouter;

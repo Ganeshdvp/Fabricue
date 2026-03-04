@@ -9,7 +9,7 @@ const baseConfig = {
 export const authLimit = rateLimit({
     ...baseConfig,
     windowMs: 15 * 60 * 1000,  // 10 minutes
-    max: 5, // only 5 attempts
+    max: 10, // only 5 attempts
     message: {
         success: false,
     message: "Too many login attempts. Try again later"
