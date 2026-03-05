@@ -7,6 +7,7 @@ import Logout from "../controllers/logout.js";
 import ChangePassword from "../controllers/changePassword.js";
 import SendOtp from "../controllers/sendOtp.js";
 import VerifyOtp from "../controllers/verifyOtp.js";
+import Contact from "../controllers/contact.js";
 
 
 export const authRoute = express.Router();
@@ -27,4 +28,7 @@ authRoute.post("/change-password", userAuth, roleAuth("seller", "user"), ChangeP
 authRoute.post('/send-otp', SendOtp);
 
 // verify otp
-authRoute.post('/verify-otp', VerifyOtp)
+authRoute.post('/verify-otp', VerifyOtp);
+
+// contact
+authRoute.post('/contact', Contact);
