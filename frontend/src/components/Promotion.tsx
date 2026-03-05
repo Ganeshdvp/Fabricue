@@ -1,15 +1,19 @@
+import { Link } from "react-router"
+
 export const Promotion = () => {
   return (
     <>
     <div className="flex flex-col md:flex-row items-center justify-around text-sm border border-gray-200 rounded-2xl mx-auto max-w-5xl w-full bg-amber-50 mt-26">
                 
             <div className="flex flex-col text-center md:text-left items-center md:items-start pt-14 md:p-10">
-                <h2 className="md:text-4xl text-2xl font-bold text-gray-800">Boost your productivity.<br />Start using our app today.</h2>
+                <h2 className="md:text-4xl text-2xl font-bold text-gray-800">Flash Sale – Today Only!<br />Limited stock available.</h2>
         
                 <div className="flex items-center gap-4 mt-6">
-                    <button type="button" aria-label="getStarted" className="bg-amber-500 hover:bg-amber-600 px-7 py-2.5 text-white rounded-md active:scale-95 transition-all">
-                        Get started
+                    <Link to='/login'>
+                    <button type="button" aria-label="getStarted" className="cursor-pointer bg-amber-500 hover:bg-amber-600 px-7 py-2.5 text-white rounded-md active:scale-95 transition-all">
+                        Grab the Deal
                     </button>
+                    </Link>
                     <button type="button" className="group flex items-center gap-2 px-7 py-2.5 active:scale-95 transition">
                         Learn more
                         <svg className="mt-1 group-hover:translate-x-0.5 transition-all" width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">

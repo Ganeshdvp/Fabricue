@@ -7,7 +7,7 @@ import { WishList } from "./WishList";
 import { ViewProduct } from "./ViewProduct";
 import { ForgotPassword } from "./ForgotPassword";
 import { EnterOtp } from './EnterOtp';
-import { Contact } from './Contact';
+import { EnterPassword } from './EnterPassword';
 
 
 const routing = createBrowserRouter([
@@ -28,12 +28,12 @@ const routing = createBrowserRouter([
     element: <EnterOtp/>
   },
   {
-    path: "/home",
-    element: <Home />,
+    path: '/change-password',
+    element: <EnterPassword/>
   },
   {
-    path: '/contact',
-    element: <Contact/>
+    path: "/home",
+    element: <Home />,
   },
   {
     path: "/cart",

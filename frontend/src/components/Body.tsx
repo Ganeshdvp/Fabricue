@@ -9,6 +9,7 @@ import { Promotion } from './Promotion';
 import { LatestCollections } from './LatestCollections';
 import { NewArrivals } from './NewArrivals';
 import { About } from "./About";
+import { Contact } from "./Contact";
 
 
 
@@ -25,6 +26,7 @@ export const Body = () => {
     <AutoScrolling/>
     <Feature/>
     <Faqs/>
+    <Contact/>
     <Promotion/>
     <Footer/>
     </>

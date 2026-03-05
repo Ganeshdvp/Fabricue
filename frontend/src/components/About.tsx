@@ -10,64 +10,64 @@ export const About = () => {
                     font-family: 'Poppins', sans-serif;
                 }
             `}</style>
-            <h1 className="text-3xl font-semibold text-center mx-auto">About our apps</h1>
+            <h1 id="about" className="text-3xl font-semibold text-center mx-auto">About our apps</h1>
             <p className="text-sm text-slate-500 text-center mt-2 max-w-lg mx-auto">
-                A visual collection of our most recent works - each piece crafted with intention, emotion and style.
+                Fabricue is a modern fashion brand delivering trend-forward styles with premium quality and everyday comfort.
             </p>
-            <div className="relative max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 px-8 md:px-0 pt-16">
+            <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-8 md:px-0 pt-16">
                 <div className="size-[520px] -top-80 left-1/2 -translate-x-1/2 rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]"></div>
-                <div>
-                    <div className="size-10 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/flashEmoji.png" alt="" />
+                <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
+                    <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">
+                        <img src="../../public/badge.png" alt="badge-icon" />
                     </div>
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-base font-medium text-slate-600">Lightning-Fast Performance</h3>
-                        <p className="text-sm text-slate-500">Built with speed — minimal load times and optimized.</p>
+                        <h3 className="text-base font-medium">Premium Quality Materials</h3>
+                        <p className="text-sm text-slate-200">We source high-quality fabrics to ensure comfort, durability, and long-lasting style in every piece.</p>
                     </div>
                 </div>
-                <div>
-                    <div className="size-10 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/colorsEmoji.png" alt="" />
+                <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
+                    <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">
+                        <img src="../../public/trending.png" alt="trending-icon" />
                     </div>
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-base font-medium text-slate-600">Beautifully Designed Components</h3>
-                        <p className="text-sm text-slate-500">Modern, pixel-perfect UI components ready for any project.</p>
+                        <h3 className="text-base font-medium">Trend-Driven Collections</h3>
+                        <p className="text-sm text-slate-200">Stay ahead with fresh arrivals inspired by the latest global fashion trends.</p>
                     </div>
                 </div>
-                <div>
-                    <div className="size-10 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/puzzelEmoji.png" alt="" />
+                <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
+                    <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">
+                        <img src="../../public/diamond.png" alt="luxury-icon" />
                     </div>
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-base font-medium text-slate-600">Plug-and-Play Integration</h3>
-                        <p className="text-sm text-slate-500">Simple setup with support for React, Next.js and Tailwind css.</p>
+                        <h3 className="text-base font-medium">Affordable Luxury</h3>
+                        <p className="text-sm text-slate-200">Experience premium fashion at prices that don’t break your budget.</p>
                     </div>
                 </div>
-                <div>
-                    <div className="size-10 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/bookEmoji.png" alt="" />
+                <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
+                    <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">
+                        <img src="../../public/shield.png" alt="secure-icon" />
                     </div>
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-base font-medium text-slate-600">Clear & Comprehensive</h3>
-                        <p className="text-sm text-slate-500">Get started fast with usage examples, live previews and code.</p>
+                        <h3 className="text-base font-medium">Secure & Seamless Checkout</h3>
+                        <p className="text-sm text-slate-200">Fast, safe, and encrypted payment process for a smooth shopping experience.</p>
                     </div>
                 </div>
-                <div>
-                    <div className="size-10 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/boxEmoji.png" alt="" />
+                <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
+                    <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">
+                        <img src="../../public/tracking.png" alt="fast-icon" />
                     </div>
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-base font-medium text-slate-600">Fully Customizable</h3>
-                        <p className="text-sm text-slate-500">Easily adapt styles, colors and layout to match your brand or product.</p>
+                        <h3 className="text-base font-medium">Fast & Reliable Delivery</h3>
+                        <p className="text-sm text-slate-200">Quick dispatch and reliable shipping across India with real-time tracking.</p>
                     </div>
                 </div>
-                <div>
-                    <div className="size-10 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/brainEmoji.png" alt="" />
+                <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
+                    <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">
+                        <img src="../../public/resend.png" alt="return-icon" />
                     </div>
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-base font-medium text-slate-600">Accessibility First</h3>
-                        <p className="text-sm text-slate-500">Built with WCAG standards in mind to ensure inclusive user experiences.</p>
+                        <h3 className="text-base font-medium">Easy Returns & Support</h3>
+                        <p className="text-sm text-slate-200">Hassle-free returns and dedicated customer support to ensure complete satisfaction.</p>
                     </div>
                 </div>
             </div>

@@ -1,45 +1,79 @@
-
+import { Link } from "react-router";
 
 export const NewArrivals = () => {
   return (
     <>
-       <style>{`
+      <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
             
                 .font-poppins {
                     font-family: 'Poppins', sans-serif;
                 }
             `}</style>
-            
-            <h1 className="text-3xl font-medium text-slate-800 text-center mb-2 font-poppins mt-26">New Arrivals</h1>
-            <p className="text-slate-600 mb-10 font-poppins text-center">Explore the latest additions to our collection.</p>
-            <section className="flex flex-wrap items-center justify-center gap-6">
-                <a href="#" className='group w-56'>
-                    <img className='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-top'src="https://images.unsplash.com/photo-1598554747436-c9293d6a588f?q=80&w=500&auto=format&fit=crop" alt="image" />
-                    <p className='text-sm mt-2'>White crew-Neck T-Shirt</p>
-                    <p className='text-xl'>$ 29.00</p>
-                </a>
-                <a href="#" className='group w-56'>
-                    <img className='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right'src="https://images.unsplash.com/photo-1508427953056-b00b8d78ebf5?q=80&w=600&auto=format&fit=crop" alt="image" />
-                    <p className='text-sm mt-2'>White crew-Neck T-Shirt</p>
-                    <p className='text-xl'>$ 39.00</p>
-                </a>
-                <a href="#" className='group w-56'>
-                    <img className='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right'src="https://images.unsplash.com/photo-1608234807905-4466023792f5?q=80&w=735&auto=format&fit=crop" alt="image" />
-                    <p className='text-sm mt-2'>White crew-Neck T-Shirt</p>
-                    <p className='text-xl'>$ 29.00</p>
-                </a>
-                <a href="#" className='group w-56'>
-                    <img className='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right'src="https://images.unsplash.com/photo-1667243038099-b257ab263bfd?q=80&w=687&auto=format&fit=crop" alt="image" />
-                    <p className='text-sm mt-2'>White crew-Neck T-Shirt</p>
-                    <p className='text-xl'>$ 49.00</p>
-                </a>
-                <a href="#" className='group w-56'>
-                    <img className='rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover object-right'src="https://images.unsplash.com/photo-1667243038099-b257ab263bfd?q=80&w=687&auto=format&fit=crop" alt="image" />
-                    <p className='text-sm mt-2'>White crew-Neck T-Shirt</p>
-                    <p className='text-xl'>$ 49.00</p>
-                </a>
-            </section>
+
+      <h1 id="new-arrivals" className="text-3xl font-medium text-slate-800 text-center mb-2 font-poppins mt-36">
+        New Arrivals
+      </h1>
+      <p className="text-slate-600 mb-10 font-poppins text-center">
+        Explore the latest additions to our collection.
+      </p>
+      <section className="flex flex-wrap space-y-4 items-center justify-center space-x-10">
+        <Link to='/login'>
+        <div className="group w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-102">
+          <img
+            className="rounded-lg w-full h-50 object-cover"
+            src="https://tiimg.tistatic.com/fp/1/008/342/comfortable-double-pocket-sleeves-daily-wear-plain-jacket-for-mens-836.jpg"
+            alt="image"
+          />
+          <p className="text-sm mt-2">Polyester Winter Jacket</p>
+          <p className="text-sm bg-amber-600 w-fit text-white px-3">$ 22.00</p>
+        </div>
+        </Link>
+        <Link to='/login'>
+         <div className="group w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-102">
+          <img
+            className="rounded-lg w-full h-50 object-cover"
+            src="https://png.pngtree.com/png-clipart/20250420/original/pngtree-elegant-red-evening-gown-for-special-occasions-png-image_20743177.png"
+            alt="image"
+          />
+          <p className="text-sm mt-2">Red Dress for females</p>
+          <p className="text-sm bg-amber-600 w-fit text-white px-3">$ 29.00</p>
+        </div>
+        </Link>
+        <Link to='/login'>
+         <div className="group w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-102">
+          <img
+            className="rounded-lg w-full h-50 object-cover"
+            src="https://5.imimg.com/data5/SELLER/Default/2022/7/WW/JF/NS/118920094/boys-shirt-pant-set.png"
+            alt="image"
+          />
+          <p className="text-sm mt-2">Kids Pant Shirt</p>
+          <p className="text-sm bg-amber-600 w-fit text-white px-3">$ 17.00</p>
+        </div>
+        </Link>
+        <Link to='/login'>
+         <div className="group w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-102">
+          <img
+            className="rounded-lg w-full h-50 object-cover"
+            src="https://wallpapers.com/images/hd/traditional-yellow-blouse-red-lehenga-gold-trim-yipf2tuvnd0v4m43-2.png"
+            alt="image"
+          />
+          <p className="text-sm mt-2">Red & Yellow Lehenga</p>
+          <p className="text-sm bg-amber-600 w-fit text-white px-3">$ 32.00</p>
+        </div>
+        </Link>
+        <Link to='/login'>
+        <div className="group w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-102">
+          <img
+            className="rounded-lg w-full h-50 object-cover"
+            src="https://s.alicdn.com/@sc04/kf/H742e968a789e4ab1b0baefcde5ff964fp/Moq-1-Free-Shipping-Streetwear-Blank-Eco-260gsm-Wholesale-100-Polyester-Black-Men-Hooded-Breathable-Plain-Hoodies-Printing-Back.jpg"
+            alt="image"
+          />
+          <p className="text-sm mt-2">Hoodie for men</p>
+          <p className="text-sm bg-amber-600 w-fit text-white px-3">$ 19.00</p>
+        </div>
+        </Link>
+      </section>
     </>
-  )
-}
+  );
+};

@@ -1,10 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { emailRegex } from '../utils/constants.js';
 
 export const HeroPage = () => {
 
   const [heroPageEmail, setHeroPageEmail] = useState("");
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
+
+  const handleSubmit = ()=>{
+    if(emailRegex.test(heroPageEmail)){
+      setHeroPageEmail(heroPageEmail);
+    navigate('/login', {state: {heroPageEmail}});
+    }
+    else{
+      setError("Invalid Email Format!")
+    }
+  }
 
 
   return (
@@ -50,20 +63,27 @@ export const HeroPage = () => {
               — everything you need in one place.
             </p>
 
-            <div className="flex items-center border gap-2 border-neutral-300 h-13 max-w-[440px] w-full rounded-full overflow-hidden mt-6 mx-auto md:mx-0">
-              <input
+            <div className="flex flex-col items-start max-w-[440px] w-full mx-auto md:mx-0">
+              <div className="flex items-center border gap-2 border-neutral-300 h-13 rounded-full overflow-hidden mt-6">
+                 <input
                 type="email"
+                value={heroPageEmail}
+                onChange={(e)=> setHeroPageEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="w-full h-full pl-6 outline-none text-sm bg-transparent text-neutral-600"
                 required
               />
               <button
-                type="submit"
-                onClick={()=> {setHeroPageEmail(heroPageEmail); navigate('/login', {state: heroPageEmail})}}
+                type="button"
+                onClick={handleSubmit}
                 className="bg-amber-600 hover:bg-amber-700 w-56 h-10 rounded-full text-sm text-slate-50 cursor-pointer mr-1.5"
               >
                 Shop Now
               </button>
+              </div>
+              {
+              error && <p className="text-red-500 text-[12px] ml-6">{error}</p>
+            }
             </div>
 
             {/* Avatars + Stars */}

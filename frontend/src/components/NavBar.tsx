@@ -17,11 +17,19 @@ export const NavBar = () => {
             className="w-15 h-auto object-contain scale-300" />
 
             {/* Desktop Menu */}
-            <div className="hidden sm:flex items-center gap-8">
+            <div className="hidden sm:flex items-center gap-8 text-sm">
                 <Link to='/home'>Home</Link>
-                <a href="#">About</a>
-                <Link to='/contact'>Contact</Link>
+                <a href="#about">About</a>
+                <a href="#new-arrivals">New Arrivals</a>
+                <a href="#latest-collections">Latest Collections</a>
+                <a href="#top-collections">Top Collections</a>
+                <a href="#faqs">FAQs</a>
+                <a href="#contact">Contact</a>
 
+                 {
+                    store ? (
+                        <>
+                        {/* search feild */}
                 <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
                     <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,6 +55,9 @@ export const NavBar = () => {
                     <button className="absolute -top-2 -right-3 text-xs text-white bg-amber-500 w-4.5 h-4.5 rounded-full">3</button>
                 </div>
                 </Link>
+                        </>
+                    ) : ""
+                 }
 
                 {
                     store ? (

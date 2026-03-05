@@ -4,29 +4,29 @@ export const Faqs = () => {
     const [openIndex, setOpenIndex] = useState(null)
     const faqsData = [
         {
-            question: 'Lightning-Fast Performance',
-            answer: 'Built with speed — minimal load times and optimized rendering.'
+            question: 'How long does delivery take?',
+            answer: 'We typically deliver within 3–7 business days depending on your location. You’ll receive tracking details once your order is shipped.'
         },
         {
-            question: 'Fully Customizable Components',
-            answer: 'Easily adjust styles, structure, and behavior to match your project needs.'
+            question: 'Do you offer returns or exchanges?',
+            answer: 'Yes, we offer hassle-free returns and exchanges within 7 days of delivery, provided the item is unused and in original condition.'
         },
         {
-            question: 'Responsive by Default',
-            answer: 'Every component are responsive by default — no extra CSS required.'
+            question: 'Are your products true to size?',
+            answer: 'Yes, our products follow standard sizing guidelines. We recommend checking the size chart on each product page for the perfect fit.'
         },
         {
-            question: 'Tailwind CSS Powered',
-            answer: 'Built using Tailwind utility classes — no extra CSS or frameworks required.'
+            question: 'Is my payment information secure?',
+            answer: 'Absolutely. All payments are processed through secure and encrypted gateways to ensure your data remains safe.'
         },
         {
-            question: 'Dark Mode Support',
-            answer: 'All components come ready with light and dark theme support out of the box.'
+            question: 'How can I contact customer support?',
+            answer: 'You can reach our support team via email or through the contact form on our website. We’re here to help you with any questions or concerns.'
         }
     ]
   return (
     <>
-    <div className='flex flex-col items-center text-center text-slate-800 px-3 mt-26'>
+    <div id="faqs" className='flex flex-col items-center text-center text-slate-800 px-3 mt-36'>
                 <h1 className='text-3xl md:text-4xl font-semibold mt-2'>Frequently Asked Questions</h1>
                 <p className='text-sm text-slate-500 mt-4 max-w-sm'>
                     Proactively answering FAQs boosts user confidence and cuts down on support tickets.
