@@ -1,6 +1,11 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 
 const cartSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref: "User"
+    },
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         require: true,
@@ -8,8 +13,13 @@ const cartSchema = mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["cart", "favorite"],
-        require: true
+        enum: "cart",
+        require: true,
+    },
+    quantity: {
+        type: Number,
+        require: true,
+        default: 1
     }
 }, {timestamps: true});
 

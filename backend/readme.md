@@ -9,6 +9,7 @@
 - POST user/send-otp
 - POST user/verify-otp
 - POST user/change-password
+- POST user/contact
 
 -- Products --
 - GET product/
@@ -26,9 +27,13 @@
 - PATCH stock/reduce
 
 -- Cart --
-- GET cart/:type
-- POST cart/add/:type/:id
+- GET cart/
+- POST cart/add/:id
 - DELETE cart/remove/:id
+
+-- Favorite --
+- GET favorite/
+- POST favorite/:type/:id ---> (add and remove)
 
 -- Search with Ai integrate --
 - POST product/:search
@@ -57,6 +62,7 @@
 - created crudProducts.js
 - created stockDetection.js
 - created cartRouter.js
+- created favoriteRouter.js
 
 # Create Controllers
 
@@ -87,6 +93,10 @@
 - created addCart.js
 - created deleteItemCart.js
 - created allCartItems.js
+
+-- Favorite Items --
+- created toggleFavoriteItems.js
+- created getAllFavoriteItems.js
 
 -- Search with ai integrate --
 - created searchProduct.js

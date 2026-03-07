@@ -42,3 +42,13 @@ export const cartLimit = rateLimit({
     message: "Too many cart actions. Slow down."
   }
 })
+
+export const favoriteLimit = rateLimit({
+  ...baseConfig,
+    windowMs: 15 * 60 * 1000,  // 15 minutes
+    max: 200, // only 100 requests
+    message: {
+    success: false,
+    message: "Too many favorite actions. Slow down."
+  }
+})

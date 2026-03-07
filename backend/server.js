@@ -8,9 +8,10 @@ import {CRUDProductsRoute} from './routes/crudProducts.js';
 import stockDetectionRouter from './routes/stockDetection.js';
 import CartRouter from './routes/cartRouter.js';
 import helmet from 'helmet';
-import { authLimit, productLimit, adminLimit, cartLimit } from './middlewares/rateLimiting.js';
+import { authLimit, productLimit, adminLimit, cartLimit, favoriteLimit } from './middlewares/rateLimiting.js';
 import { rateLimit } from 'express-rate-limit';
-import cors from 'cors'
+import cors from 'cors';
+import { FavoriteRouter } from './routes/favoriteRouter.js';
 
 
 // enable .env variables
@@ -48,7 +49,8 @@ app.use('/user', authLimit, authRoute);
 app.use('/product', productLimit, productRoute);
 app.use('/admin/products', adminLimit, CRUDProductsRoute);
 app.use('/stock', stockDetectionRouter);
-app.use('/cart', cartLimit, CartRouter)
+app.use('/cart', cartLimit, CartRouter);
+app.use('/favorite', favoriteLimit, FavoriteRouter)
 
 
 // Database connection

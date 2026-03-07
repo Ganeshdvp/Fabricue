@@ -11,7 +11,7 @@ const deleteItemCart = async (req, res)=>{
     };
 
     // send response
-    res.status(200).json({message: 'Successfully item removed!'})
+    res.status(200).json({message: 'Successfully item removed from cart!'})
 
   }
   catch(err){

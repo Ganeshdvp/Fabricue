@@ -79,6 +79,10 @@ const productSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isFavorite: {
+        type: Boolean,
+        default: false
+    }
 }, {timestamps: true});
 
 productSchema.index({sellerId: 1});  // indexing

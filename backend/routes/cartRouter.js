@@ -8,13 +8,12 @@ import deleteItemCart from '../controllers/deleteItemCart.js';
 const CartRouter = express.Router();
 
 // get all cart items
-CartRouter.get("/:type", UserAuth, getAllCartItems);
+CartRouter.get("/", UserAuth, getAllCartItems);
 
 // add items in cart
-CartRouter.post('/add/:type/:id', UserAuth, addItemToCart);
+CartRouter.post('/add/:id', UserAuth, addItemToCart);
 
-
-// remove cart
+// remove items in cart
 CartRouter.delete('/remove/:id', UserAuth, deleteItemCart);
 
 
