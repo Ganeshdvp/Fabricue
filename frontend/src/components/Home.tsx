@@ -2,39 +2,71 @@ import { Card } from "./Card"
 import { NavBar } from "./NavBar";
 import { Pagination } from './Pagination';
 import { Footer } from "./Footer";
-import { Outlet } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { BASE_URL } from '../utils/constants.js';
+import { PageNotFound } from './errorAndLoading/PageNotFound.js';
+import { useState, useEffect } from "react";
+import { Tabs } from "./Tabs.js";
+import {Cookie} from './Cookie.js';
+
+
 
 export const Home = () => {
 
-  let cardData = []
+  const [page, setPage] = useState(1);
+  const [isActive, setIsActive] = useState(false);
 
-  for(let i=0; i<=50; i++){
-    const product = {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhDfUlPeHT_3kpqOmOGKnYtLlQROYrNII_kmYqAC69jA&s',
-    subCategory: 'T-Shirts',
-    name: 'Casual t-shirt for men',
-    price: 499,
-    discountPrice: 299,
-    rating: 4.2,
-    description: 'This is t-shirt is for men and females also based on the sizes'
-}
-    cardData.push(product)
-  }
+
+  // fetching all products
+  const {data, isPending} = useQuery({
+    queryKey: ['product', page],
+    queryFn: async ()=>{
+      const res = await axios(BASE_URL + `/product?page=${page}`, {
+        withCredentials: true
+      });
+      return res?.data
+    },
+    refetchOnMount: true,
+    retry: 2,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
+
+    useEffect(()=>{
+    setTimeout(()=>{
+      setIsActive(true);
+    },1000)
+  },[])
+
+
+  if(isPending) return <p>Loading....</p>
 
 
   return (
     <>
     <NavBar/>
-    <div className="flex gap-x-2 gap-y-4 flex-wrap p-4 justify-center">
+    <Tabs/>
+    {
+      data?.data?.length > 0 ? (
+        <>
+        <div className="flex gap-x-2 gap-y-4 flex-wrap p-4 justify-center">
       {
-      cardData.map((item, index)=>{
+      data?.data?.map((item)=>{
         return (
-          <Card productData={item} key={index}/>
+          <Card productData={item} key={item._id}/>
         )
       })
     }
     </div>
-    <Pagination/>
+    <Pagination page={page} setPage={setPage} totalPages={data?.totalPages} />
+        </>
+      ) : <PageNotFound title='Products'/>
+    }
+    {
+      isActive && <Cookie setIsActive={()=> setIsActive(false)}/>
+    }
     <Footer/>
     </>
   )

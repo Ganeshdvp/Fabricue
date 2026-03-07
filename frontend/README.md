@@ -11,12 +11,12 @@
 
 
 # Pages
-- created Hero page
-- created Login, forgotPassword and otp pages
-- created Home page
-- created Cart page
-- created Wishlist page
-- created contact page
+- Developed Hero page related content.
+- Developed Login, forgotPassword and otp pages.
+- Developed Home page related content.
+- Developed Cart page
+- Developed Wishlist page
+
 
 # Configuration
 - React Router

@@ -1,33 +1,82 @@
-import { Heart } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { Heart, ShoppingCart } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { BASE_URL } from '../utils/constants.js';
+import { Loading } from "./Loading.js";
 
 
 
 export const Card = ({productData}) => {
 
-    const {image, subCategory, name, rating, price, discountPrice, description} = productData;
+    const {_id, name, brand, price, discountPrice, rating, description, image, isNewArrival, isFavorite} = productData;
+    const navigate = useNavigate();
+    const [favorite, setFavorite] = useState(isFavorite);
 
-    const navigate = useNavigate()
+    const queryClient = useQueryClient();
+
+    // add to cart
+    const {mutate:cartMutate, isPending:cartPending} = useMutation({
+        mutationFn: async ()=>{
+            const res = await axios.post(BASE_URL + `/cart/add/${_id}`, {}, {
+                withCredentials: true
+            });
+            return res?.data
+        },
+        onSuccess:()=>{
+             queryClient.invalidateQueries({queryKey: ['cart']});
+        }
+    });
+
+    // add or remove favorite items
+    const {mutate:favoriteMutate, isPending: favoritePending} = useMutation({
+         mutationFn: async (type)=>{
+            const res = await axios.post(BASE_URL + `/favorite/${type}/${_id}`, {}, {
+                withCredentials: true
+            });
+            return res?.data
+        },
+        onSuccess:()=>{
+            queryClient.invalidateQueries({queryKey: ['favorite']});
+            queryClient.invalidateQueries({queryKey: ['product']});
+            setFavorite(!favorite);
+        }
+    })
+
+
+    // handle item to cart
+    const handleCart= ()=>{
+        cartMutate();
+    }
+
+    // handle favorite items
+    const handleFavorite = (type)=>{
+        favoriteMutate(type);
+    }
 
 
   return (
     <>
-     <div className="group border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-60 w-full cursor-pointer hover:block" onClick={()=> navigate('/view/1')}>
+     <div className="group border border-gray-500/30 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-60 w-full cursor-pointer hover:block">
             <div className="group cursor-pointer flex items-center justify-center px-2">
-                <img className="group-hover:scale-105 transition h-30 max-w-26 md:max-w-36" src={image} alt={name} />
+                <img className="group-hover:scale-105 transition h-30 max-w-26 md:max-w-36" src={image[0]} alt={name} />
             </div>
-            <div className="relative -top-28 left-2 opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer">
-                <Heart size={16}/>
+            <div onClick={()=> handleFavorite(favorite ? 'remove' : 'add')} className="relative -top-28 left-2 opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer w-fit">
+                {
+                    favoritePending ? <Loading/> : <Heart size={16} className={favorite ? "fill-red-500 text-red-500" : ""} />
+                }
+                
             </div>
             <div className="text-gray-500/60 text-sm">
-                <p>{subCategory}</p>
-                <p className="text-gray-700 font-medium text-lg truncate w-full">{name}</p>
+                <p>{brand}</p>
+                <p onClick={()=> navigate(`/view/${_id}`)} className="text-gray-700 font-medium text-lg truncate w-full hover:underline">{name}</p>
                 <p>{description}</p>
                 <div className="flex items-center gap-0.5 mt-2">
                     {Array(5).fill('').map((_, i) => (
                         Math.floor(rating) > i ? (
                             <svg key={i} width="14" height="13" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8.049.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L9.589 13.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L4.78 10.99a1 1 0 0 0-.363-1.118L1.028 7.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69z" fill="#615fff" />
+                                <path d="M8.049.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L9.589 13.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L4.78 10.99a1 1 0 0 0-.363-1.118L1.028 7.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69z" fill="orange" />
                             </svg>
                         ) : (
                             <svg width="14" height="13" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,15 +87,15 @@ export const Card = ({productData}) => {
                     <p>({rating})</p>
                 </div>
                 <div className="flex items-end justify-between mt-3">
-                    <p className="md:text-xl text-base font-medium text-indigo-500">
+                    <p className="md:text-xl text-base font-medium text-amber-500">
                         ${discountPrice} <span className="text-gray-500/60 md:text-sm text-xs line-through">${price}</span>
                     </p>
-                    <div className="text-indigo-500">
-                       <button className="flex items-center justify-center gap-1 bg-indigo-100 border border-indigo-300 md:w-[80px] w-[64px] h-[34px] rounded text-indigo-600 font-medium cursor-pointer">
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M.583.583h2.333l1.564 7.81a1.17 1.17 0 0 0 1.166.94h5.67a1.17 1.17 0 0 0 1.167-.94l.933-4.893H3.5m2.333 8.75a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0m6.417 0a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0" stroke="#615fff" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Add
+                    <div className="text-amber-500">
+                       <button disabled={cartPending} onClick={handleCart} className="flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 border border-amber-300 md:w-[80px] w-[64px] h-[34px] rounded text-amber-600 font-medium cursor-pointer">
+                                {
+                                    cartPending ? <p className="mr-4"><Loading/></p> : <p className="flex items-center gap-x-1"><ShoppingCart size={15}/>
+                                Add</p>
+                                }
                             </button>
                     </div>
                 </div>
