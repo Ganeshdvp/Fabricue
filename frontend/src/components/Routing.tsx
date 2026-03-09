@@ -6,15 +6,14 @@ import { Cart } from "./Cart";
 import { WishList } from "./WishList";
 import { ViewProduct } from "./ViewProduct";
 import { ForgotPassword } from "./ForgotPassword";
-import { EnterOtp } from './EnterOtp';
-import { EnterPassword } from './EnterPassword';
+import { EnterOtp } from "./EnterOtp";
+import { EnterPassword } from "./EnterPassword";
 import { PrivateRoutes } from "./protectedRoutes/PrivateRoutes";
 import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
+import { Tabs } from "./Tabs.js";
 
-
-export const Routing = ({store}) => {
-
- const routing = createBrowserRouter([
+export const Routing = ({ store }) => {
+  const routing = createBrowserRouter([
     {
       path: "/",
       element: (
@@ -62,30 +61,40 @@ export const Routing = ({store}) => {
           <Home />
         </PrivateRoutes>
       ),
-    },
-    {
-      path: "/cart",
-      element: (
-        <PrivateRoutes store={store}>
-          <Cart />
-        </PrivateRoutes>
-      ),
-    },
-    {
-      path: "/wishlist",
-      element: (
-        <PrivateRoutes store={store}>
-          <WishList />
-        </PrivateRoutes>
-      ),
-    },
-    {
-      path: "/view/:id",
+      children: [
+        {
+          path: "",
+          element: (
+            <PrivateRoutes store={store}>
+              <Tabs />
+            </PrivateRoutes>
+          ),
+        },
+        {
+          path: "cart",
+          element: (
+            <PrivateRoutes store={store}>
+              <Cart />
+            </PrivateRoutes>
+          ),
+        },
+        {
+          path: "wishlist",
+          element: (
+            <PrivateRoutes store={store}>
+              <WishList />
+            </PrivateRoutes>
+          ),
+        },
+        {
+      path: "view/:id",
       element: (
         <PrivateRoutes store={store}>
           <ViewProduct />
         </PrivateRoutes>
       ),
+    },
+      ],
     },
   ]);
 

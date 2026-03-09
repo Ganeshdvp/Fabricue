@@ -31,7 +31,6 @@ export const WishList = () => {
 
   return (
     <>
-     <NavBar/>
         {
           data?.length > 0 ? (
             <>
@@ -47,7 +46,6 @@ export const WishList = () => {
             </>
           ) : <PageNotFound title='Wish List' />
         }
-    <Footer/>
     </>
   )
 }

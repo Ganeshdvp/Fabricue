@@ -53,7 +53,6 @@ export const Cart = () => {
 
   return (
     <>
-    <NavBar/>
      {
         data?.length > 0 ? (
             <div className="flex flex-col md:flex-row py-16 max-w-7xl w-full px-6 mx-auto">
@@ -173,7 +172,6 @@ export const Cart = () => {
         </div>
         ) : <PageNotFound title='Cart Items'/>
      }
-    <Footer/>
     </>
   )
 }

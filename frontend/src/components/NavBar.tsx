@@ -114,7 +114,7 @@ export const NavBar = () => {
               </div> */}
 
               {/* wishlist */}
-              <Link to="/wishlist">
+              <Link to="/home/wishlist">
                 <div className="relative cursor-pointer hover:scale-110">
                   <Heart size={16} />
                   <button className="absolute -top-2 -right-3 text-xs text-white bg-amber-500 w-4.5 h-4.5 rounded-full">
@@ -124,7 +124,7 @@ export const NavBar = () => {
               </Link>
 
               {/* cart */}
-              <Link to="/cart">
+              <Link to="/home/cart">
                 <div className="relative cursor-pointer hover:scale-110">
                   <svg
                     width="18"

@@ -53,8 +53,8 @@ export const ProfileDropDown = () => {
                 </li>
                 
                 <div className="w-full h-px bg-gray-300/50 my-2"></div>
-                <li className="flex items-center text-red-600/80 justify-between gap-3 cursor-pointer px-3 py-2 rounded hover:bg-red-600/20 transition">
-                    <button onClick={handleLogout} disabled={isPending}>
+                <li onClick={handleLogout} className="flex items-center text-red-600/80 justify-between gap-3 cursor-pointer px-3 py-2 rounded hover:bg-red-600/20 transition">
+                    <button disabled={isPending}>
                         {
                             isPending ? "pending..." : "Logout"
                         }
