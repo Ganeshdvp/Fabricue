@@ -1,9 +1,5 @@
 import {
-  Baby,
-  Grid,
-  LifeBuoyIcon,
   Search,
-  Shirt,
   Sparkles,
 } from "lucide-react";
 import { Cookie } from "./Cookie.js";
@@ -15,15 +11,14 @@ import { BASE_URL } from "../utils/constants.js";
 import { PageNotFound } from "./errorAndLoading/PageNotFound.js";
 import { useState } from "react";
 import { Pagination } from "./Pagination";
-import { Card } from "./Card";
 import { Loading } from "./Loading.js";
 import { addProduct, removeProduct } from '../utils/productSlice.js';
+import { HomeCardsContainer } from "./HomeCardsContainer.js";
 
 
 export const Tabs = () => {
   const [page, setPage] = useState(1);
   const store = useSelector((store) => store.cookieToggle);
-  const productStore = useSelector((store) => store.product);
   const dispatch = useDispatch();
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeSubCategory, setActiveSubCategory] = useState("");
@@ -73,50 +68,168 @@ export const Tabs = () => {
 
   const categories = {
     all: [
-      "T-shirts",
-      "Shirts",
-      "Hoodies",
-      "Jeans",
-      "Jackets",
-      "Blazers",
-      "Shorts",
-      "Sweaters",
-      "Underwears",
-      "Dresses",
-      "Tops",
-      "Skirts",
-      "Sarees",
-      "Kurtis",
-      "Lehengas",
+      {
+        image : '../../public/MenTshirt.png',
+        name : "T-shirts"
+      },
+      {
+        image : '../../public/menShirt.png',
+        name : "Shirts"
+      },
+      {
+        image : '../../public/hoodie.png',
+        name : "Hoodies"
+      },
+      {
+        image : '../../public/MenJeans.png',
+        name : "Jeans"
+      },
+      {
+        image : '../../public/jacket.png',
+        name : "Jackets"
+      },
+      {
+        image : '../../public/blazer.png',
+        name : "Blazers"
+      },
+      {
+        image : '../../public/MensShort.png',
+        name : "Shorts"
+      },
+      {
+        image : '../../public/sweater.png',
+        name : "Sweaters"
+      },
+      {
+        image : '../../public/underwear.png',
+        name : "Underwears"
+      },
+      {
+        image : '../../public/dresses.png',
+        name : "Dresses"
+      },
+      {
+        image : '../../public/tops.png',
+        name : "Tops"
+      },
+      {
+        image : '../../public/skirt.png',
+        name : "Skirts"
+      },
+      {
+        image : '../../public/sarees.png',
+        name : "Sarees"
+      },
+      {
+        image : '../../public/kurti.PNG',
+        name : "Kurtis"
+      },
+      {
+        image : '../../public/lehenga.png',
+        name : "Lehengas"
+      },
     ],
     men: [
-      "T-shirts",
-      "Shirts",
-      "Hoodies",
-      "Jeans",
-      "Jackets",
-      "Blazers",
-      "Shorts",
-      "Sweaters",
-      "Underwears",
+      {
+        image : '../../public/MenTshirt.png',
+        name : "T-shirts"
+      },
+      {
+        image : '../../public/menShirt.png',
+        name : "Shirts"
+      },
+      {
+        image : '../../public/hoodie.png',
+        name : "Hoodies"
+      },
+      {
+        image : '../../public/MenJeans.png',
+        name : "Jeans"
+      },
+      {
+        image : '../../public/jacket.png',
+        name : "Jackets"
+      },
+      {
+        image : '../../public/blazer.png',
+        name : "Blazers"
+      },
+      {
+        image : '../../public/MensShort.png',
+        name : "Shorts"
+      },
+      {
+        image : '../../public/sweater.png',
+        name : "Sweaters"
+      },
+      {
+        image : '../../public/underwear.png',
+        name : "Underwears"
+      },
     ],
     women: [
-      "Dresses",
-      "Tops",
-      "Skirts",
-      "Jeans",
-      "Sarees",
-      "Kurtis",
-      "Lehengas",
-      "Jackets",
+      {
+        image : '../../public/dresses.png',
+        name : "Dresses"
+      },
+      {
+        image : '../../public/tops.png',
+        name : "Tops"
+      },
+      {
+        image : '../../public/skirt.png',
+        name : "Skirts"
+      },
+      {
+        image : '../../public/sarees.png',
+        name : "Sarees"
+      },
+      {
+        image : '../../public/kurti.PNG',
+        name : "Kurtis"
+      },
+      {
+        image : '../../public/lehenga.png',
+        name : "Lehengas"
+      },
+      {
+        image : '../../public/womenJackets.png',
+        name : "Jackets"
+      },
+      {
+        image : '../../public/womenJeans.png',
+        name : "Jeans"
+      },
     ],
     kids: [
-      "Kids t-shirts",
-      "Kids shirts",
-      "Kids dresses",
-      "Kids hoodies",
-      "Kids jackets",
-      "Kids sweatshirts",
+      {
+        image : '../../public/kidsTShirts.png',
+        name : "Kids t-shirts"
+      },
+      {
+        image : '../../public/kidsShirt.png',
+        name : "Kids shirts"
+      },
+      {
+        image : '../../public/kidsDresses.png',
+        name : "Kids dresses"
+      },
+      {
+        image : '../../public/kidsHoodies.png',
+        name : "Kids hoodies"
+      },
+      {
+        image : '../../public/jacket.png',
+        name : "Kids jackets"
+      },
+      {
+        image : '../../public/kidsSweatShirts.png',
+        name : "Kids sweatshirts"
+      },
+      {
+        image : '../../public/sweaters.png',
+        name : "Kids sweaters"
+      },
     ],
   };
 
@@ -161,7 +274,7 @@ export const Tabs = () => {
 
               <button
                 onClick={handleSearchClick}
-                className="flex items-start gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition"
+                className="flex items-start gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition cursor-pointer"
               >
                 {searchPending ? (
                   <p className="mr-4">
@@ -184,13 +297,14 @@ export const Tabs = () => {
                   setActiveSubCategory("");
                   dispatch(removeProduct());
                 }}
-                className={`flex items-center gap-1 pb-1 cursor-pointer ${
+                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
                   activeCategory === "all"
                     ? "text-amber-600 border-b-2 border-amber-500"
                     : "hover:text-amber-600"
                 }`}
               >
-                <Grid size={16} />
+                <img src="../../public/all.png" alt="all-icon" 
+                className={`${activeCategory === 'all' ? 'bg-amber-400 ' : ''} w-15 h-10 rounded-full`}/>
                 All
               </button>
 
@@ -200,13 +314,14 @@ export const Tabs = () => {
                   setActiveSubCategory("");
                   dispatch(removeProduct());
                 }}
-                className={`flex items-center gap-1 pb-1 cursor-pointer ${
+                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
                   activeCategory === "men"
                     ? "text-amber-600 border-b-2 border-amber-500"
                     : "hover:text-amber-600"
                 }`}
               >
-                <Shirt size={16} />
+                <img src="../../public/men.png" alt="men-image"
+                className={`${activeCategory === 'men' ? 'bg-amber-400 ' : ''} w-15 h-10 rounded-full`}/>
                 Men
               </button>
 
@@ -216,13 +331,13 @@ export const Tabs = () => {
                   setActiveSubCategory("");
                   dispatch(removeProduct());
                 }}
-                className={`flex items-center gap-1 pb-1 cursor-pointer ${
+                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
                   activeCategory === "women"
                     ? "text-amber-600 border-b-2 border-amber-500"
                     : "hover:text-amber-600"
                 }`}
               >
-                <LifeBuoyIcon size={16} />
+                <img src='../../public/women.png' alt="women-image" className={`${activeCategory === 'women' ? 'bg-amber-400 ' : ''} w-15 h-10 object-cover rounded-full`}/>
                 Women
               </button>
 
@@ -232,13 +347,13 @@ export const Tabs = () => {
                   setActiveSubCategory("");
                   dispatch(removeProduct());
                 }}
-                className={`flex items-center gap-1 pb-1 cursor-pointer ${
+                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
                   activeCategory === "kids"
                     ? "text-amber-600 border-b-2 border-amber-500"
                     : "hover:text-amber-600"
                 }`}
               >
-                <Baby size={16} />
+                <img src="../../public/kids.png" alt="kid-image" className={`${activeCategory === 'kids' ? 'bg-amber-400 ' : ''} w-15 h-10 object-contain rounded-full`}/>
                 Kids
               </button>
             </div>
@@ -246,13 +361,16 @@ export const Tabs = () => {
             {/* Sub Categories */}
             <div className="flex flex-wrap justify-center mx-auto gap-3 mt-4 text-xs max-w-200">
               {categories[activeCategory].map((sub, i) => (
+                <>
                 <button
-                  onClick={() => setActiveSubCategory(sub)}
+                  onClick={() => setActiveSubCategory(sub.name)}
                   key={i}
-                  className={`cursor-pointer px-3 py-1.5 bg-white border border-amber-200 rounded-full hover:border-amber-500 hover:text-amber-600 transition ${activeSubCategory === sub ? "focus:text-amber-600 border-amber-500" : ""}`}
+                  className={`flex items-center cursor-pointer px-3 py-1.5 border border-amber-200 rounded-full hover:border-amber-500 hover:text-amber-600 transition ${activeSubCategory === sub.name ? "focus:text-amber-600 focus:bg-amber-50 text-amber-600 bg-amber-50 border-amber-500" : ""}`}
                 >
-                  {sub}
+                  <img src={sub.image} alt={sub.name} className="w-10 h-5 object-contain"/>
+                  {sub.name}
                 </button>
+                </>
               ))}
             </div>
           </div>
@@ -262,19 +380,7 @@ export const Tabs = () => {
         {/* all cards */}
       {data?.data?.length > 0 ? (
         <>
-          <div className="flex gap-x-2 gap-y-4 flex-wrap p-4 mt-8 justify-center">
-            {
-              productStore ? (
-                productStore?.map((item) => {
-              return <Card productData={item} key={item._id} />;
-            })
-              ) : (
-                data?.data?.map((item) => {
-              return <Card productData={item} key={item._id} />;
-            })
-              )
-            }
-          </div>
+          <HomeCardsContainer data={data?.data} />
           <Pagination
             page={page}
             setPage={setPage}

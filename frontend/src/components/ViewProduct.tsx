@@ -10,6 +10,7 @@ export const ViewProduct = () => {
   const { id } = useParams();
   const [size, setSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [imageIndex, setImageIndex] = useState(0);
 
   // fetch product
   const { data, isPending, isError, error } = useQuery({
@@ -53,7 +54,6 @@ export const ViewProduct = () => {
 
   return (
     <>
-      <NavBar />
       {data && (
         <div className="max-w-6xl w-full px-6 mx-auto mt-20">
           <div className="flex flex-col md:flex-row gap-16 mt-4">
@@ -64,16 +64,16 @@ export const ViewProduct = () => {
                     key={index}
                     className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer"
                   >
-                    <img src={image} alt={`Thumbnail ${index + 1}`} />
+                    <img src={image} alt={`Thumbnail ${index + 1}`} onClick={()=> setImageIndex(index)} />
                   </div>
                 ))}
               </div>
 
-              <div className="border border-gray-500/30 max-w-100 rounded overflow-hidden">
+              <div className="border border-gray-500/30 w-100 h-80 rounded overflow-hidden">
                 <img
-                  src={data?.image[0]}
+                  src={data?.image[imageIndex]}
                   alt="Selected product"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain scale-90"
                 />
               </div>
             </div>
@@ -211,15 +211,14 @@ export const ViewProduct = () => {
                 <button className="w-full py-3.5 cursor-pointer font-medium bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
                   Add to Cart
                 </button>
-                <button onClick={handleBuyButton} className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition">
-                  Buy now
+                <button onClick={handleBuyButton} disabled={data?.stock === 0} className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition">
+                  {data?.stock === 0 ? 'No Stock' : 'Buy now'}
                 </button>
               </div>
             </div>
           </div>
         </div>
       )}
-      <Footer />
     </>
   );
 };
