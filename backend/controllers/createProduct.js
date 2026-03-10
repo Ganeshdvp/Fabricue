@@ -4,6 +4,9 @@ const createProduct = async (req, res) => {
   try {
     const { name, brand, category, description, discountPrice, currency, price, subCategory, stock, numReviews, rating, sizes, colors, isNewArrival, image } = req.body;
 
+    const subCategoryCase = subCategory.charAt(0).toUpperCase() + subCategory.slice(1).toLowerCase();
+
+
     // Create a new product instance
     const newProduct = new Product({
       sellerId: req.user?._id,
@@ -14,7 +17,7 @@ const createProduct = async (req, res) => {
       discountPrice,
       currency,
       price,
-      subCategory,
+      subCategory : subCategoryCase,
       stock,
       numReviews,
       rating,
