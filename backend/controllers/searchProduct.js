@@ -13,7 +13,7 @@ const searchProduct = async (req, res)=>{
         const searchCase = search.charAt(0).toUpperCase() + search.slice(1).toLowerCase();
 
         // Direct DB search first (fastest)
-        const products = await Product.find({subCategory : searchCase });
+        let products = await Product.find({subCategory : searchCase });
 
         //  If not found → use AI
         if(!products.length){
@@ -25,12 +25,10 @@ const searchProduct = async (req, res)=>{
             }
 
             // find in db
-            products = await Product.find({subCategory : aiSearch.trim()});
+            products = await Product.find({subCategory : aiSearch});
             if(!products.length){
                 return res.status(404).json({message: 'Products Not Found!'})
             };
-            // send response
-            return res.status(200).json({message: 'Successfully fetched products data!', data: product});
         }
 
         // send response

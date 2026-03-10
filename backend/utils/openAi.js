@@ -1,45 +1,59 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  const groq = new Groq({
+  apiKey: process.env.GROK_API_KEY
 });
 
+
 const SUB_CATEGORIES = [
-  "T-Shirts",
+  "T-shirts",
   "Shirts",
   "Jeans",
   "Jackets",
   "Hoodies",
   "Blazers",
-  "Shots",
+  "Shorts",
   "Sweaters",
   "Underwears",
   "Sarees",
-  "Kurti",
-  "Dress",
-  "Top",
-  "Skirt",
-  "Lehenga",
+  "Kurtis",
+  "Dresses",
+  "Tops",
+  "Skirts",
+  "Lehengas",
+  "Kids t-shirts",
+  "Kids shirts",
+  "Kids dresses",
+  "Kids hoodies",
+  "Kids jackets",
+  "Kids sweatshirts"
 ];
 
 // Ai search Integrated
 const AISearch = async (prompt) => {
+
   try {
     const searchPrompt = `
 Choose exactly one from:
 ${JSON.stringify(SUB_CATEGORIES)}
-for this input: "${prompt}".
-Return only the value.
+based on this input: "${prompt}".
+Don't give extra texts or sentence and first letter is upper case and rest of the letters is lower case, dont care about two words just follow the pattern!.
 `;
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: searchPrompt,
-      temperature: 0,
+    const response = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: 'user',
+          content: searchPrompt
+        }
+      ],
+      max_tokens: 20
     });
-    return response.text.trim();
+    return response.choices[0]?.message?.content.trim()
   } catch (err) {
+    console.log(err)
     return err;
   }
 };
