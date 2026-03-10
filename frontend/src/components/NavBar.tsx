@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Heart, User2Icon } from "lucide-react";
 import { Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ export const NavBar = () => {
   const cartItems = useSelector((store) => store?.cartItems);
   const dispatch = useDispatch();
   const [dropDown, setDropDown] = useState(false);
+  const dropDownRef = useRef(null);
 
   // fetch favorite items
   const { data: favoriteData, isPending: favoritePending } = useQuery({
@@ -56,9 +57,24 @@ export const NavBar = () => {
     setDropDown(!dropDown);
   };
 
+
+  useEffect(()=>{
+    const handleClickOutside = (e)=>{
+      if(dropDownRef.current && !dropDownRef.current.contains(e.target)){
+        setDropDown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+
+     return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+    
+  },[])
+
   return (
     <>
-      <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+      <nav ref={dropDownRef} className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
         <img
           src="../../public/Fabricue.png"
           alt="logo"

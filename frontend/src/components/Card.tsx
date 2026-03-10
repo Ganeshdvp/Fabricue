@@ -70,7 +70,7 @@ export const Card = ({productData}) => {
             </div>
             <div className="text-gray-500/60 text-sm">
                 <p>{brand}</p>
-                <p onClick={()=> navigate(`/view/${_id}`)} className="text-gray-700 font-medium text-lg truncate w-full hover:underline">{name}</p>
+                <p onClick={()=> navigate(`/home/view/${_id}`)} className="text-gray-700 font-medium text-lg truncate w-full hover:underline">{name}</p>
                 <p>{description}</p>
                 <div className="flex items-center gap-0.5 mt-2">
                     {Array(5).fill('').map((_, i) => (

@@ -11,6 +11,7 @@ import { EnterPassword } from "./EnterPassword";
 import { PrivateRoutes } from "./protectedRoutes/PrivateRoutes";
 import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
 import { Tabs } from "./Tabs.js";
+import { Orders } from "./Orders.js";
 
 export const Routing = ({ store }) => {
   const routing = createBrowserRouter([
@@ -94,6 +95,14 @@ export const Routing = ({ store }) => {
         </PrivateRoutes>
       ),
     },
+    {
+          path: "orders",
+          element: (
+            <PrivateRoutes store={store}>
+              <Orders />
+            </PrivateRoutes>
+          ),
+        },
       ],
     },
   ]);
