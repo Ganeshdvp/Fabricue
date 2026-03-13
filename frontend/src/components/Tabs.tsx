@@ -14,6 +14,8 @@ import { Pagination } from "./Pagination";
 import { Loading } from "./Loading.js";
 import { addProduct, removeProduct } from '../utils/productSlice.js';
 import { HomeCardsContainer } from "./HomeCardsContainer.js";
+import { TabsShimmer } from "./errorAndLoading/TabsShimmer.js";
+import { CardShimmer } from "./errorAndLoading/cardShimmer.js";
 
 
 export const Tabs = () => {
@@ -243,13 +245,19 @@ export const Tabs = () => {
     mutate(data);
   };
 
-  if (isPending) return <p>Loading....</p>;
+  if (isPending){
+    return (
+      <>
+      <TabsShimmer/>
+      </>
+    )
+  };
 
   return (
     <>
-      <div className="bg-white min-h-screen -mb-115">
+      <div className="bg-white">
         {/* SEARCH + CATEGORY SECTION */}
-        <section className="">
+        <section>
           <div className="max-w-7xl mx-auto px-4 py-6">
             {/* Search */}
             <div className="flex items-start gap-2 max-w-xl mx-auto mt-6">
@@ -262,7 +270,7 @@ export const Tabs = () => {
                     onChange={(e) => setSearchInput(e.target.value)}
                     title="Enables Multi-Language Support"
                     placeholder={`Search for products or describe product`}
-                    className="w-full px-2 py-2.5 text-sm outline-none"
+                    className="w-full px-2 py-3 text-sm outline-none"
                   />
                 </div>
                 {searchError && (
@@ -274,7 +282,7 @@ export const Tabs = () => {
 
               <button
                 onClick={handleSearchClick}
-                className="flex items-start gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition cursor-pointer"
+                className="flex items-start gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-3 rounded-lg text-sm font-medium transition cursor-pointer"
               >
                 {searchPending ? (
                   <p className="mr-4">
@@ -304,7 +312,7 @@ export const Tabs = () => {
                 }`}
               >
                 <img src="../../public/all.png" alt="all-icon" 
-                className={`${activeCategory === 'all' ? 'bg-amber-400 ' : ''} w-15 h-10 rounded-full`}/>
+                className={`${activeCategory === 'all' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 rounded-full`}/>
                 All
               </button>
 
@@ -321,7 +329,7 @@ export const Tabs = () => {
                 }`}
               >
                 <img src="../../public/men.png" alt="men-image"
-                className={`${activeCategory === 'men' ? 'bg-amber-400 ' : ''} w-15 h-10 rounded-full`}/>
+                className={`${activeCategory === 'men' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 rounded-full`}/>
                 Men
               </button>
 
@@ -337,7 +345,7 @@ export const Tabs = () => {
                     : "hover:text-amber-600"
                 }`}
               >
-                <img src='../../public/women.png' alt="women-image" className={`${activeCategory === 'women' ? 'bg-amber-400 ' : ''} w-15 h-10 object-cover rounded-full`}/>
+                <img src='../../public/women.png' alt="women-image" className={`${activeCategory === 'women' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-cover rounded-full`}/>
                 Women
               </button>
 
@@ -353,21 +361,23 @@ export const Tabs = () => {
                     : "hover:text-amber-600"
                 }`}
               >
-                <img src="../../public/kids.png" alt="kid-image" className={`${activeCategory === 'kids' ? 'bg-amber-400 ' : ''} w-15 h-10 object-contain rounded-full`}/>
+                <img src="../../public/kids.png" alt="kid-image" className={`${activeCategory === 'kids' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-contain rounded-full`}/>
                 Kids
               </button>
             </div>
 
+            <div className="border-b-1 border-gray-200"></div>
+
             {/* Sub Categories */}
-            <div className="flex flex-wrap justify-center mx-auto gap-3 mt-4 text-xs max-w-200">
+            <div className="flex flex-wrap justify-center mx-auto gap-3 mt-8 border-b border-gray-200 pb-8 text-xs max-w-200">
               {categories[activeCategory].map((sub, i) => (
                 <>
                 <button
                   onClick={() => setActiveSubCategory(sub.name)}
                   key={i}
-                  className={`flex items-center cursor-pointer px-3 py-1.5 border border-amber-200 rounded-full hover:border-amber-500 hover:text-amber-600 transition ${activeSubCategory === sub.name ? "focus:text-amber-600 focus:bg-amber-50 text-amber-600 bg-amber-50 border-amber-500" : ""}`}
+                  className={`flex flex-col items-center cursor-pointer px-2 py-1.5 rounded-full hover:bg-gray-100 transition ${activeSubCategory === sub.name ? "focus:text-amber-600 focus:bg-amber-100 text-amber-600 bg-amber-100 scale-105" : ""}`}
                 >
-                  <img src={sub.image} alt={sub.name} className="w-10 h-5 object-contain"/>
+                  <img src={sub.image} alt={sub.name} className="w-15 h-10 object-contain"/>
                   {sub.name}
                 </button>
                 </>

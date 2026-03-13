@@ -53,7 +53,6 @@ export const NavBar = () => {
   });
 
   const handleProfileClick = () => {
-    console.log("clicked");
     setDropDown(!dropDown);
   };
 
@@ -74,7 +73,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <nav ref={dropDownRef} className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+      <nav ref={dropDownRef} className="flex items-center justify-between px-16 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
         <img
           src="../../public/Fabricue.png"
           alt="logo"

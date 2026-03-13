@@ -17,6 +17,7 @@
 - Developed Cart page
 - Developed Wishlist page
 - Integrated AI-Powered Searching Product
+- Implemented Shimmer UI
 
 
 # Configuration

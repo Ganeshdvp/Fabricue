@@ -1,19 +1,24 @@
 import { useState } from "react";
-import { NavBar } from "./NavBar";
-import { Footer } from "./Footer";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constants.js";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { Loading } from "./Loading.js";
+import { ViewProductShimmer } from "./errorAndLoading/ViewProductShimmer.js";
 
 export const ViewProduct = () => {
+  const queryClient = useQueryClient();
+
   const { id } = useParams();
   const [size, setSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const navigate = useNavigate();
 
   // fetch product
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: [`product/${id}`],
     queryFn: async () => {
       const res = await axios.get(BASE_URL + `/product/${id}`, {
@@ -27,30 +32,80 @@ export const ViewProduct = () => {
     gcTime: 1000 * 60 * 30,
   });
 
-  if (isPending) return <p>Loading....</p>;
+  // add to cart
+  const { mutate: cartMutate, isPending: cartPending } = useMutation({
+    mutationFn: async (cartData) => {
+      const res = await axios.post(BASE_URL + `/cart/add/${id}`, cartData, {
+        withCredentials: true,
+      });
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
 
+  // add to orders
+  const { mutate: orderMutate, isPending: orderPending } = useMutation({
+    mutationFn: async (data) => {
+      setError(null)
+      const res = await axios.post(BASE_URL + `/payment`, data, {
+        withCredentials: true,
+      });
+      return res?.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["order"] });
+      window.location.href = data?.url;
+    },
+    onError: (error) => {
+      console.error("Payment error from frontend:", error);
+    },
+  });
 
-  const handleBuyButton = ()=>{
-    console.log({size, selectedColor})
-  }
-  //  const product = {
-  //     name: "Nike Pegasus 41 shoes",
-  //     category: "Sports",
-  //     price: 189,
-  //     offerPrice: 159,
-  //     rating: 4.2,
-  //     images: [
-  //         "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage.png",
-  //         "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage2.png",
-  //         "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage3.png",
-  //         "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage4.png"
-  //     ],
-  //     description: [
-  //         "High-quality material",
-  //         "Comfortable for everyday use",
-  //         "Available in different sizes"
-  //     ]
-  // };
+  if (isPending) return <ViewProductShimmer/>
+
+  const handleBuyButton = () => {
+    if (!size || !selectedColor){
+      return setError('all fields are required!');
+    };
+
+    const orderData = {
+      items: [
+        {
+        productId : data._id,
+        size: size,
+        color: selectedColor,
+        quantity: quantity
+      }
+      ],
+      cancelUrl: window.location.href,
+      paymentMethod: "Online",
+      paymentDate: new Date(),
+    };
+    orderMutate(orderData);
+  };
+
+  const handleAddToCart = () => {
+    const cartData = { 
+      size: size || data?.sizes[0],
+      selectedColor: selectedColor || data?.colors[0],
+      quantity : quantity
+    };
+    cartMutate(cartData);
+    navigate("/home/cart");
+  };
+
+  const increase = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const decrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
 
   return (
     <>
@@ -64,7 +119,11 @@ export const ViewProduct = () => {
                     key={index}
                     className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer"
                   >
-                    <img src={image} alt={`Thumbnail ${index + 1}`} onClick={()=> setImageIndex(index)} />
+                    <img
+                      src={image}
+                      alt={`Thumbnail ${index + 1}`}
+                      onClick={() => setImageIndex(index)}
+                    />
                   </div>
                 ))}
               </div>
@@ -146,20 +205,44 @@ export const ViewProduct = () => {
                 </span>
               </div>
 
+              {/* quantity */}
+              <div className="flex flex-col gap-4">
+                <p className="text-base font-medium mt-6">Quantity</p>
+                <div className="flex items-center gap-4">
+                  <button
+                  onClick={decrease}
+                  className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded hover:bg-gray-200 cursor-pointer"
+                >
+                  -
+                </button>
+
+                <span className="text-md">{quantity}</span>
+
+                <button
+                  onClick={increase}
+                  className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded hover:bg-gray-200 cursor-pointer"
+                >
+                  +
+                </button>
+                </div>
+              </div>
+
               {/* colors */}
               <div className="flex flex-col gap-x-2 mt-2">
                 <p className="text-base font-medium mt-6">Colors</p>
                 <div className="flex gap-x-2 mt-2 ml-4">
-                  {
-                    data?.colors.map((color, index)=>{
-                        return (
-                            <div className="cursor-pointer" key={index}>
-                    <div className={`${selectedColor === color ? 'border-3 border-amber-500' : "border border-gray-200"} w-10 h-10 rounded-2xl`} style={{backgroundColor: color.toLowerCase()}} onClick={()=> setSelectedColor(color)}></div>
-                    <p>{color}</p>
-                  </div>
-                        )
-                    })
-                  }
+                  {data?.colors.map((color, index) => {
+                    return (
+                      <div className="cursor-pointer" key={index}>
+                        <div
+                          className={`${selectedColor === color ? "border-3 border-amber-500" : "border border-gray-200"} w-10 h-10 rounded-2xl`}
+                          style={{ backgroundColor: color.toLowerCase() }}
+                          onClick={() => setSelectedColor(color)}
+                        ></div>
+                        <p>{color}</p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -207,13 +290,32 @@ export const ViewProduct = () => {
                 <p className="ml-4">{data?.numReviews}</p>
               </div>
 
-              <div className="flex items-center mt-10 gap-4 text-base">
-                <button className="w-full py-3.5 cursor-pointer font-medium bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition">
-                  Add to Cart
+              <div>
+               <div className="flex items-center mt-10 gap-4 text-base">
+                 <button
+                  onClick={handleAddToCart}
+                  disabled={cartPending}
+                  className="w-full py-3.5 cursor-pointer font-medium bg-gray-100 text-gray-800/80 hover:bg-gray-200 transition"
+                >
+                  {cartPending ? <Loading /> : "Add to Cart"}
                 </button>
-                <button onClick={handleBuyButton} disabled={data?.stock === 0} className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition">
-                  {data?.stock === 0 ? 'No Stock' : 'Buy now'}
+                <button
+                  onClick={handleBuyButton}
+                  disabled={data?.stock === 0}
+                  className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition"
+                >
+                  {orderPending ? (
+                    <Loading />
+                  ) : data?.stock === 0 ? (
+                    "No stock"
+                  ) : (
+                    "Buy now"
+                  )}
                 </button>
+               </div>
+                {
+                  error && <p className="text-red-500">{error}</p>
+                }
               </div>
             </div>
           </div>

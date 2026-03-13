@@ -7,7 +7,7 @@ export const HomeCardsContainer = ({data}) => {
 
   return (
     <>
-    <div className="flex gap-x-2 gap-y-4 flex-wrap p-4 mt-22 justify-center">
+    <div className="flex gap-x-3 gap-y-4 px-4 flex-wrap mx-auto max-w-7xl justify-start">
                 {
                   productStore ? (
                     productStore?.map((item) => {
