@@ -6,11 +6,13 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice.js";
 import { BASE_URL } from "../utils/constants.js";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Loading } from "./Loading.js";
 
 export const Login = () => {
+
+  const queryClient = useQueryClient();
 
    const location = useLocation();
   const [toggle, setToggle] = useState(true);
@@ -91,6 +93,7 @@ export const Login = () => {
       return res.data;
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries({queryKey: ["user"]});
       dispatch(addUser(data?.data));
       navigate("/home");
     },

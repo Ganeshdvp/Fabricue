@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Body } from "./Body";
 import { Login } from "./Login";
 import { Home } from "./Home";
@@ -12,13 +12,15 @@ import { PrivateRoutes } from "./protectedRoutes/PrivateRoutes";
 import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
 import { Tabs } from "./Tabs.js";
 import { Orders } from "./Orders.js";
+import { OrderSuccess } from "./OrderSuccess.js";
 
-export const Routing = ({ store }) => {
+export const Routing = () => {
+
   const routing = createBrowserRouter([
     {
       path: "/",
       element: (
-        <PublicRoutes store={store}>
+        <PublicRoutes>
           <Body />
         </PublicRoutes>
       ),
@@ -26,7 +28,7 @@ export const Routing = ({ store }) => {
     {
       path: "/login",
       element: (
-        <PublicRoutes store={store}>
+        <PublicRoutes>
           <Login />
         </PublicRoutes>
       ),
@@ -34,7 +36,7 @@ export const Routing = ({ store }) => {
     {
       path: "/forgot-password",
       element: (
-        <PublicRoutes store={store}>
+        <PublicRoutes>
           <ForgotPassword />
         </PublicRoutes>
       ),
@@ -42,7 +44,7 @@ export const Routing = ({ store }) => {
     {
       path: "/enter-otp",
       element: (
-        <PublicRoutes store={store}>
+        <PublicRoutes>
           <EnterOtp />
         </PublicRoutes>
       ),
@@ -50,7 +52,7 @@ export const Routing = ({ store }) => {
     {
       path: "/change-password",
       element: (
-        <PublicRoutes store={store}>
+        <PublicRoutes>
           <EnterPassword />
         </PublicRoutes>
       ),
@@ -58,52 +60,25 @@ export const Routing = ({ store }) => {
     {
       path: "/home",
       element: (
-        <PrivateRoutes store={store}>
+        <PrivateRoutes>
           <Home />
         </PrivateRoutes>
       ),
       children: [
-        {
-          path: "",
-          element: (
-            <PrivateRoutes store={store}>
-              <Tabs />
-            </PrivateRoutes>
-          ),
-        },
-        {
-          path: "cart",
-          element: (
-            <PrivateRoutes store={store}>
-              <Cart />
-            </PrivateRoutes>
-          ),
-        },
-        {
-          path: "wishlist",
-          element: (
-            <PrivateRoutes store={store}>
-              <WishList />
-            </PrivateRoutes>
-          ),
-        },
-        {
-      path: "view/:id",
-      element: (
-        <PrivateRoutes store={store}>
-          <ViewProduct />
-        </PrivateRoutes>
-      ),
+        { path: "", element: <Tabs /> },
+        { path: "cart", element: <Cart /> },
+        { path: "wishlist", element: <WishList /> },
+        { path: "view/:id", element: <ViewProduct /> },
+        { path: "orders", element: <Orders /> },
+      ],
     },
     {
-          path: "orders",
-          element: (
-            <PrivateRoutes store={store}>
-              <Orders />
-            </PrivateRoutes>
-          ),
-        },
-      ],
+      path: "/success",
+      element: (
+        <PrivateRoutes>
+          <OrderSuccess />
+        </PrivateRoutes>
+      ),
     },
   ]);
 
