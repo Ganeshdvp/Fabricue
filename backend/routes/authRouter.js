@@ -8,10 +8,12 @@ import ChangePassword from "../controllers/changePassword.js";
 import SendOtp from "../controllers/sendOtp.js";
 import VerifyOtp from "../controllers/verifyOtp.js";
 import Contact from "../controllers/contact.js";
+import checkCookie from "../controllers/checkCookie.js";
 
 
 export const authRoute = express.Router();
 
+authRoute.get('/check', userAuth, checkCookie);
 // register
 authRoute.post("/register", Register);
 

@@ -8,11 +8,13 @@ import {CRUDProductsRoute} from './routes/crudProducts.js';
 import stockDetectionRouter from './routes/stockDetection.js';
 import CartRouter from './routes/cartRouter.js';
 import helmet from 'helmet';
-import { authLimit, productLimit, adminLimit, cartLimit, favoriteLimit } from './middlewares/rateLimiting.js';
+import { authLimit, productLimit, adminLimit, cartLimit, favoriteLimit, paymentLimit, orderLimit, profileLimit } from './middlewares/rateLimiting.js';
 import { rateLimit } from 'express-rate-limit';
 import cors from 'cors';
 import { FavoriteRouter } from './routes/favoriteRouter.js';
-
+import { paymentRouter } from './routes/PaymentRouter.js';
+import { ordersRouter } from './routes/ordersRouter.js';
+import { profileRouter } from './routes/profileRouter.js';
 
 // enable .env variables
 dotenv.config();
@@ -45,13 +47,15 @@ app.use(express.json());
 app.use(cookieParser())
 
 // routes
-app.use('/user', authLimit, authRoute);
+app.use('/user', /*authLimit*/ authRoute);
+app.use('/profile', profileLimit, profileRouter);
 app.use('/product', productLimit, productRoute);
 app.use('/admin/products', adminLimit, CRUDProductsRoute);
 app.use('/stock', stockDetectionRouter);
 app.use('/cart', cartLimit, CartRouter);
-app.use('/favorite', favoriteLimit, FavoriteRouter)
-
+app.use('/favorite', favoriteLimit, FavoriteRouter);
+app.use('/payment', paymentLimit, paymentRouter);
+app.use('/orders', orderLimit, ordersRouter);
 
 // Database connection
 connectDB().then(()=>{
