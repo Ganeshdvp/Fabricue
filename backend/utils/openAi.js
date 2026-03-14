@@ -36,10 +36,23 @@ const AISearch = async (prompt) => {
 
   try {
     const searchPrompt = `
-Choose exactly one from:
+You are a clothing product classifier.
+
+Choose EXACTLY ONE category from the list below.
+
+Rules:
+- Return ONLY the category name.
+- No explanations.
+- No extra text.
+- Must match exactly from the list.
+
+Categories:
 ${JSON.stringify(SUB_CATEGORIES)}
-based on this input: "${prompt}".
-Don't give extra texts or sentence and first letter is upper case and rest of the letters is lower case, dont care about two words just follow the pattern!.
+
+User Input:
+"${prompt}"
+
+Output:
 `;
     const response = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
@@ -49,6 +62,7 @@ Don't give extra texts or sentence and first letter is upper case and rest of th
           content: searchPrompt
         }
       ],
+      temperature: 0,
       max_tokens: 20
     });
     return response.choices[0]?.message?.content.trim()

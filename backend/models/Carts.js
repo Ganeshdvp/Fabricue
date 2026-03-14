@@ -11,16 +11,21 @@ const cartSchema = mongoose.Schema({
         require: true,
         ref: 'Product'
     },
-    type: {
-        type: String,
-        enum: "cart",
-        require: true,
-    },
     quantity: {
         type: Number,
         require: true,
         default: 1
-    }
+    },
+    size: {
+        type: String,
+        require: true,
+        default: 'S'
+    },
+    color: {
+        type: String,
+        require: true,
+        default: 'black'
+    },
 }, {timestamps: true});
 
 cartSchema.index({productId: 1});

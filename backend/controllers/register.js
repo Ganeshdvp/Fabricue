@@ -1,3 +1,4 @@
+import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import { RegisterVadlidation } from '../utils/validations.js';
 import bcrypt from 'bcrypt';
@@ -26,6 +27,12 @@ const Register = async(req, res)=>{
         });
         
         await newUser.save();
+
+        // create profile model
+        const profile = new Profile({
+          userId : newUser._id,
+        });
+        await profile.save()
     
         res
           .status(200)

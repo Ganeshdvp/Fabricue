@@ -11,6 +11,13 @@
 - POST user/change-password
 - POST user/contact
 
+-- Profile --
+- GEt profile/
+- PATCH profile/edit
+- POST profile/address-add
+- PATCH profile/address-edit
+- DELETE profile/address-delete/:id
+
 -- Products --
 - GET product/
 - GET product/:id
@@ -30,6 +37,7 @@
 - GET cart/
 - POST cart/add/:id
 - DELETE cart/remove/:id
+- POST cart/quantity
 
 -- Favorite --
 - GET favorite/
@@ -38,10 +46,13 @@
 -- Search with Ai integrate --
 - POST product/:search
 
+-- Orders --
+- GET orders/
+
 
 # Installation Dependencies :-
 - npm init
-- npm i express nodemon dotenv mongoose validator bcrypto cookie-parser date-fns jsonwebtoken resend
+- npm i express nodemon dotenv mongoose validator bcrypto cookie-parser date-fns jsonwebtoken resend stripe
 
 # Sensitive Data
 - created .env file to store sensitive data
@@ -54,7 +65,7 @@
 - connected to Db and run server
 
 # Create Schema and model
-- created models folder > User.js & Products.js & Carts.js
+- created models folder > User.js & Products.js & Carts.js & Orders.js & Profile.js
 
 # Define Routes
 - created authRouter.js
@@ -63,6 +74,9 @@
 - created stockDetection.js
 - created cartRouter.js
 - created favoriteRouter.js
+- created paymentRouter.js
+- created ordersRouter.js
+- created profileRouter.js
 
 # Create Controllers
 
@@ -73,6 +87,14 @@
 - created sendOtp.js
 - created verifyOtp.js
 - created changePassword.js
+- created checkCookie.js
+
+-- Profile --
+- created profile.js
+- created profileAddAddress.js
+- created profileEdit.js
+- created addressEdit.js
+- created addressDelete.js
 
 -- GET Product --
 - created allProducts.js
@@ -93,6 +115,7 @@
 - created addCart.js
 - created deleteItemCart.js
 - created allCartItems.js
+- created increaseQuantity.js
 
 -- Favorite Items --
 - created toggleFavoriteItems.js
@@ -100,6 +123,12 @@
 
 -- Search with ai integrate --
 - created searchProduct.js
+
+-- Payment Stripe --
+- created payment.js
+
+-- Orders --
+- created allOrders.js
 
 # Create middlewares
 - created userAuth.js
@@ -110,6 +139,9 @@
 - created sendEmail.js 
 - created validations.js
 - created openAi.js
+
+# Payment Gateway
+- Integrated Stripe for payments
 
 # Security
 - used helmet for headers

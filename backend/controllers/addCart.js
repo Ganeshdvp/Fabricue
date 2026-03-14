@@ -5,7 +5,8 @@ import Cart from '../models/Carts.js'
 const addItemToCart = async (req, res)=>{
      try{
         const {id} = req.params;
-        const loggedInUser = req?.user?._id
+        const {size, selectedColor, quantity} = req?.body;
+        const loggedInUser = req?.user?._id        
     
         // check product exist or not?
         const isProductExist = await Product.findById(id);
@@ -17,8 +18,11 @@ const addItemToCart = async (req, res)=>{
           userId : loggedInUser,
           productId : id
         });
+
         if(itemAlreadyExistInCart){
-          itemAlreadyExistInCart.quantity += 1;
+          itemAlreadyExistInCart.quantity += quantity || 1;
+          itemAlreadyExistInCart.size = size || itemAlreadyExistInCart.size;
+          itemAlreadyExistInCart.color = selectedColor || itemAlreadyExistInCart.color;
           await itemAlreadyExistInCart.save();
           return res.status(200).json({
         message: "Cart quantity updated",
@@ -29,7 +33,9 @@ const addItemToCart = async (req, res)=>{
         const product = new Cart({
           userId : loggedInUser,
           productId : id,
-          type: 'cart',
+          size : isProductExist.sizes[0] || size,
+          color : isProductExist.colors[0] || selectedColor,
+          quantity : quantity
         })
     
         await product.save();
