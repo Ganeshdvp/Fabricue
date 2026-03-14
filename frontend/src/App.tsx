@@ -4,6 +4,7 @@ import axios from "axios";
 import { addUser } from './utils/userSlice.js';
 import { useDispatch } from "react-redux";
 import { BASE_URL } from './utils/constants.js';
+import { HeroPageShimmer } from "./components/errorAndLoading/HeroPageShimmer.js";
 
 function App() {
 
@@ -27,9 +28,9 @@ function App() {
 
   if(isLoading){
       return (
-      <div className="h-screen flex items-center justify-center">
-        Loading...
-      </div>
+        <>
+        <HeroPageShimmer/>
+        </>
     );
   }
 

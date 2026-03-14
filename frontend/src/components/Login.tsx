@@ -74,8 +74,7 @@ export const Login = () => {
       const res = await axios.post(BASE_URL + "/user/register", data);
       return res.data;
     },
-    onSuccess: (data) => {
-      dispatch(addUser(data?.data));
+    onSuccess: () => {
       setToggle(true);
     },
   });
