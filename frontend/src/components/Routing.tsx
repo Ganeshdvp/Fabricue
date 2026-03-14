@@ -13,6 +13,7 @@ import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
 import { Tabs } from "./Tabs.js";
 import { Orders } from "./Orders.js";
 import { OrderSuccess } from "./OrderSuccess.js";
+import { Profile } from "./Profile.js";
 
 export const Routing = () => {
 
@@ -70,6 +71,7 @@ export const Routing = () => {
         { path: "wishlist", element: <WishList /> },
         { path: "view/:id", element: <ViewProduct /> },
         { path: "orders", element: <Orders /> },
+        { path: "profile", element: <Profile/>}
       ],
     },
     {
