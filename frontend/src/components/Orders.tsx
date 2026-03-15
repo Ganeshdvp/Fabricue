@@ -3,6 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants.js";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { OrdersShimmer } from "./errorAndLoading/OrdersShimmer.js";
+import { PageNotFound } from "./errorAndLoading/PageNotFound.js";
 
 
 export const Orders = () => {
@@ -30,7 +31,9 @@ export const Orders = () => {
 
   return (
     <>
-      <div className="max-w-6xl mx-auto md:p-10 p-4">
+      {
+        data?.length > 0 ? (
+          <div className="max-w-6xl mx-auto md:p-10 p-4">
         <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           Orders List
         </h2>
@@ -112,6 +115,8 @@ export const Orders = () => {
           )}
         </div>
       </div>
+        ) : <PageNotFound title='Orders' />
+      }
     </>
   );
 };

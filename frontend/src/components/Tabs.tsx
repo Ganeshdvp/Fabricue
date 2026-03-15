@@ -71,165 +71,165 @@ export const Tabs = () => {
   const categories = {
     all: [
       {
-        image : '../../public/MenTshirt.png',
+        image : '../../public/MenTshirt.webp',
         name : "T-shirts"
       },
       {
-        image : '../../public/menShirt.png',
+        image : '../../public/menShirt.webp',
         name : "Shirts"
       },
       {
-        image : '../../public/hoodie.png',
+        image : '../../public/hoodie.webp',
         name : "Hoodies"
       },
       {
-        image : '../../public/MenJeans.png',
+        image : '../../public/MenJeans.webp',
         name : "Jeans"
       },
       {
-        image : '../../public/jacket.png',
+        image : '../../public/jacket.webp',
         name : "Jackets"
       },
       {
-        image : '../../public/blazer.png',
+        image : '../../public/blazer.webp',
         name : "Blazers"
       },
       {
-        image : '../../public/MensShort.png',
+        image : '../../public/MensShort.webp',
         name : "Shorts"
       },
       {
-        image : '../../public/sweater.png',
+        image : '../../public/sweater.webp',
         name : "Sweaters"
       },
       {
-        image : '../../public/underwear.png',
+        image : '../../public/underwear.webp',
         name : "Underwears"
       },
       {
-        image : '../../public/dresses.png',
+        image : '../../public/dresses.webp',
         name : "Dresses"
       },
       {
-        image : '../../public/tops.png',
+        image : '../../public/tops.webp',
         name : "Tops"
       },
       {
-        image : '../../public/skirt.png',
+        image : '../../public/skirt.webp',
         name : "Skirts"
       },
       {
-        image : '../../public/sarees.png',
+        image : '../../public/sarees.webp',
         name : "Sarees"
       },
       {
-        image : '../../public/kurti.PNG',
+        image : '../../public/kurti.webp',
         name : "Kurtis"
       },
       {
-        image : '../../public/lehenga.png',
+        image : '../../public/lehenga.webp',
         name : "Lehengas"
       },
     ],
     men: [
       {
-        image : '../../public/MenTshirt.png',
+        image : '../../public/MenTshirt.webp',
         name : "T-shirts"
       },
       {
-        image : '../../public/menShirt.png',
+        image : '../../public/menShirt.webp',
         name : "Shirts"
       },
       {
-        image : '../../public/hoodie.png',
+        image : '../../public/hoodie.webp',
         name : "Hoodies"
       },
       {
-        image : '../../public/MenJeans.png',
+        image : '../../public/MenJeans.webp',
         name : "Jeans"
       },
       {
-        image : '../../public/jacket.png',
+        image : '../../public/jacket (1).webp',
         name : "Jackets"
       },
       {
-        image : '../../public/blazer.png',
+        image : '../../public/blazer.webp',
         name : "Blazers"
       },
       {
-        image : '../../public/MensShort.png',
+        image : '../../public/MensShort.webp',
         name : "Shorts"
       },
       {
-        image : '../../public/sweater.png',
+        image : '../../public/sweater.webp',
         name : "Sweaters"
       },
       {
-        image : '../../public/underwear.png',
+        image : '../../public/underwear.webp',
         name : "Underwears"
       },
     ],
     women: [
       {
-        image : '../../public/dresses.png',
+        image : '../../public/dresses.webp',
         name : "Dresses"
       },
       {
-        image : '../../public/tops.png',
+        image : '../../public/tops.webp',
         name : "Tops"
       },
       {
-        image : '../../public/skirt.png',
+        image : '../../public/skirt.webp',
         name : "Skirts"
       },
       {
-        image : '../../public/sarees.png',
+        image : '../../public/sarees.webp',
         name : "Sarees"
       },
       {
-        image : '../../public/kurti.PNG',
+        image : '../../public/kurti.webp',
         name : "Kurtis"
       },
       {
-        image : '../../public/lehenga.png',
+        image : '../../public/lehenga.webp',
         name : "Lehengas"
       },
       {
-        image : '../../public/womenJackets.png',
+        image : '../../public/womenJackets.webp',
         name : "Jackets"
       },
       {
-        image : '../../public/womenJeans.png',
+        image : '../../public/womenJeans.webp',
         name : "Jeans"
       },
     ],
     kids: [
       {
-        image : '../../public/kidsTShirts.png',
+        image : '../../public/kidsTShirts.webp',
         name : "Kids t-shirts"
       },
       {
-        image : '../../public/kidsShirt.png',
+        image : '../../public/kidsShirt.webp',
         name : "Kids shirts"
       },
       {
-        image : '../../public/kidsDresses.png',
+        image : '../../public/kidsDresses.webp',
         name : "Kids dresses"
       },
       {
-        image : '../../public/kidsHoodies.png',
+        image : '../../public/kidsHoodies.webp',
         name : "Kids hoodies"
       },
       {
-        image : '../../public/jacket.png',
+        image : '../../public/jacket.webp',
         name : "Kids jackets"
       },
       {
-        image : '../../public/kidsSweatShirts.png',
+        image : '../../public/kidsSweatShirts.webp',
         name : "Kids sweatshirts"
       },
       {
-        image : '../../public/sweaters.png',
+        image : '../../public/sweaters.webp',
         name : "Kids sweaters"
       },
     ],
@@ -311,7 +311,7 @@ export const Tabs = () => {
                     : "hover:text-amber-600"
                 }`}
               >
-                <img src="../../public/all.png" alt="all-icon" 
+                <img src="../../public/all.webp" alt="all-icon" 
                 className={`${activeCategory === 'all' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 rounded-full`}/>
                 All
               </button>
@@ -328,7 +328,7 @@ export const Tabs = () => {
                     : "hover:text-amber-600"
                 }`}
               >
-                <img src="../../public/men.png" alt="men-image"
+                <img src="../../public/men.webp" alt="men-image"
                 className={`${activeCategory === 'men' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 rounded-full`}/>
                 Men
               </button>
@@ -345,7 +345,7 @@ export const Tabs = () => {
                     : "hover:text-amber-600"
                 }`}
               >
-                <img src='../../public/women.png' alt="women-image" className={`${activeCategory === 'women' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-cover rounded-full`}/>
+                <img src='../../public/women.webp' alt="women-image" className={`${activeCategory === 'women' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-cover rounded-full`}/>
                 Women
               </button>
 
@@ -361,7 +361,7 @@ export const Tabs = () => {
                     : "hover:text-amber-600"
                 }`}
               >
-                <img src="../../public/kids.png" alt="kid-image" className={`${activeCategory === 'kids' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-contain rounded-full`}/>
+                <img src="../../public/kids.webp" alt="kid-image" className={`${activeCategory === 'kids' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-contain rounded-full`}/>
                 Kids
               </button>
             </div>

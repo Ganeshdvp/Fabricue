@@ -4,6 +4,8 @@ import { Edit2Icon, HeartIcon, LogOut, ShoppingBag, ShoppingCart } from "lucide-
 import { BASE_URL } from '../utils/constants.js';
 import { useDispatch } from "react-redux";
 import {removeUser} from '../utils/userSlice.js';
+import {removeFavorite} from '../utils/wishListSlice.js';
+import {removeCart} from '../utils/cartItemsSlice.js';
 import { Link, useNavigate } from "react-router";
 import { Loading } from "./Loading.js";
 
@@ -24,6 +26,8 @@ export const ProfileDropDown = () => {
         },
         onSuccess: ()=>{
             dispatch(removeUser());
+            dispatch(removeFavorite());
+            dispatch(removeCart());
             navigate('/login');
         }
     })

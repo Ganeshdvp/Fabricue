@@ -7,8 +7,11 @@ const wishListSlice = createSlice({
         addFavorite: (state, action)=>{
             return action.payload;
         },
+        removeFavorite: ()=>{
+            return null;
+        }
     }
 });
 
-export const { addFavorite } = wishListSlice.actions;
+export const { addFavorite, removeFavorite } = wishListSlice.actions;
 export default wishListSlice.reducer;

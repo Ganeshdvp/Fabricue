@@ -7,8 +7,11 @@ const cartItemsSlice = createSlice({
         addCart: (state, action)=>{
             return action.payload;
         },
+        removeCart: ()=>{
+            return null;
+        }
     }
 });
 
-export const { addCart } = cartItemsSlice.actions;
+export const { addCart, removeCart } = cartItemsSlice.actions;
 export default cartItemsSlice.reducer;

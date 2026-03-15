@@ -14,13 +14,20 @@ import { Loading } from "./Loading.js";
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { removeUser } from '../utils/userSlice.js';
+import {removeFavorite} from '../utils/wishListSlice.js';
+import {removeCart} from '../utils/cartItemsSlice.js';
+import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer.js";
+import imageCompression from "browser-image-compression";
 
 export const Profile = () => {
   const queryClient = useQueryClient();
 
   const [editProfile, setEditProfile] = useState(false);
-  const [editProfileFullName, setEditProfileFullName] = useState(null);
-  const [editProfileImage, setEditProfileImage] = useState(null);
+  const [editProfileData, setEditProfileData] = useState({
+    fullName : "",
+    image: null
+  })
+  
 
   const [addAddress, setAddAddress] = useState(false);
   const [addAddressData, setAddAddressData] = useState({
@@ -65,8 +72,8 @@ export const Profile = () => {
   // edit profile
   const { mutate: editProfileMutate, isPending: editProfilePending } =
     useMutation({
-      mutationFn: async (data) => {
-        await axios.patch(BASE_URL + "/profile/edit", data, {
+      mutationFn: async (formData) => {
+        await axios.patch(BASE_URL + "/profile/edit", formData, {
           withCredentials: true,
         });
       },
@@ -82,6 +89,9 @@ export const Profile = () => {
       mutationFn: async (data) => {
         await axios.patch(BASE_URL + "/profile/address-edit", data, {
           withCredentials: true,
+          headers: {
+          "Content-Type": "multipart/form-data",
+        },
         });
       },
       onSuccess: () => {
@@ -139,20 +149,32 @@ export const Profile = () => {
         },
         onSuccess: ()=>{
             dispatch(removeUser());
+            dispatch(removeFavorite());
+            dispatch(removeCart());
             navigate('/login');
         }
     })
 
-  if (isPending) return <p>Loading...</p>;
+  if (isPending) return <ProfileShimmer/>;
 
   // profile edit button
-  const handleEditProfile = (e) => {
+  const handleEditProfile = async (e) => {
     e.preventDefault();
-    const editProfileData = {
-      fullName: editProfileFullName,
-      image: editProfileImage,
+  
+  const formData = new FormData();
+  formData.append("fullName", editProfileData.fullName);
+  
+  if(editProfileData.image){
+    const options = {
+      maxSizeMB: 0.5,       // compress to max 0.5MB
+      maxWidthOrHeight: 400, // resize to max 400px
+      useWebWorker: true,    // non-blocking
     };
-    editProfileMutate(editProfileData);
+    const compressedImage = await imageCompression(editProfileData.image, options);
+    formData.append("image", compressedImage, editProfileData.image.name);
+  }
+
+  editProfileMutate(formData);
   };
 
   // edit address button
@@ -204,7 +226,7 @@ export const Profile = () => {
           </div>
 
           <button
-            onClick={() => setEditProfile(true)}
+            onClick={() => {setEditProfile(true); setEditProfileData({fullName: data?.userId?.fullName, image: null})}}
             className="mt-4 px-6 py-2 bg-amber-500 hover:bg-amber-600 cursor-pointer text-white rounded-full text-sm transition"
           >
             Edit Profile
@@ -236,8 +258,8 @@ export const Profile = () => {
                 <label className="block mb-1">Full Name</label>
                 <input
                   type="text"
-                  value={editProfileFullName || data?.userId?.fullName}
-                  onChange={(e) => setEditProfileFullName(e.target.value)}
+                  value={editProfileData.fullName}
+                  onChange={(e) => setEditProfileData(prev=> ({...prev, fullName: e.target.value}))}
                   placeholder="Enter your full name"
                   className="w-full border border-gray-300 rounded-md p-2 outline-none focus:ring-2 focus:ring-amber-400"
                 />
@@ -258,8 +280,8 @@ export const Profile = () => {
                 <label className="block mb-1">Profile Image</label>
                 <input
                   type="file"
-                  value={editProfileImage}
-                  onChange={(e) => setEditProfileImage(e.target.value)}
+                  accept="image/*"
+                  onChange={(e) => setEditProfileData(prev=> ({...prev, image: e.target.files[0]}))}
                   className="w-full border border-gray-300 rounded-md p-2 cursor-pointer"
                 />
               </div>
@@ -684,7 +706,7 @@ export const Profile = () => {
       )}
 
       {/* ACCOUNT SETTINGS */}
-      <div className="bg-white rounded-xl p-6 mt-10">
+      <div className="bg-white rounded-xl mt-10">
         <h3 className="text-xl font-semibold mb-4">Account Settings</h3>
 
         <div className="flex flex-col items-start">

@@ -8,6 +8,7 @@
 - React Redux Toolkit
 - TenStack Query
 - Formik & Yup
+- browser-image-compression ( sending compressed images to server, it leads for fast.)
 
 
 # Pages
@@ -24,3 +25,7 @@
 - React Router
 - Redux Toolkit
 - Tanstack query
+
+# Performance
+- used Image compression and browser-image-compression
+- 
