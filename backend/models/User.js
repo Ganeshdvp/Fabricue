@@ -5,14 +5,14 @@ const userSchema = mongoose.Schema(
   {
     fullName: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
       minLength: 3,
       maxLength: 100,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true, // auto apply the index
       lowercase: true,
       trim: true,
@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      require: true,
+      required: true,
       validator: {
         validator: (value) => {
           if (!validator.isStrongPassword(value)) {
@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      require: true,
+      required: true,
       enum: ["seller", "user"],
     },
     failedLoginAttempts: {

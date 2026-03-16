@@ -15,6 +15,8 @@ import { FavoriteRouter } from './routes/favoriteRouter.js';
 import { paymentRouter } from './routes/PaymentRouter.js';
 import { ordersRouter } from './routes/ordersRouter.js';
 import { profileRouter } from './routes/profileRouter.js';
+import {stripeWebhook} from './controllers/stripeWebhook.js';
+
 
 // enable .env variables
 dotenv.config();
@@ -39,6 +41,13 @@ app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 1000
 }));
+
+// stripe webhook
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook
+);
 
 // middlewares
 app.use(express.json());

@@ -4,19 +4,19 @@ const itemSchema = mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
-    require: true,
+    required: true,
   },
   size: {
     type: String,
-    require: true,
+    required: true,
   },
   color: {
     type: String,
-    require: true,
+    required: true,
   },
   quantity: {
     type: Number,
-    require: true,
+    required: true,
     min: 1,
   },
 });
@@ -25,30 +25,39 @@ const ordersSchema = mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      require: true,
+      required: true,
       ref: "User",
     },
     items: {
       type: [itemSchema],
-      require: true,
+      required: true,
     },
     paymentMethod: {
       type: String,
-      require: true,
+      required: true,
       enum: ["COD", "Online"],
     },
     paymentDate: {
       type: Date,
-      require: true,
+      required: true,
     },
     status: {
       type: String,
-      require: true,
+      required: true,
       enum: ["failed", "paid", "COD"],
     },
+    stripeSessionId: {
+      type: String,
+      required: true,
+      unique: true
+    }
   },
   { timestamps: true },
 );
+
+ordersSchema.index({ userId: 1 });  // index
+ordersSchema.index({ "items.productId": 1 });
+
 
 const Order = mongoose.model("Order", ordersSchema);
 

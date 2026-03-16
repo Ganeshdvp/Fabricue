@@ -49,10 +49,14 @@
 -- Orders --
 - GET orders/
 
+-- Payment --
+- POST payment/
+- POST /webhook
+
 
 # Installation Dependencies :-
 - npm init
-- npm i express nodemon dotenv mongoose validator bcrypto cookie-parser date-fns jsonwebtoken resend stripe
+- npm i express nodemon dotenv mongoose validator bcrypto cookie-parser cors date-fns jsonwebtoken resend stripe multer cloudinary streamifier groq-sdk helmet express-rate-limit
 
 # Sensitive Data
 - created .env file to store sensitive data
@@ -95,6 +99,7 @@
 - created profileEdit.js
 - created addressEdit.js
 - created addressDelete.js
+- created uploadProfileImage.js
 
 -- GET Product --
 - created allProducts.js
@@ -126,6 +131,7 @@
 
 -- Payment Stripe --
 - created payment.js
+- created stripeWebhook.js
 
 -- Orders --
 - created allOrders.js
@@ -139,6 +145,7 @@
 - created sendEmail.js 
 - created validations.js
 - created openAi.js
+- created cloudinary.js
 
 # Payment Gateway
 - Integrated Stripe for payments
@@ -148,3 +155,7 @@
    - npm i helmet
 - used rateLimit based on IP and Database
    - npm i express-rate-limit
+
+# performance
+- used db indexing
+- used cloudinary for images (streamifier instead of base64)

@@ -1,4 +1,3 @@
-import Order from "../models/Orders.js";
 import Stripe from 'stripe';
 import Product from '../models/Products.js';
 
@@ -8,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const payment = async (req, res)=>{
   try{
-    const {items, paymentDate, paymentMethod, cancelUrl} = req?.body;
+    const {items, cancelUrl} = req?.body;
     const loggedInUser = req?.user?._id;
 
     // validate items
@@ -47,25 +46,25 @@ export const payment = async (req, res)=>{
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/success`,
       cancel_url: cancelUrl,
+      // store order data here so webhook can use it later
+      metadata: {
+        userId: loggedInUser.toString(),
+        items: JSON.stringify(items),
+      },
+      payment_intent_data:{
+        metadata:{
+          userId : loggedInUser.toString(),
+          items: JSON.stringify(items),
+          sessionId: "pending", //it will be updated by Stripe automatically
+        }
+      }
     });
-
-    // save order
-    const orderData = new Order({
-      userId : loggedInUser,
-      items,
-      paymentMethod,
-      paymentDate,
-      status: 'paid'
-    });
-
-    await orderData.save();
 
     // return response
-    res.status(200).json({message:'Successfully placed order!', url:session.url})
+    res.status(200).json({url:session.url})
 
   }
   catch(err){
-    console.log(err.message)
     return res.status(500).json({message: 'Payment Failed!'}) 
   }
 }

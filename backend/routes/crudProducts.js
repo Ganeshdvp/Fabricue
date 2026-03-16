@@ -6,6 +6,7 @@ import deleteProduct from '../controllers/deleteProduct.js';
 import UserAuth from '../middlewares/UserAuth.js';
 import getSellerProducts from '../controllers/sellerProducts.js';
 import cloudinary from '../utils/cloudinary.js';
+import upload from '../middlewares/uploadImages.js';
 
 
 export const CRUDProductsRoute = express.Router();
@@ -22,33 +23,38 @@ CRUDProductsRoute.delete('/deleteProduct/:id', UserAuth, roleAuth("seller"), del
 // GET all products by SellerId
 CRUDProductsRoute.get('/allProducts', UserAuth, roleAuth("seller"), getSellerProducts);
 
+
 // upload image
-// CRUDProductsRoute.post('/upload', async(req, res)=>{
-//     try{
-//         const images = req?.body?.images;
+CRUDProductsRoute.post('/upload', upload.array("images"), async(req, res)=>{
+    try{
+        const files = req.files;
 
-//         console.log(images)
+        if (!files || files.length === 0) {
+      return res.status(400).json({
+        message: "Images not found",
+      });
+    }
 
-//         if(!images){
-//             return res.status(404).json({message: 'Image not found!'})
-//         }
+    const uploadedImages = [];
 
-//         // cloudinary upload
-//         const uploadResult = await cloudinary.uploader
-//        .upload(
-//            images, {
-//                public_id: 'shoes',
-//            }
-//        )
+    for (const file of files) {
 
-//        console.log(uploadResult);
+      const base64 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
 
-//        // return
-//        res.status(200).json({message: 'Image Uploaded successfully!'})
+      const result = await cloudinary.uploader.upload(base64, {
+        folder: "Images",
+      });
 
-//     }
-//     catch(err){
-//         console.log(err)
-//         return res.status(400).json({message: 'Failed to upload Image!'})
-//     }
-// })
+      uploadedImages.push(result.secure_url);
+    }
+
+    return res.status(200).json({
+      message: "Images uploaded successfully",
+      images: uploadedImages,
+    });
+
+    }
+    catch(err){
+        return res.status(400).json({message: 'Failed to upload Image!'})
+    }
+})

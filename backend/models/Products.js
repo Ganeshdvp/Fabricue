@@ -3,33 +3,33 @@ import mongoose from "mongoose";
 const productSchema = mongoose.Schema({
     sellerId:{
         type: mongoose.Schema.Types.ObjectId,
-        require: true,
+        required: true,
         ref: "User",
     },
     name: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
     brand: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
      category: {
         type: String,
         enum : ['all', 'men', 'women', 'kids', 'newArrivals', 'topDeals'],
-        require: true,
+        required: true,
         trim: true
     },
     subCategory: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
     price: {
         type: Number,
-        require: true,
+        required: true,
         min: 0
     },
     discountPrice: {
@@ -38,22 +38,22 @@ const productSchema = mongoose.Schema({
     },
     currency: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
     sizes: {
         type: [String],
-        require: true,
+        required: true,
         trim: true
     },
     colors: {
         type: [String],
         trim: true,
-        require: true
+        required: true
     },
      stock: {
         type: Number,
-        require: true,
+        required: true,
         min: 0
     },
     rating: {
@@ -68,12 +68,12 @@ const productSchema = mongoose.Schema({
     },
     description: {
         type: String,
-        require: true,
+        required: true,
         trim: true
     },
     image: {
         type: [String],
-        require: true,
+        required: true,
         trim: true
     },
     isNewArrival: {

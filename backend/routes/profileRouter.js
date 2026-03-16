@@ -5,6 +5,7 @@ import profileEdit from '../controllers/profileEdit.js';
 import profileAddAddress from '../controllers/profileAddAddress.js';
 import addressEdit from '../controllers/addressEdit.js';
 import addressDelete from '../controllers/addressDelete.js';
+import upload from '../middlewares/uploadImages.js';
 
 
 export const profileRouter = express.Router();
@@ -13,7 +14,7 @@ export const profileRouter = express.Router();
 profileRouter.get('/', UserAuth, profile);
 
 // edit profile
-profileRouter.patch('/edit', UserAuth, profileEdit);
+profileRouter.patch('/edit', UserAuth, upload.single("image"), profileEdit);
 
 // add address
 profileRouter.post('/address-add', UserAuth, profileAddAddress);
@@ -22,4 +23,4 @@ profileRouter.post('/address-add', UserAuth, profileAddAddress);
 profileRouter.patch('/address-edit', UserAuth, addressEdit);
 
 // delete address
-profileRouter.delete('/address-delete/:id', UserAuth, addressDelete)
+profileRouter.delete('/address-delete/:id', UserAuth, addressDelete);
