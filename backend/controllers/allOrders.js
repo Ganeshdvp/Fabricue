@@ -12,6 +12,10 @@ const allOrders = async (req, res)=>{
             path: "items.productId",
             select: 'name discountPrice image'
         })
+        .populate({
+            path: "userId",
+            select: "fullName",
+        })
         .sort({createdAt : -1})
 
     // send response

@@ -13,7 +13,9 @@ import checkCookie from "../controllers/checkCookie.js";
 
 export const authRoute = express.Router();
 
+// checking cookie
 authRoute.get('/check', userAuth, checkCookie);
+
 // register
 authRoute.post("/register", Register);
 
@@ -24,7 +26,7 @@ authRoute.post("/login", Login);
 authRoute.post("/logout", userAuth, roleAuth("seller","user"), Logout);
 
 // change password
-authRoute.post("/change-password", userAuth, roleAuth("seller", "user"), ChangePassword);
+authRoute.post("/change-password", ChangePassword);
 
 // send otp
 authRoute.post('/send-otp', SendOtp);

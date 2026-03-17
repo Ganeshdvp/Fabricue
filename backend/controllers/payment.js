@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import Product from '../models/Products.js';
+import Order from '../models/Orders.js';
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -7,13 +8,34 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const payment = async (req, res)=>{
   try{
-    const {items, cancelUrl} = req?.body;
+    const {items, cancelUrl, paymentMethod, deliveryAddress} = req?.body;
     const loggedInUser = req?.user?._id;
 
     // validate items
    if (!items || items.length === 0) {
       return res.status(400).json({ message: "No items provided" });
+    };
+
+    // validate delivery address
+    if (!deliveryAddress) {
+      return res.status(400).json({ message: "Delivery address is required" });
     }
+
+    // COD order
+     if(paymentMethod === "COD"){
+       const order = new Order({
+          userId: loggedInUser,
+          items,
+          deliveryAddress,
+          paymentMethod: "COD",
+          paymentDate: new Date(),
+          status: "COD",
+        });
+        await order.save();
+        return res.status(200).json({message: 'Order Placed Successfully!'});
+    }
+    
+    // Online payment
 
     // fetch products
     const products = await Product.find({
@@ -50,12 +72,13 @@ export const payment = async (req, res)=>{
       metadata: {
         userId: loggedInUser.toString(),
         items: JSON.stringify(items),
+        deliveryAddress: JSON.stringify(deliveryAddress),
       },
       payment_intent_data:{
         metadata:{
           userId : loggedInUser.toString(),
           items: JSON.stringify(items),
-          sessionId: "pending", //it will be updated by Stripe automatically
+          deliveryAddress: JSON.stringify(deliveryAddress),
         }
       }
     });
@@ -65,6 +88,7 @@ export const payment = async (req, res)=>{
 
   }
   catch(err){
+    console.error("Payment error:", err.message);
     return res.status(500).json({message: 'Payment Failed!'}) 
   }
 }

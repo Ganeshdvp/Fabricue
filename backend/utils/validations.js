@@ -28,3 +28,9 @@ export const EmailValid = (email)=>{
         throw new Error('Email is not valid');
     }
 }
+
+export const PasswordValid = (password)=>{
+      if(!validator.isStrongPassword(password)){
+        throw new Error('your password is weak!');
+    }
+}

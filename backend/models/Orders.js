@@ -21,6 +21,35 @@ const itemSchema = mongoose.Schema({
   },
 });
 
+// delivery address schema
+const deliveryAddressSchema = mongoose.Schema({
+   addressType: {
+    type: String,
+    required: true,
+    enum: ["Home", "Office"],
+  },
+  landMark: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  pinCode: {
+    type: Number,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+});
+
 const ordersSchema = mongoose.Schema(
   {
     userId: {
@@ -31,6 +60,10 @@ const ordersSchema = mongoose.Schema(
     items: {
       type: [itemSchema],
       required: true,
+    },
+    deliveryAddress: {
+      type: deliveryAddressSchema,
+      required: true
     },
     paymentMethod: {
       type: String,
@@ -48,7 +81,7 @@ const ordersSchema = mongoose.Schema(
     },
     stripeSessionId: {
       type: String,
-      required: true,
+      sparse: true, // it will allow null also
       unique: true
     }
   },

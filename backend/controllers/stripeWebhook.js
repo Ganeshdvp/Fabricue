@@ -13,25 +13,20 @@ export const stripeWebhook = async (req, res) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      process.env.STRIPE_SIGNING_SECRETE
+      process.env.STRIPE_SIGNING_SECRETE,
     );
   } catch (err) {
-    console.error("Webhook signature failed:", err.message);
     return res.status(400).json({ message: "Webhook verification failed" });
   }
 
   // handle event
   try {
     switch (event.type) {
-
       case "checkout.session.completed": {
         const session = event.data.object;
 
         // make sure payment is actually paid
         if (session.payment_status !== "paid") break;
-
-        const userId = session.metadata.userId;
-        const items = JSON.parse(session.metadata.items);
 
         // prevent duplicate orders
         const existingOrder = await Order.findOne({
@@ -39,14 +34,14 @@ export const stripeWebhook = async (req, res) => {
         });
 
         if (existingOrder) {
-          console.log("Duplicate webhook, order already exists");
           break;
         }
 
         // save order
         const order = new Order({
-          userId,
-          items,
+          userId: session.metadata.userId,
+          items: JSON.parse(session.metadata.items),
+          deliveryAddress: JSON.parse(session.metadata.deliveryAddress),
           paymentMethod: "Online",
           paymentDate: new Date(),
           status: "paid",
@@ -54,7 +49,6 @@ export const stripeWebhook = async (req, res) => {
         });
 
         await order.save();
-        console.log("Order saved:", order._id);
         break;
       }
 
@@ -62,19 +56,19 @@ export const stripeWebhook = async (req, res) => {
       case "checkout.session.expired": {
         const session = event.data.object;
 
+        if (!session.metadata?.userId || !session.metadata?.items) {
+          break;
+        }
+
         const existingOrder = await Order.findOne({
           stripeSessionId: session.id,
         });
         if (existingOrder) break;
 
-          if (!session.metadata?.userId || !session.metadata?.items) {
-    console.log("No metadata found, skipping...");
-    break;
-  }
-
         const order = new Order({
-          userId : session.metadata.userId,
-          items : JSON.parse(session.metadata.items),
+          userId: session.metadata.userId,
+          items: JSON.parse(session.metadata.items),
+          deliveryAddress: JSON.parse(session.metadata.deliveryAddress),
           paymentMethod: "Online",
           paymentDate: new Date(),
           status: "failed",
@@ -82,16 +76,14 @@ export const stripeWebhook = async (req, res) => {
         });
 
         await order.save();
-        console.log("Order saved (expired):", order._id);
         break;
-      };
+      }
 
       // Card declined / payment failed
       case "payment_intent.payment_failed": {
-        const paymentIntent  = event.data.object;
+        const paymentIntent = event.data.object;
 
-         if (!paymentIntent.metadata?.userId) {
-          console.log("No metadata found, skipping...");
+        if (!paymentIntent.metadata?.userId) {
           break;
         }
 
@@ -103,6 +95,7 @@ export const stripeWebhook = async (req, res) => {
         const order = new Order({
           userId: paymentIntent.metadata.userId,
           items: JSON.parse(paymentIntent.metadata.items),
+          deliveryAddress: JSON.parse(paymentIntent.metadata.deliveryAddress),
           paymentMethod: "Online",
           paymentDate: new Date(),
           status: "failed",
@@ -110,15 +103,10 @@ export const stripeWebhook = async (req, res) => {
         });
 
         await order.save();
-        console.log("Order saved (failed):", order._id);
         break;
       }
-
-      default:
-        console.log("Unhandled event type:", event.type);
     }
   } catch (err) {
-    console.error("Webhook handler error:", err.message);
     // still return 200 so Stripe doesn't keep retrying
     return res.status(200).json({ received: true });
   }
