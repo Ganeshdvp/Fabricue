@@ -4,6 +4,7 @@ import wishListSlice from './wishListSlice';
 import cartItemsSlice from './cartItemsSlice';
 import cookieSlice from './cookieSlice';
 import productSlice from './productSlice';
+import addressSlice from './addressSlice';
 
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
         cartItems : cartItemsSlice,
         cookieToggle : cookieSlice,
         product: productSlice,
+        address: addressSlice,
     }
 })
 

@@ -14,6 +14,7 @@ import { Tabs } from "./Tabs.js";
 import { Orders } from "./Orders.js";
 import { OrderSuccess } from "./OrderSuccess.js";
 import { Profile } from "./Profile.js";
+import { OrderSummary } from "./OrderSummary.js";
 
 export const Routing = () => {
 
@@ -70,6 +71,7 @@ export const Routing = () => {
         { path: "cart", element: <Cart /> },
         { path: "wishlist", element: <WishList /> },
         { path: "view/:id", element: <ViewProduct /> },
+        {path: 'payment', element: <OrderSummary/>},
         { path: "orders", element: <Orders /> },
         { path: "profile", element: <Profile/>}
       ],

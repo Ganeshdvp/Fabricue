@@ -20,6 +20,7 @@
 - Developed Wishlist page
 - Integrated AI-Powered Searching Product
 - Implemented Shimmer UI
+- Developed Profile page
 
 
 # Configuration

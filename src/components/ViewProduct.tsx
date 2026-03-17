@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Loading } from "./Loading.js";
 import { ViewProductShimmer } from "./errorAndLoading/ViewProductShimmer.js";
+import { toast } from "sonner";
 
 export const ViewProduct = () => {
   const queryClient = useQueryClient();
@@ -42,25 +43,20 @@ export const ViewProduct = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
+               toast.success("successfully added to cart", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
     },
   });
-
-  // add to orders
-  const { mutate: orderMutate, isPending: orderPending } = useMutation({
-    mutationFn: async (data) => {
-      setError(null)
-      const res = await axios.post(BASE_URL + `/payment`, data, {
-        withCredentials: true,
-      });
-      return res?.data;
-    },
-    onSuccess: (data) => {
-      window.location.href = data?.url;
-    },
-    onError: (error) => {
-      console.error("Payment error:", error);
-    },
-  });
+  
 
   if (isPending) return <ViewProductShimmer/>
 
@@ -69,8 +65,9 @@ export const ViewProduct = () => {
       return setError('all fields are required!');
     };
 
-    const orderData = {
-      items: [
+    navigate('/home/payment', {
+      state: {
+        items: [
         {
         productId : data._id,
         size: size,
@@ -78,9 +75,9 @@ export const ViewProduct = () => {
         quantity: quantity
       }
       ],
-      cancelUrl: window.location.href,
-    };
-    orderMutate(orderData);
+      totalPrice: data?.discountPrice
+      }
+    })
   };
 
   const handleAddToCart = () => {
@@ -192,10 +189,10 @@ export const ViewProduct = () => {
 
               <div className="mt-2">
                 <p className="text-gray-500/70 line-through">
-                  MRP: ${data.price}
+                  MRP: ${data.price * quantity || data.price}
                 </p>
                 <p className="text-2xl font-medium">
-                  Price: ${data.discountPrice}
+                  Price: ${data.discountPrice * quantity || data.discountPrice}
                 </p>
                 <span className="text-gray-500/70">
                   (inclusive of all taxes)
@@ -232,7 +229,7 @@ export const ViewProduct = () => {
                     return (
                       <div className="cursor-pointer" key={index}>
                         <div
-                          className={`${selectedColor === color ? "border-3 border-amber-500" : "border border-gray-200"} w-10 h-10 rounded-2xl`}
+                          className={`${selectedColor === color ? "border-3 border-amber-700" : "border border-gray-200"} w-10 h-10 rounded-2xl`}
                           style={{ backgroundColor: color.toLowerCase() }}
                           onClick={() => setSelectedColor(color)}
                         ></div>
@@ -270,15 +267,6 @@ export const ViewProduct = () => {
                 </div>
               </div>
 
-              {/* Delivery Address */}
-              <div className="mt-10">
-                <p className="text-base font-medium mt-6">Delivery Address</p>
-                <p>Ganesh</p>
-                <p>Puttapaka, Narayanapur road</p>
-                <p>Yadadri Bhuvanagiri district, 508253</p>
-                <p>Telangana state, India</p>
-              </div>
-
               <p className="text-base font-medium mt-6">About Product</p>
               <p className="list-disc ml-4">{data.description}</p>
 
@@ -301,13 +289,9 @@ export const ViewProduct = () => {
                   disabled={data?.stock === 0}
                   className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition"
                 >
-                  {orderPending ? (
-                    <Loading />
-                  ) : data?.stock === 0 ? (
-                    "No stock"
-                  ) : (
-                    "Buy now"
-                  )}
+                  {
+                    data?.stock === 0 ? 'No Stock' : 'Buy Now'
+                  }
                 </button>
                </div>
                 {

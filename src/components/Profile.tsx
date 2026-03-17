@@ -19,6 +19,7 @@ import { removeFavorite } from "../utils/wishListSlice.js";
 import { removeCart } from "../utils/cartItemsSlice.js";
 import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer.js";
 import imageCompression from "browser-image-compression";
+import { toast } from "sonner";
 
 export const Profile = () => {
   const queryClient = useQueryClient();
@@ -80,6 +81,17 @@ export const Profile = () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["profile"] });
         setEditProfile(false);
+         toast.success("updated profile successfully!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
       },
     });
 
@@ -89,14 +101,22 @@ export const Profile = () => {
       mutationFn: async (data) => {
         await axios.patch(BASE_URL + "/profile/address-edit", data, {
           withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
         });
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["profile"] });
         setEditAddress(false);
+         toast.success("updated address successfully!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
       },
     });
 
@@ -124,6 +144,18 @@ export const Profile = () => {
         pinCode: "",
         country: "",
       });
+               toast.success("successfully address added!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
+      
     },
   });
 
@@ -136,6 +168,17 @@ export const Profile = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+               toast.success("deleted address successfully!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
     },
   });
 
