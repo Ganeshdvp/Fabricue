@@ -66,10 +66,10 @@ export const Orders = () => {
 
                 {/* Address */}
                 <div className="text-sm text-gray-600 text-center md:text-left">
-                  <p>Ganesh</p>
-                  <p>Puttapaka</p>
-                  <p>Yadadri Bhuvanagiri</p>
-                  <p>Telangana 508253</p>
+                  <p>{order?.userId?.fullName}</p>
+                  <p>{order?.deliveryAddress?.landMark}</p>
+                  <p>{order?.deliveryAddress?.city}</p>
+                  <p>{order?.deliveryAddress?.state}, {order?.deliveryAddress?.pinCode} {order?.deliveryAddress?.country} </p>
                 </div>
 
                 {/* Price */}
@@ -93,7 +93,7 @@ export const Orders = () => {
                 <div
                   className={`mt-1 px-3 py-1 text-xs rounded-full w-fit font-medium
                 ${
-                  order.status === "paid"
+                  order.status === "paid" || "COD"
                     ? "bg-amber-100 text-amber-700"
                     : "bg-red-100 text-red-700"
                 }`}
@@ -103,7 +103,12 @@ export const Orders = () => {
                       <CheckCircle2 size={16} />
                       paid
                     </p>
-                  ) : (
+                  ) : order.status === 'COD' ? (
+                    <p className="flex gap-x-1">
+                      <CheckCircle2 size={16} />
+                      COD
+                    </p>
+                  )  : (
                     <p className="flex gap-x-1">
                       <AlertCircle size={16} />
                       failed

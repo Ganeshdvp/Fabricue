@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { BASE_URL } from '../utils/constants.js';
 import { Loading } from "./Loading";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 
 
@@ -12,6 +12,8 @@ export const EnterOtp = () => {
   const [otp, setOtp] = useState(["","","","","",""]);
   const [otpError, setOtpError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email;
   const inputRefs = useRef([]);
 
  // otp change
@@ -39,7 +41,7 @@ const {mutate, isPending, isError, error} = useMutation({
   },
   onSuccess: ()=>{
     sessionStorage.removeItem('token');
-    navigate('/change-password');
+    navigate('/change-password', {state: {email}});
     setOtp(["","","","","",""]);
   },
 })
@@ -65,7 +67,6 @@ const {mutate, isPending, isError, error} = useMutation({
 
     mutate(data)
   }
-
 
   return (
     <>

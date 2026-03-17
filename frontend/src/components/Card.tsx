@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { BASE_URL } from '../utils/constants.js';
 import { Loading } from "./Loading.js";
+import { toast } from "sonner";
 
 
 
@@ -26,6 +27,17 @@ export const Card = ({productData}) => {
         },
         onSuccess:()=>{
              queryClient.invalidateQueries({queryKey: ['cart']});
+    toast.success("Successfully added to cart", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
         }
     });
 

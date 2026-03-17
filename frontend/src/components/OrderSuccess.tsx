@@ -13,7 +13,7 @@ export const OrderSuccess = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-green-50 to-white overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-screen overflow-hidden">
 
       {/* Animated circle */}
       <div className="relative flex items-center justify-center w-32 h-32 rounded-full bg-amber-500 animate-pulse shadow-xl">

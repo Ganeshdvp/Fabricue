@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import {BASE_URL, passwordRegex} from '../utils/constants.js';
 import { useState } from "react";
 import { Loading } from "./Loading.js";
@@ -10,6 +10,8 @@ export const EnterPassword = () => {
     const navigate = useNavigate();
     const [password, setPassword] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
+    const location = useLocation();
+    const email = location.state?.email;
 
 
   const {mutate, isPending, isError, error} = useMutation({
@@ -37,17 +39,17 @@ const handleClick = ()=>{
 
 
   const data = {
+    email: email,
     password : password.trim()
   }
 
   mutate(data);
 }
-       
       
   return (
     <>
     <div className="w-full flex items-center justify-center h-screen bg-[url(https://img.freepik.com/premium-photo/background-with-grip_1286621-341.jpg?semt=ais_rp_progressive&w=740&q=80)] bg-no-repeat bg-cover bg-center">
-          <div className="bg-white text-gray-500 w-110 h-85 mx-4 md:p-6 p-4 text-left text-sm rounded-lg shadow-[0px_0px_10px_5px] shadow-black/10">
+          <div className="bg-white text-gray-500 w-110 h-90 mx-4 md:p-6 p-4 text-left text-sm rounded-lg shadow-[0px_0px_10px_5px] shadow-black/10">
             <h2 className="text-2xl font-semibold mb-2 text-center text-gray-800">Create a New Password</h2>
             <p className="text-[12px] mb-8 translate-x-22 text-center mb-8 max-w-60">Enter a new password for your account to continue securely.</p>
             <label htmlFor="password">New Password</label>
@@ -63,6 +65,9 @@ const handleClick = ()=>{
               }
             </button>
             <p className="text-[12px] translate-x-10 text-center mb-2 max-w-80">Note: Make sure your password is strong and keep it secure.</p>
+            <Link to='/login'>
+            <p className="text-center text-[12px] mt-4 underline">Want to create new account ? Sign up</p>
+            </Link>
         </div>
     </div>
     </>

@@ -4,6 +4,7 @@
 # Installation
 - Vite + React
 - TailwindCSS(Prebuilt Ui)
+- shadcn/ui
 - React Router
 - React Redux Toolkit
 - TenStack Query
@@ -19,6 +20,7 @@
 - Developed Wishlist page
 - Integrated AI-Powered Searching Product
 - Implemented Shimmer UI
+- Developed Profile page
 
 
 # Configuration

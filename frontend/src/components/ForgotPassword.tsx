@@ -23,7 +23,7 @@ export const ForgotPassword = () => {
       },
       onSuccess: (data)=>{
         sessionStorage.setItem('token',data?.data);
-        navigate('/enter-otp');
+        navigate('/enter-otp', {state: {email}});
         setEmail(null);
       }
     });

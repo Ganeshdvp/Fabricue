@@ -6,6 +6,7 @@ import {
   Heart,
   ShoppingCart,
   Trash,
+  Info,
 } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,21 +14,21 @@ import { BASE_URL } from "../utils/constants.js";
 import { Loading } from "./Loading.js";
 import { Link, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { removeUser } from '../utils/userSlice.js';
-import {removeFavorite} from '../utils/wishListSlice.js';
-import {removeCart} from '../utils/cartItemsSlice.js';
+import { removeUser } from "../utils/userSlice.js";
+import { removeFavorite } from "../utils/wishListSlice.js";
+import { removeCart } from "../utils/cartItemsSlice.js";
 import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer.js";
 import imageCompression from "browser-image-compression";
+import { toast } from "sonner";
 
 export const Profile = () => {
   const queryClient = useQueryClient();
 
   const [editProfile, setEditProfile] = useState(false);
   const [editProfileData, setEditProfileData] = useState({
-    fullName : "",
-    image: null
-  })
-  
+    fullName: "",
+    image: null,
+  });
 
   const [addAddress, setAddAddress] = useState(false);
   const [addAddressData, setAddAddressData] = useState({
@@ -80,6 +81,17 @@ export const Profile = () => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["profile"] });
         setEditProfile(false);
+         toast.success("updated profile successfully!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
       },
     });
 
@@ -89,14 +101,22 @@ export const Profile = () => {
       mutationFn: async (data) => {
         await axios.patch(BASE_URL + "/profile/address-edit", data, {
           withCredentials: true,
-          headers: {
-          "Content-Type": "multipart/form-data",
-        },
         });
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["profile"] });
         setEditAddress(false);
+         toast.success("updated address successfully!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
       },
     });
 
@@ -124,6 +144,18 @@ export const Profile = () => {
         pinCode: "",
         country: "",
       });
+               toast.success("successfully address added!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
+      
     },
   });
 
@@ -136,45 +168,63 @@ export const Profile = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
+               toast.success("deleted address successfully!", {
+  style: {
+    background: '#fb923c',      // orange-600
+    color: '#ffffff',
+    border: '1px solid #fb923c',
+    borderRadius: '10px',
+    fontSize: '12px',
+    width: '250px',
+    height: '40px',
+  }
+});
     },
   });
 
   // logout
-  const {mutate:logoutMutate, isPending:logoutPending} = useMutation({
-        mutationFn: async ()=>{
-            const res = await axios.post(BASE_URL + '/user/logout', {}, {
-                withCredentials: true
-            });
-            return res?.data
+  const { mutate: logoutMutate, isPending: logoutPending } = useMutation({
+    mutationFn: async () => {
+      const res = await axios.post(
+        BASE_URL + "/user/logout",
+        {},
+        {
+          withCredentials: true,
         },
-        onSuccess: ()=>{
-            dispatch(removeUser());
-            dispatch(removeFavorite());
-            dispatch(removeCart());
-            navigate('/login');
-        }
-    })
+      );
+      return res?.data;
+    },
+    onSuccess: () => {
+      dispatch(removeUser());
+      dispatch(removeFavorite());
+      dispatch(removeCart());
+      navigate("/login");
+    },
+  });
 
-  if (isPending) return <ProfileShimmer/>;
+  if (isPending) return <ProfileShimmer />;
 
   // profile edit button
   const handleEditProfile = async (e) => {
     e.preventDefault();
-  
-  const formData = new FormData();
-  formData.append("fullName", editProfileData.fullName);
-  
-  if(editProfileData.image){
-    const options = {
-      maxSizeMB: 0.5,       // compress to max 0.5MB
-      maxWidthOrHeight: 400, // resize to max 400px
-      useWebWorker: true,    // non-blocking
-    };
-    const compressedImage = await imageCompression(editProfileData.image, options);
-    formData.append("image", compressedImage, editProfileData.image.name);
-  }
 
-  editProfileMutate(formData);
+    const formData = new FormData();
+    formData.append("fullName", editProfileData.fullName);
+
+    if (editProfileData.image) {
+      const options = {
+        maxSizeMB: 0.5, // compress to max 0.5MB
+        maxWidthOrHeight: 400, // resize to max 400px
+        useWebWorker: true, // non-blocking
+      };
+      const compressedImage = await imageCompression(
+        editProfileData.image,
+        options,
+      );
+      formData.append("image", compressedImage, editProfileData.image.name);
+    }
+
+    editProfileMutate(formData);
   };
 
   // edit address button
@@ -195,9 +245,9 @@ export const Profile = () => {
   };
 
   // logout
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     logoutMutate();
-  }
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-10 lg:px-16 py-10">
@@ -226,7 +276,13 @@ export const Profile = () => {
           </div>
 
           <button
-            onClick={() => {setEditProfile(true); setEditProfileData({fullName: data?.userId?.fullName, image: null})}}
+            onClick={() => {
+              setEditProfile(true);
+              setEditProfileData({
+                fullName: data?.userId?.fullName,
+                image: null,
+              });
+            }}
             className="mt-4 px-6 py-2 bg-amber-500 hover:bg-amber-600 cursor-pointer text-white rounded-full text-sm transition"
           >
             Edit Profile
@@ -259,7 +315,12 @@ export const Profile = () => {
                 <input
                   type="text"
                   value={editProfileData.fullName}
-                  onChange={(e) => setEditProfileData(prev=> ({...prev, fullName: e.target.value}))}
+                  onChange={(e) =>
+                    setEditProfileData((prev) => ({
+                      ...prev,
+                      fullName: e.target.value,
+                    }))
+                  }
                   placeholder="Enter your full name"
                   className="w-full border border-gray-300 rounded-md p-2 outline-none focus:ring-2 focus:ring-amber-400"
                 />
@@ -281,7 +342,12 @@ export const Profile = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setEditProfileData(prev=> ({...prev, image: e.target.files[0]}))}
+                  onChange={(e) =>
+                    setEditProfileData((prev) => ({
+                      ...prev,
+                      image: e.target.files[0],
+                    }))
+                  }
                   className="w-full border border-gray-300 rounded-md p-2 cursor-pointer"
                 />
               </div>
@@ -310,34 +376,34 @@ export const Profile = () => {
 
       {/* QUICK ACTIONS */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12">
-        <Link to='/home/orders'>
-        <div className="bg-white rounded-xl p-6 flex items-center gap-4 hover:shadow-lg shadow-md transition cursor-pointer">
-          <Package size={28} className="text-amber-500" />
-          <div>
-            <h4 className="font-semibold">My Orders</h4>
-            <p className="text-sm text-gray-500">Track your purchases</p>
+        <Link to="/home/orders">
+          <div className="bg-white rounded-xl p-6 flex items-center gap-4 hover:shadow-lg shadow-md transition cursor-pointer">
+            <Package size={28} className="text-amber-500" />
+            <div>
+              <h4 className="font-semibold">My Orders</h4>
+              <p className="text-sm text-gray-500">Track your purchases</p>
+            </div>
           </div>
-        </div>
         </Link>
 
-        <Link to='/home/wishlist'>
-        <div className="bg-white rounded-xl p-6 flex items-center gap-4 hover:shadow-lg shadow-md transition cursor-pointer">
-          <Heart size={28} className="text-amber-500" />
-          <div>
-            <h4 className="font-semibold">Wishlist</h4>
-            <p className="text-sm text-gray-500">Saved products</p>
+        <Link to="/home/wishlist">
+          <div className="bg-white rounded-xl p-6 flex items-center gap-4 hover:shadow-lg shadow-md transition cursor-pointer">
+            <Heart size={28} className="text-amber-500" />
+            <div>
+              <h4 className="font-semibold">Wishlist</h4>
+              <p className="text-sm text-gray-500">Saved products</p>
+            </div>
           </div>
-        </div>
         </Link>
 
-        <Link to='/home/cart'>
-        <div className="bg-white rounded-xl p-6 flex items-center gap-4 hover:shadow-lg shadow-md transition cursor-pointer">
-          <ShoppingCart size={28} className="text-amber-500" />
-          <div>
-            <h4 className="font-semibold">Cart</h4>
-            <p className="text-sm text-gray-500">Items in your cart</p>
+        <Link to="/home/cart">
+          <div className="bg-white rounded-xl p-6 flex items-center gap-4 hover:shadow-lg shadow-md transition cursor-pointer">
+            <ShoppingCart size={28} className="text-amber-500" />
+            <div>
+              <h4 className="font-semibold">Cart</h4>
+              <p className="text-sm text-gray-500">Items in your cart</p>
+            </div>
           </div>
-        </div>
         </Link>
       </div>
 
@@ -710,11 +776,19 @@ export const Profile = () => {
         <h3 className="text-xl font-semibold mb-4">Account Settings</h3>
 
         <div className="flex flex-col items-start">
-          <button className="px-6 py-2 underline cursor-pointer transition text-sm">
-            Change Password
+          <Link to='/change-password'>
+          <button className="flex gap-x-2 items-center px-6 py-2 underline cursor-pointer transition text-sm">
+            Change Password{" "}
+            <span title="You can change password after every 7 days.">
+              <Info size={16} />
+            </span>
           </button>
+          </Link>
 
-          <button onClick={handleLogout} className="px-6 py-2 text-amber-500 font-semibold underline cursor-pointer text-sm">
+          <button
+            onClick={handleLogout}
+            className="px-6 py-2 text-amber-500 font-semibold underline cursor-pointer text-sm"
+          >
             Logout
           </button>
         </div>
