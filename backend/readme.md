@@ -1,0 +1,161 @@
+# Fabricue Full Stack E-commerce Application
+
+# API Design
+
+-- Role-Based Authentication --
+- POST user/register
+- POST user/login
+- POST user/logout
+- POST user/send-otp
+- POST user/verify-otp
+- POST user/change-password
+- POST user/contact
+
+-- Profile --
+- GEt profile/
+- PATCH profile/edit
+- POST profile/address-add
+- PATCH profile/address-edit
+- DELETE profile/address-delete/:id
+
+-- Products --
+- GET product/
+- GET product/:id
+- GET product/category/:category
+- POST product/sort
+
+-- Admin CRUD Product --
+- POST admin/products/createProduct
+- PATCH admin/products/updateProduct/:id
+- DELETE admin/products/deleteProduct/:id
+- GET admin/products/allProducts
+
+-- Stock Reduction --
+- PATCH stock/reduce
+
+-- Cart --
+- GET cart/
+- POST cart/add/:id
+- DELETE cart/remove/:id
+- POST cart/quantity
+
+-- Favorite --
+- GET favorite/
+- POST favorite/:type/:id ---> (add and remove)
+
+-- Search with Ai integrate --
+- POST product/:search
+
+-- Orders --
+- GET orders/
+
+-- Payment --
+- POST payment/
+- POST /webhook
+
+
+# Installation Dependencies :-
+- npm init
+- npm i express nodemon dotenv mongoose validator bcrypto cookie-parser cors date-fns jsonwebtoken resend stripe multer cloudinary streamifier groq-sdk helmet express-rate-limit
+
+# Sensitive Data
+- created .env file to store sensitive data
+
+# Configure Database
+- Created config folder > db.js to configure database
+
+# Run the server
+- created server.js file
+- connected to Db and run server
+
+# Create Schema and model
+- created models folder > User.js & Products.js & Carts.js & Orders.js & Profile.js
+
+# Define Routes
+- created authRouter.js
+- created productRouter.js
+- created crudProducts.js
+- created stockDetection.js
+- created cartRouter.js
+- created favoriteRouter.js
+- created paymentRouter.js
+- created ordersRouter.js
+- created profileRouter.js
+
+# Create Controllers
+
+-- Authentication --
+- created register.js
+- created login.js
+- created logout.js
+- created sendOtp.js
+- created verifyOtp.js
+- created changePassword.js
+- created checkCookie.js
+
+-- Profile --
+- created profile.js
+- created profileAddAddress.js
+- created profileEdit.js
+- created addressEdit.js
+- created addressDelete.js
+- created uploadProfileImage.js
+
+-- GET Product --
+- created allProducts.js
+- created productById.js
+- created categoryProducts.js
+- created sortByPrice.js
+
+-- Admin Products --
+- created createProduct.js
+- created updateProduct.js
+- created deleteProduct.js
+- created sellerProducts.js
+
+-- Stock Deduction --
+- created stockDetection.js
+
+-- Cart Items --
+- created addCart.js
+- created deleteItemCart.js
+- created allCartItems.js
+- created increaseQuantity.js
+
+-- Favorite Items --
+- created toggleFavoriteItems.js
+- created getAllFavoriteItems.js
+
+-- Search with ai integrate --
+- created searchProduct.js
+
+-- Payment Stripe --
+- created payment.js
+- created stripeWebhook.js
+
+-- Orders --
+- created allOrders.js
+
+# Create middlewares
+- created userAuth.js
+- created roleAuth.js
+- created rateLimiting.js
+
+# Create utils
+- created sendEmail.js 
+- created validations.js
+- created openAi.js
+- created cloudinary.js
+
+# Payment Gateway
+- Integrated Stripe for payments
+
+# Security
+- used helmet for headers
+   - npm i helmet
+- used rateLimit based on IP and Database
+   - npm i express-rate-limit
+
+# performance
+- used db indexing
+- used cloudinary for images (streamifier instead of base64)
