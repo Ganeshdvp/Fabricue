@@ -2,7 +2,7 @@ import Cart from '../models/Carts.js';
 
 
 const POPULATEFEILDS =
-  "_id sellerId name brand category subCategory price discountPrice currency sizes colors rating numReviews description image isNewArrival isFavorite";
+  "_id sellerId name brand category subCategory price discountPrice stock currency sizes colors rating numReviews description image isNewArrival isFavorite";
 
 
 const getAllCartItems = async (req, res)=>{

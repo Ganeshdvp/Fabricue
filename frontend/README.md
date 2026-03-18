@@ -1,6 +1,5 @@
 # Frontend Fabricue
 
-
 # Installation
 - Vite + React
 - TailwindCSS(Prebuilt Ui)

@@ -55,7 +55,7 @@ export const Contact = () => {
       <form
         onSubmit={handleSubmit}
         id="contact"
-        className="flex flex-col items-center text-sm text-slate-800 mt-36"
+        className="flex flex-col items-center text-sm text-slate-800 mt-12"
       >
         <p className="text-xs bg-amber-100 text-amber-500 font-medium px-3 py-1 rounded-full">
           Contact Us

@@ -8,6 +8,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants.js";
 import { addFavorite } from "../utils/wishListSlice.js";
 import { addCart } from "../utils/cartItemsSlice.js";
+import { Loading } from "./Loading.js";
 
 export const NavBar = () => {
   const [toggle, setToggle] = useState(false);
@@ -19,7 +20,7 @@ export const NavBar = () => {
   const dropDownRef = useRef(null);
 
   // fetch favorite items
-  const { data: favoriteData, isPending: favoritePending } = useQuery({
+  useQuery({
     queryKey: ["favorite"],
     queryFn: async () => {
       const res = await axios.get(BASE_URL + "/favorite", {
@@ -36,7 +37,7 @@ export const NavBar = () => {
   });
 
   // fetch cart Items
-  const { data: cartData, isPending: cartPending } = useQuery({
+  useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await axios.get(BASE_URL + "/cart", {
@@ -83,25 +84,28 @@ export const NavBar = () => {
         {/* Desktop Menu */}
         <div className="hidden sm:flex items-center gap-8 text-sm">
           <Link to="/home">Home</Link>
-          <a href="#about">About</a>
           {!store && (
             <>
+            <a href="#about">About</a>
               <a href="#new-arrivals">New Arrivals</a>
               <a href="#latest-collections">Latest Collections</a>
               <a href="#top-collections">Top Collections</a>
+              <a href="#faqs">FAQs</a>
+          <a href="#contact">Contact</a>
             </>
           )}
-          <a href="#faqs">FAQs</a>
-          <a href="#contact">Contact</a>
 
           {store ? (
             <>
+            <Link to="/home/about">About</Link>
+            <Link to="/home">New Arrivals</Link>
+            <Link to="/home/contact">Contact Us</Link>
               {/* wishlist */}
               <Link to="/home/wishlist">
                 <div className="relative cursor-pointer hover:scale-110">
                   <Heart size={16} />
                   <button className="absolute -top-2 -right-3 text-xs text-white bg-amber-500 w-4.5 h-4.5 rounded-full">
-                    {wishList?.length || 0}
+                    {!wishList ? <p className="-ml-4"><Loading/></p> : wishList?.length || 0}
                   </button>
                 </div>
               </Link>
@@ -124,7 +128,7 @@ export const NavBar = () => {
                     />
                   </svg>
                   <button className="absolute -top-2 -right-3 text-xs text-white bg-amber-500 w-4.5 h-4.5 rounded-full">
-                    {cartItems?.length || 0}
+                    {!cartItems ? <p className="-ml-4"><Loading/></p> : cartItems?.length || 0}
                   </button>
                 </div>
               </Link>

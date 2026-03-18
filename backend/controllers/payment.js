@@ -32,8 +32,20 @@ export const payment = async (req, res)=>{
           status: "COD",
         });
         await order.save();
+
+          // reduce stock
+                await Promise.all(
+                  order.items?.map(async (item) => {
+                    await Product.findByIdAndUpdate(item.productId, {
+                      $inc: { stock: -item.quantity },
+                    });
+                  }),
+                );
+
+                
         return res.status(200).json({message: 'Order Placed Successfully!'});
     }
+    
     
     // Online payment
 
@@ -55,7 +67,7 @@ export const payment = async (req, res)=>{
             name: product.name,
             images: product.image ? [product.image[0]] : [],
           },
-          unit_amount: (product.discountPrice + product.discountPrice * 0.02) * 100,
+          unit_amount: Math.round(product.discountPrice * 1.02 * 100),
         },
         quantity: item.quantity,
       };

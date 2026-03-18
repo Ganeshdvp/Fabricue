@@ -83,7 +83,7 @@ export const Card = ({productData}) => {
             <div className="text-gray-500/60 text-sm">
                 <p>{brand}</p>
                 <p onClick={()=> navigate(`/home/view/${_id}`)} className="text-gray-700 font-medium text-lg truncate w-full hover:underline">{name}</p>
-                <p>{description}</p>
+                <p className="text-[12px]">{description.length > 100 ? description.slice(0,100) + '...more' : description}</p>
                 <div className="flex items-center gap-0.5 mt-2">
                     {Array(5).fill('').map((_, i) => (
                         Math.floor(rating) > i ? (
@@ -98,7 +98,7 @@ export const Card = ({productData}) => {
                     ))}
                     <p>({rating})</p>
                 </div>
-                <div className="flex items-end justify-between mt-3">
+                <div className="flex items-end justify-between mt-3 mb-2">
                     <p className="md:text-xl text-base font-medium text-amber-500">
                         ${discountPrice} <span className="text-gray-500/60 md:text-sm text-xs line-through">${price}</span>
                     </p>
@@ -115,4 +115,18 @@ export const Card = ({productData}) => {
         </div>
     </>
   )
+}
+
+// Higher-order Component with New-arrival label.
+export const NewArrivalCard =(Card)=>{
+    return (props)=>{
+        return (
+            <>
+             <div className="relative">
+                <label className="text-black absolute top-2 right-2 bg-amber-100 rounded-lg text-xs px-2 py-0.5 rounded z-10"><span className="inline-flex w-2 h-2 rounded-full bg-amber-500"></span> New arrival</label>
+                <Card {...props} />
+            </div>
+            </>
+        )
+    }
 }

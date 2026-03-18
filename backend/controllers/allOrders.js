@@ -10,7 +10,7 @@ const allOrders = async (req, res)=>{
             userId : loggedInUser._id
         }).populate({
             path: "items.productId",
-            select: 'name discountPrice image'
+            select: 'name discountPrice image stock'
         })
         .populate({
             path: "userId",

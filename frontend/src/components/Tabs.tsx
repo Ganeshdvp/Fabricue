@@ -15,7 +15,7 @@ import { Loading } from "./Loading.js";
 import { addProduct, removeProduct } from '../utils/productSlice.js';
 import { HomeCardsContainer } from "./HomeCardsContainer.js";
 import { TabsShimmer } from "./errorAndLoading/TabsShimmer.js";
-import { CardShimmer } from "./errorAndLoading/cardShimmer.js";
+
 
 
 export const Tabs = () => {
@@ -255,137 +255,114 @@ export const Tabs = () => {
 
   return (
     <>
-      <div className="bg-white">
-        {/* SEARCH + CATEGORY SECTION */}
-        <section>
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            {/* Search */}
-            <div className="flex items-start gap-2 max-w-xl mx-auto mt-6">
-              <div className="flex flex-col w-full">
-                <div className="flex items-center w-full border border-amber-200 rounded-lg px-3 bg-white">
-                  <Search size={18} className="text-amber-500" />
-                  <input
-                    type="text"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    title="Enables Multi-Language Support"
-                    placeholder={`Search for products or describe product`}
-                    className="w-full px-2 py-3 text-sm outline-none"
-                  />
-                </div>
-                {searchError && (
-                  <p className="text-red-600 text-[12px] ml-2">
-                    {searchErrorData?.response?.data?.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                onClick={handleSearchClick}
-                className="flex items-start gap-2 bg-amber-500 hover:bg-amber-600 text-white px-4 py-3 rounded-lg text-sm font-medium transition cursor-pointer"
-              >
-                {searchPending ? (
-                  <p className="mr-4">
-                    <Loading />
-                  </p>
-                ) : (
-                  <p className="flex gap-x-1">
-                    <Sparkles size={16} />
-                    Search
-                  </p>
-                )}
-              </button>
-            </div>
-
-            {/* Main Category Tabs */}
-            <div className="flex items-center justify-center max-w-250 gap-10 mt-12 text-sm font-medium text-gray-600 overflow-x-auto mx-auto">
-              <button
-                onClick={() => {
-                  setActiveCategory("all");
-                  setActiveSubCategory("");
-                  dispatch(removeProduct());
-                }}
-                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
-                  activeCategory === "all"
-                    ? "text-amber-600 border-b-2 border-amber-500"
-                    : "hover:text-amber-600"
-                }`}
-              >
-                <img src="../../public/all.webp" alt="all-icon" 
-                className={`${activeCategory === 'all' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 rounded-full`}/>
-                All
-              </button>
-
-              <button
-                onClick={() => {
-                  setActiveCategory("men");
-                  setActiveSubCategory("");
-                  dispatch(removeProduct());
-                }}
-                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
-                  activeCategory === "men"
-                    ? "text-amber-600 border-b-2 border-amber-500"
-                    : "hover:text-amber-600"
-                }`}
-              >
-                <img src="../../public/men.webp" alt="men-image"
-                className={`${activeCategory === 'men' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 rounded-full`}/>
-                Men
-              </button>
-
-              <button
-                onClick={() => {
-                  setActiveCategory("women");
-                  setActiveSubCategory("");
-                  dispatch(removeProduct());
-                }}
-                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
-                  activeCategory === "women"
-                    ? "text-amber-600 border-b-2 border-amber-500"
-                    : "hover:text-amber-600"
-                }`}
-              >
-                <img src='../../public/women.webp' alt="women-image" className={`${activeCategory === 'women' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-cover rounded-full`}/>
-                Women
-              </button>
-
-              <button
-                onClick={() => {
-                  setActiveCategory("kids");
-                  setActiveSubCategory("");
-                  dispatch(removeProduct());
-                }}
-                className={`flex flex-col items-center gap-1 pb-1 cursor-pointer ${
-                  activeCategory === "kids"
-                    ? "text-amber-600 border-b-2 border-amber-500"
-                    : "hover:text-amber-600"
-                }`}
-              >
-                <img src="../../public/kids.webp" alt="kid-image" className={`${activeCategory === 'kids' ? 'bg-amber-400 ' : 'bg-amber-400'} w-20 h-20 object-contain rounded-full`}/>
-                Kids
-              </button>
-            </div>
-
-            <div className="border-b-1 border-gray-200"></div>
-
-            {/* Sub Categories */}
-            <div className="flex flex-wrap justify-center mx-auto gap-3 mt-8 border-b border-gray-200 pb-8 text-xs max-w-200">
-              {categories[activeCategory].map((sub, i) => (
-                <>
-                <button
-                  onClick={() => setActiveSubCategory(sub.name)}
-                  key={i}
-                  className={`flex flex-col items-center cursor-pointer px-2 py-1.5 rounded-full hover:bg-gray-100 transition ${activeSubCategory === sub.name ? "focus:text-amber-600 focus:bg-amber-100 text-amber-600 bg-amber-100 scale-105" : ""}`}
-                >
-                  <img src={sub.image} alt={sub.name} className="w-15 h-10 object-contain"/>
-                  {sub.name}
-                </button>
-                </>
-              ))}
-            </div>
-          </div>
-        </section>
+{/* HERO SEARCH SECTION */}
+<div className="bg-white mb-12">
+ 
+  {/* Hero Banner */}
+  <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 px-4 py-12 text-center">
+    <p className="text-[11px] font-semibold text-amber-500 tracking-widest uppercase mb-2">
+      Fabricue Store
+    </p>
+    <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+      Find Your Perfect Style
+    </h1>
+    <p className="text-sm text-gray-400 mb-8">
+      Search from thousands of curated clothing items
+    </p>
+ 
+    {/* Search Bar */}
+    <div className="flex items-stretch gap-2 max-w-xl mx-auto">
+      <div className="flex flex-col flex-1">
+        <div className="flex items-center gap-2 bg-white border-2 border-amber-200 rounded-2xl px-4 focus-within:border-amber-400 transition-colors">
+          <Search size={16} className="text-amber-400 flex-shrink-0" />
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search or describe what you're looking for..."
+            className="w-full py-3.5 text-sm outline-none text-gray-700 placeholder:text-gray-400 bg-transparent"
+          />
+        </div>
+        {searchError && (
+          <p className="text-red-500 text-[11px] ml-2 mt-1 text-left">
+            {searchErrorData?.response?.data?.message}
+          </p>
+        )}
       </div>
+      <button
+        onClick={handleSearchClick}
+        className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-5 rounded-2xl text-sm font-medium transition-all cursor-pointer whitespace-nowrap"
+      >
+        {searchPending ? (
+          <Loading />
+        ) : (
+          <>
+            <Sparkles size={15} />
+            <span className="hidden sm:inline">AI Search</span>
+            <span className="sm:hidden">Search</span>
+          </>
+        )}
+      </button>
+    </div>
+  </div>
+ 
+  {/* Main Category Tabs */}
+  <div className="border-b border-gray-100 bg-white">
+    <div className="max-w-2xl mx-auto px-4 flex justify-center gap-1 overflow-x-auto scrollbar-hide">
+      {[
+        { key: "all", label: "All", img: "../../public/all.webp" },
+        { key: "men", label: "Men", img: "../../public/men.webp" },
+        { key: "women", label: "Women", img: "../../public/women.webp" },
+        { key: "kids", label: "Kids", img: "../../public/kids.webp" },
+      ].map(({ key, label, img }) => (
+        <button
+          key={key}
+          onClick={() => {
+            setActiveCategory(key);
+            setActiveSubCategory("");
+            dispatch(removeProduct());
+          }}
+          className={`flex flex-col items-center gap-2 px-5 sm:px-8 py-4 border-b-2 flex-shrink-0 transition-all cursor-pointer
+            ${activeCategory === key
+              ? "border-amber-500 text-amber-600"
+              : "border-transparent text-gray-400 hover:text-amber-500 hover:border-amber-200"
+            }`}
+        >
+          <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden transition-all
+            ${activeCategory === key
+              ? "ring-2 ring-amber-400 ring-offset-2 scale-105"
+              : "ring-1 ring-gray-200"
+            }`}
+          >
+            <img src={img} alt={label} className="w-full h-full object-cover" />
+          </div>
+          <span className="text-xs font-medium">{label}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+ 
+  {/* Sub Categories */}
+  <div className="bg-white border-b border-gray-100 py-4 px-4">
+    <div className="max-w-3xl mx-auto flex flex-wrap justify-center gap-2">
+      {categories[activeCategory].map((sub, i) => (
+        <button
+          key={i}
+          onClick={() => setActiveSubCategory(sub.name)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all cursor-pointer
+            ${activeSubCategory === sub.name
+              ? "bg-amber-100 text-amber-700 border border-amber-300 scale-105"
+              : "bg-gray-50 text-gray-500 border border-gray-100 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-100"
+            }`}
+        >
+          <img src={sub.image} alt={sub.name} className="w-5 h-5 object-contain" />
+          {sub.name}
+        </button>
+      ))}
+    </div>
+  </div>
+ 
+</div>
 
         {/* all cards */}
       {data?.data?.length > 0 ? (

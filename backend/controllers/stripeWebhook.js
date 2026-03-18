@@ -1,5 +1,6 @@
 import Order from "../models/Orders.js";
 import Stripe from "stripe";
+import Product from "../models/Products.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -49,6 +50,16 @@ export const stripeWebhook = async (req, res) => {
         });
 
         await order.save();
+
+        // reduce stock
+        await Promise.all(
+          order.items?.map(async (item) => {
+            await Product.findByIdAndUpdate(item.productId, {
+              $inc: { stock: -item.quantity },
+            });
+          }),
+        );
+
         break;
       }
 
@@ -70,36 +81,8 @@ export const stripeWebhook = async (req, res) => {
           items: JSON.parse(session.metadata.items),
           deliveryAddress: JSON.parse(session.metadata.deliveryAddress),
           paymentMethod: "Online",
-          paymentDate: new Date(),
           status: "failed",
           stripeSessionId: session.id,
-        });
-
-        await order.save();
-        break;
-      }
-
-      // Card declined / payment failed
-      case "payment_intent.payment_failed": {
-        const paymentIntent = event.data.object;
-
-        if (!paymentIntent.metadata?.userId) {
-          break;
-        }
-
-        const existingOrder = await Order.findOne({
-          stripeSessionId: paymentIntent.metadata?.sessionId,
-        });
-        if (existingOrder) break;
-
-        const order = new Order({
-          userId: paymentIntent.metadata.userId,
-          items: JSON.parse(paymentIntent.metadata.items),
-          deliveryAddress: JSON.parse(paymentIntent.metadata.deliveryAddress),
-          paymentMethod: "Online",
-          paymentDate: new Date(),
-          status: "failed",
-          stripeSessionId: paymentIntent.metadata?.sessionId,
         });
 
         await order.save();

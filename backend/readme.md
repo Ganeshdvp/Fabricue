@@ -30,9 +30,6 @@
 - DELETE admin/products/deleteProduct/:id
 - GET admin/products/allProducts
 
--- Stock Reduction --
-- PATCH stock/reduce
-
 -- Cart --
 - GET cart/
 - POST cart/add/:id
@@ -75,7 +72,6 @@
 - created authRouter.js
 - created productRouter.js
 - created crudProducts.js
-- created stockDetection.js
 - created cartRouter.js
 - created favoriteRouter.js
 - created paymentRouter.js
@@ -112,9 +108,6 @@
 - created updateProduct.js
 - created deleteProduct.js
 - created sellerProducts.js
-
--- Stock Deduction --
-- created stockDetection.js
 
 -- Cart Items --
 - created addCart.js

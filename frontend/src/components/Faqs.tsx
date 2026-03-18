@@ -26,7 +26,7 @@ export const Faqs = () => {
     ]
   return (
     <>
-    <div id="faqs" className='flex flex-col items-center text-center text-slate-800 px-3 mt-36'>
+    <div id="faqs" className='flex flex-col items-center text-center text-slate-800 px-3 mt-36 mb-36'>
                 <h1 className='text-3xl md:text-4xl font-semibold mt-2'>Frequently Asked Questions</h1>
                 <p className='text-sm text-slate-500 mt-4 max-w-sm'>
                     Proactively answering FAQs boosts user confidence and cuts down on support tickets.
