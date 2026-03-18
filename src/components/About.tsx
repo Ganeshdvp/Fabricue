@@ -10,7 +10,7 @@ export const About = () => {
                     font-family: 'Poppins', sans-serif;
                 }
             `}</style>
-            <h1 id="about" className="text-3xl font-semibold text-center mx-auto">About our apps</h1>
+            <h1 id="about" className="text-3xl font-semibold text-center mx-auto mt-12">About our apps</h1>
             <p className="text-sm text-slate-500 text-center mt-2 max-w-lg mx-auto">
                 Fabricue is a modern fashion brand delivering trend-forward styles with premium quality and everyday comfort.
             </p>

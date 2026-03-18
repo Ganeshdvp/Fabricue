@@ -84,93 +84,119 @@ export const OrderSummary = ({ totalPrice, store }) => {
 
   return (
     <>
-      <div className="max-w-[360px] mx-auto mt-4 w-full bg-gray-100/40 p-5 max-md:mt-16 border border-gray-300/70">
-        <h2 className="text-xl md:text-xl font-medium">Order Summary</h2>
-        <hr className="border-gray-300 my-5" />
-
-        <div className="mb-6">
-          <p className="text-sm font-medium uppercase">Delivery Address</p>
-          {
-            !addressStore ? <Loading/> : (
-                <div className="relative flex justify-between items-start mt-2">
-            <pre className="text-gray-500 text-[13px]">
-              {data?.userId?.fullName}
-              <br />
-              {addressStore?.landMark} <br />
-              {addressStore?.city} {addressStore?.pinCode} <br />
-              {addressStore?.state}, {addressStore?.country}
-            </pre>
-            <button
-              onClick={() => setShowAddress(!showAddress)}
-              className="text-[13px] text-amber-500 hover:underline cursor-pointer"
-            >
-              Change
-            </button>
-            {showAddress && (
-              <>
-                <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full shadow-lg">
-                  {data?.address?.map((address) => (
-                    <>
-                      <pre
-                        key={address._id}
-                        onClick={()=> {dispatch(addAddress(address)); setShowAddress(false)}}
-                        className="text-gray-500 text-[13px] border-b pb-2 p-2 cursor-pointer hover:bg-gray-100"
-                      >
-                        {data?.userId?.fullName}
-                        <br />
-                        {address.landMark} <br />
-                        {address.city}, {address.pinCode} <br />
-                        {address.state}, {address.country}
-                      </pre>
-                    </>
-                  ))}
-                  <p className="text-[12px] flex items-center gap-x-1 p-2"><Info size={14}/> Want to add new address? Go to profile</p>
+         <div className="w-full max-w-[360px] mx-auto mt-12">
+      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+ 
+        {/* Top strip */}
+        <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300" />
+ 
+        <div className="p-5">
+          <h2 className="text-base font-semibold text-gray-900 mb-4">Order Summary</h2>
+ 
+          {/* Delivery Address */}
+          <div className="mb-4">
+            <p className="text-[10px] font-semibold text-amber-500 uppercase tracking-widest mb-2">
+              Delivery Address
+            </p>
+            {!addressStore ? (
+              <Loading />
+            ) : (
+              <div className="relative">
+                <div className="bg-amber-50 rounded-xl p-3">
+                  <div className="flex justify-between items-start gap-2">
+                    <div>
+                      <p className="text-xs font-semibold text-gray-800">{data?.userId?.fullName}</p>
+                      <p className="text-[11px] text-gray-400 mt-1 leading-relaxed">
+                        {addressStore?.landMark}<br />
+                        {addressStore?.city} {addressStore?.pinCode}<br />
+                        {addressStore?.state}, {addressStore?.country}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowAddress(!showAddress)}
+                      className="text-[11px] text-amber-500 hover:underline font-medium cursor-pointer whitespace-nowrap"
+                    >
+                      Change
+                    </button>
+                  </div>
                 </div>
-              </>
+ 
+                {/* Address Dropdown */}
+                {showAddress && (
+                  <div className="absolute top-full mt-1 left-0 right-0 z-50 bg-white border border-orange-100 rounded-xl shadow-lg shadow-orange-50 overflow-hidden">
+                    {data?.address?.map((address) => (
+                      <div
+                        key={address._id}
+                        onClick={() => { dispatch(addAddress(address)); setShowAddress(false); }}
+                        className="p-3 border-b border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors last:border-0"
+                      >
+                        <p className="text-xs font-medium text-gray-800">{data?.userId?.fullName}</p>
+                        <p className="text-[11px] text-gray-400 mt-0.5 leading-relaxed">
+                          {address.landMark}<br />
+                          {address.city}, {address.pinCode}<br />
+                          {address.state}, {address.country}
+                        </p>
+                      </div>
+                    ))}
+                    <p className="text-[11px] flex items-center gap-1 p-3 text-gray-400">
+                      <Info size={12} /> Want to add a new address? Go to profile
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
           </div>
-            )
-          }
-
-          <p className="text-sm font-medium uppercase mt-6">Payment Method</p>
-
-          <select
-            onChange={(e) => setPaymentMethod(e.target.value)}
-            className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none"
+ 
+          {/* Payment Method */}
+          <div className="mb-4">
+            <p className="text-[10px] font-semibold text-amber-500 uppercase tracking-widest mb-2">
+              Payment Method
+            </p>
+            <select
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="w-full bg-amber-50 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none cursor-pointer"
+            >
+              <option value="COD">Cash on Delivery</option>
+              <option value="Online">Online Payment</option>
+            </select>
+          </div>
+ 
+          {/* Divider */}
+          <div className="border-t border-orange-50 my-4" />
+ 
+          {/* Price Breakdown */}
+          <div className="space-y-2.5">
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Price</span>
+              <span className="font-medium text-gray-700">${price}</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Shipping Fee</span>
+              <span className="text-green-600 font-medium">Free</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Tax (2%)</span>
+              <span className="font-medium text-gray-700">${((price * 2) / 100).toFixed(2)}</span>
+            </div>
+ 
+            {/* Total */}
+            <div className="flex justify-between items-center bg-orange-50 border border-orange-100 rounded-xl px-3 py-3 mt-2">
+              <span className="text-sm font-semibold text-gray-800">Total Amount</span>
+              <span className="text-lg font-bold text-amber-500">${totalAmount.toFixed(2)}</span>
+            </div>
+          </div>
+ 
+          {/* Place Order Button */}
+          <button
+            onClick={handlePlaceOrder}
+            className="w-full mt-4 py-3 bg-amber-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors cursor-pointer text-sm tracking-wide"
           >
-            <option value="COD">Cash On Delivery</option>
-            <option value="Online">Online Payment</option>
-          </select>
+            {orderPending ? <Loading /> : "Place Order"}
+          </button>
         </div>
-
-        <hr className="border-gray-300" />
-
-        <div className="text-gray-500 mt-4 space-y-2">
-          <p className="flex justify-between">
-            <span>Price</span>
-            <span>${totalPriceFromBuyNow || totalPrice}</span>
-          </p>
-          <p className="flex justify-between">
-            <span>Shipping Fee</span>
-            <span className="text-green-600">Free</span>
-          </p>
-          <p className="flex justify-between">
-            <span>Tax (2%)</span>
-            <span>${((totalPriceFromBuyNow || totalPrice) * 2) / 100}</span>
-          </p>
-          <p className="flex justify-between text-lg font-medium mt-3">
-            <span>Total Amount:</span>
-            <span>${totalAmount}</span>
-          </p>
-        </div>
-
-        <button
-          onClick={handlePlaceOrder}
-          className="w-full py-3 mt-6 cursor-pointer bg-amber-500 text-white font-medium hover:bg-amber-600 transition"
-        >
-          {orderPending ? <Loading /> : "Place Order"}
-        </button>
       </div>
+    </div>
+
     </>
   );
 };
