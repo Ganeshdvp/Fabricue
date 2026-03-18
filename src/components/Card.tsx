@@ -117,9 +117,7 @@ export const Card = ({productData}) => {
   )
 }
 
-
 // Higher-order Component with New-arrival label.
-
 export const NewArrivalCard =(Card)=>{
     return (props)=>{
         return (
