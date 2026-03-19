@@ -55,7 +55,7 @@ app.use(express.json());
 app.use(cookieParser())
 
 // routes
-app.use('/user', authLimit, authRoute);
+app.use('/user', /*authLimit*/ authRoute);
 app.use('/profile', profileLimit, profileRouter);
 app.use('/product', productLimit, productRoute);
 app.use('/admin/products', adminLimit, CRUDProductsRoute);

@@ -7,8 +7,13 @@ const POPULATEFEILDS =
 
 const getAllCartItems = async (req, res)=>{
     try {
+
+      const loggedInUser = req?.user;
+
     // find db
-    const products = await Cart.find({})
+    const products = await Cart.find({
+      userId: loggedInUser._id,
+    })
       .populate("productId", POPULATEFEILDS)
       .lean();
 
