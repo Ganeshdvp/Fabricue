@@ -7,8 +7,11 @@ const addressSlice = createSlice({
         addAddress: (state, action)=>{
             return action.payload;
         },
+        removeAddress: ()=>{
+            return null;
+        }
     }
 });
 
-export const { addAddress} = addressSlice.actions;
+export const { addAddress, removeAddress} = addressSlice.actions;
 export default addressSlice.reducer;

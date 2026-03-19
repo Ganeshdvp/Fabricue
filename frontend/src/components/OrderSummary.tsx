@@ -14,6 +14,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userStore = useSelector(store=> store?.user);
 
   const location = useLocation();
   const storeFromBuyNow = location.state?.items;
@@ -28,7 +29,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
 
   // fetch profile of addresses
   const { data } = useQuery({
-    queryKey: ["profile"],
+    queryKey: ["profile", userStore?._id],
     queryFn: async () => {
       const res = await axios.get(BASE_URL + "/profile", {
         withCredentials: true,
@@ -44,7 +45,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
   });
 
   // payment
-  const { mutate: orderMutate, isPending: orderPending } = useMutation({
+  const { mutate: orderMutate, isPending: orderPending, isError, error } = useMutation({
     mutationFn: async (data) => {
       const res = await axios.post(BASE_URL + `/payment`, data, {
         withCredentials: true,
@@ -52,7 +53,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
       return res?.data
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["order"] });
+      queryClient.invalidateQueries({ queryKey: ["order", userStore?._id] });
       if(data?.url) {
         window.location.href = data?.url;
       }
@@ -99,7 +100,12 @@ export const OrderSummary = ({ totalPrice, store }) => {
               Delivery Address
             </p>
             {!addressStore ? (
-              <Loading />
+              <>
+  <p className="text-xs font-medium text-gray-700">No address found</p>
+  <p className="text-[11px] flex items-center gap-1 mt-2 text-gray-500">
+    <Info size={12} /> Want to add a new address? Go to profile
+  </p>
+</>
             ) : (
               <div className="relative">
                 <div className="bg-amber-50 rounded-xl p-3">
@@ -193,6 +199,10 @@ export const OrderSummary = ({ totalPrice, store }) => {
           >
             {orderPending ? <Loading /> : "Place Order"}
           </button>
+
+          {
+            isError && <p className="text-red-500 text-[12px] mt-1 text-center">{error?.response?.data?.message}</p>
+          }
         </div>
       </div>
     </div>

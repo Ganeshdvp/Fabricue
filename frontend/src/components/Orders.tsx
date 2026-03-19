@@ -3,6 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants.js";
 import { OrdersShimmer } from "./errorAndLoading/OrdersShimmer.js";
 import { PageNotFound } from "./errorAndLoading/PageNotFound.js";
+import { useSelector } from "react-redux";
 
 
 const statusConfig = {
@@ -32,9 +33,12 @@ const statusConfig = {
 
 
 export const Orders = () => {
+
+  const store = useSelector(store=> store?.user);
+  
   // fetch orders
   const { data, isPending } = useQuery({
-    queryKey: ["order"],
+    queryKey: ["order", store?._id],
     queryFn: async () => {
       const res = await axios.get(BASE_URL + "/orders", {
         withCredentials: true,

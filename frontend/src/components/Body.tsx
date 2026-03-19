@@ -10,6 +10,7 @@ import { LatestCollections } from './LatestCollections';
 import { NewArrivals } from './NewArrivals';
 import { About } from "./About";
 import { Contact } from "./Contact";
+import { AlertBanner } from './AlertBanner';
 
 
 
@@ -20,6 +21,7 @@ export const Body = () => {
     <Banner/>
     <NavBar/>
     <HeroPage/>
+    <AlertBanner/>
     <About/>
     <NewArrivals/>
     <LatestCollections/>

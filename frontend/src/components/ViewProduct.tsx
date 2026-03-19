@@ -6,7 +6,7 @@ import axios from "axios";
 import { Loading } from "./Loading.js";
 import { ViewProductShimmer } from "./errorAndLoading/ViewProductShimmer.js";
 import { toast } from "sonner";
-import { ShoppingCart } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export const ViewProduct = () => {
   const queryClient = useQueryClient();
@@ -18,6 +18,7 @@ export const ViewProduct = () => {
   const [error, setError] = useState(null);
   const [imageIndex, setImageIndex] = useState(0);
   const navigate = useNavigate();
+  const store = useSelector(store=> store?.user);
 
   // fetch product
   const { data, isPending } = useQuery({
@@ -43,7 +44,7 @@ export const ViewProduct = () => {
       return res?.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ["cart", store?._id] });
                toast.success("successfully added to cart", {
   style: {
     background: '#fb923c',      // orange-600

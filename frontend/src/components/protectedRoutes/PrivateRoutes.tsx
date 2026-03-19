@@ -6,7 +6,7 @@ export const PrivateRoutes = ({ children }) => {
   const store = useSelector(store=> store.user);
 
   if (!store) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
   return children;
 };

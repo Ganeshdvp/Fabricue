@@ -287,12 +287,12 @@ export const Login = () => {
               >
                 {toggle ? (
                   loginPending ? (
-                    <Loading />
+                    <Loading color={'border-white'}/>
                   ) : (
                     "Login"
                   )
                 ) : signUpPending ? (
-                  <Loading />
+                  <Loading color={'border-white'}/>
                 ) : (
                   "Sign Up"
                 )}

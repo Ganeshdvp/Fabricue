@@ -13,10 +13,11 @@ export const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const store = useSelector((store) => store?.cartItems);
+  const userStore = useSelector(store=> store?.user);
 
   // fetching all cart items
   const { data, isPending } = useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", userStore?._id],
     queryFn: async () => {
       const res = await axios.get(BASE_URL + "/cart", {
         withCredentials: true,
@@ -35,7 +36,7 @@ export const Cart = () => {
       return res?.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
     },
   });
 
@@ -48,7 +49,7 @@ export const Cart = () => {
       return res?.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
     },
   });
 
