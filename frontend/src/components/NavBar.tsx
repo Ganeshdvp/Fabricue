@@ -83,17 +83,19 @@ export const NavBar = () => {
     <>
       <nav
         ref={dropDownRef}
-        className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-10 lg:px-16 xl:px-24 py-5 bg-white border-b border-gray-200 relative transition-all"
+        className="sticky top-0 z-50 flex items-center justify-between max-w-screen px-16 sm:px-20 md:px-20 lg:px-20 xl:px-24 py-5 bg-white border-b border-gray-200 relative transition-all"
       >
         {/* Logo */}
+        <Link to='/home'>
         <img
           src="../../public/Fabricue.png"
           alt="logo"
           className="w-15 h-auto object-contain scale-300"
         />
+        </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden sm:flex items-center gap-7 text-sm">
+        <div className={`${store ? 'md:flex' : 'lg:flex'} hidden items-center gap-7 text-sm`}>
           <Link to="/home" className={navLinkCls}>Home</Link>
 
           {!store && (
@@ -110,7 +112,7 @@ export const NavBar = () => {
           {store && (
             <>
               <Link to="/home/about" className={navLinkCls}>About</Link>
-              <Link to="/home" className={navLinkCls}>New Arrivals</Link>
+              <Link to="/home/faqs" className={navLinkCls}>FAQS</Link>
               <Link to="/home/contact" className={navLinkCls}>Contact</Link>
 
               {/* Wishlist */}
@@ -155,21 +157,21 @@ export const NavBar = () => {
         </div>
 
         {/* Mobile hamburger */}
-        <button
+        {/* <button
           onClick={() => setToggle(!toggle)}
           aria-label="Menu"
-          className="sm:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className={`${store ? 'hidden' : 'lg:hidden'} p-2 rounded-lg hover:bg-gray-100 transition-colors`}
         >
           <svg width="20" height="14" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="21" height="1.5" rx=".75" fill="#426287" />
             <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
             <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
           </svg>
-        </button>
+        </button> */}
 
         {/* Mobile Menu */}
         <div
-          className={`${toggle ? "flex" : "hidden"} absolute top-full left-0 z-50 w-full bg-white border-b border-gray-100 shadow-md py-5 flex-col items-start gap-1 px-6 md:hidden`}
+          className={`${toggle ? "flex" : "hidden"} absolute top-full left-0 z-50 w-full bg-white border-b border-gray-100 shadow-md py-5 flex-col items-start gap-1 px-6 lg:hidden`}
         >
           {[
             { label: "Home", to: "/home", isLink: true },
@@ -198,6 +200,54 @@ export const NavBar = () => {
             </button>
           </Link>
         </div>
+
+        {/* Mobile: icons if logged in, hamburger if not */}
+{store ? (
+  <div className="md:hidden flex items-center gap-6 -mr-10">
+    
+    {/* Wishlist */}
+    <Link to="/home/wishlist">
+      <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
+        <Heart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
+        <Badge count={!wishList ? <Loading /> : wishList?.length || 0} />
+      </div>
+    </Link>
+
+    {/* Cart */}
+    <Link to="/home/cart">
+      <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
+        <ShoppingCart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
+        <Badge count={!cartItems ? <Loading /> : cartItems?.length || 0} />
+      </div>
+    </Link>
+
+    {/* Profile */}
+    <button
+      onClick={handleProfileClick}
+      className="w-8 h-8 rounded-full bg-gray-100 hover:bg-amber-50 border border-gray-200 hover:border-amber-300 flex items-center justify-center transition-colors cursor-pointer"
+    >
+      <User2Icon size={16} className="text-gray-600 hover:text-amber-500" />
+    </button>
+    {dropDown && (
+      <div className="z-100 absolute top-14 right-4">
+        <ProfileDropDown />
+      </div>
+    )}
+
+  </div>
+) : (
+  <button
+    onClick={() => setToggle(!toggle)}
+    aria-label="Menu"
+    className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+  >
+    <svg width="20" height="14" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="21" height="1.5" rx=".75" fill="#426287" />
+      <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
+      <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
+    </svg>
+  </button>
+)}
       </nav>
     </>
   );

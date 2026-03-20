@@ -17,9 +17,12 @@
 - Developed Home page related content.
 - Developed Cart page
 - Developed Wishlist page
-- Integrated AI-Powered Searching Product
-- Implemented Shimmer UI
+- Developed Orders page
 - Developed Profile page
+- Integrated AI-Powered Searching Product
+- Developed HomeAbout page
+- Developed HomeFaqs page
+- Implemented Shimmer UI for all pages
 
 
 # Configuration
@@ -29,4 +32,4 @@
 
 # Performance
 - used Image compression and browser-image-compression
-- 
+- Lazy Loading (pending)

@@ -11,7 +11,7 @@ export const HomeCardsContainer = ({data}) => {
 
   return (
     <>
-    <div className="flex justify-center gap-x-6 gap-y-4 px-2 flex-wrap max-w-8xl mx-auto">
+    <div className="flex justify-center gap-x-2 sm:gap-x-6 gap-y-4 px-4 flex-wrap sm:max-w-8xl mx-auto">
                 {
                   productStore ? (
                     productStore?.map((item) => {

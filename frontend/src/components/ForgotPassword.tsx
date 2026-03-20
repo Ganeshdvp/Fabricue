@@ -60,7 +60,7 @@ export const ForgotPassword = () => {
             }
             <button type="button" disabled={isPending} className="w-full my-6 bg-amber-500 active:scale-95 transition py-2.5 rounded text-white cursor-pointer hover:bg-amber-600" onClick={handleSendEmail}>
               {
-                isPending ? <Loading/> : "Send Email"
+                isPending ? <Loading color={'border-white'}/> : "Send Email"
               }
             </button>
             <p className="text-center">Don’t have an account? <span className="text-amber-500 underline cursor-pointer" onClick={()=> navigate('/login')}>Signup Now</span></p>

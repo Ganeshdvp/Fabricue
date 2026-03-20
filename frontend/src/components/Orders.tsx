@@ -69,7 +69,7 @@ export const Orders = () => {
       {/* Header */}
       <div className="mb-8 pb-6 border-b border-orange-100">
         <div className="flex items-center gap-3">
-          <div className="w-1 h-8 bg-orange-500 rounded-full" />
+          <div className="w-1 h-8 bg-amber-500 rounded-full" />
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
               My Orders

@@ -87,7 +87,7 @@ export const Card = ({ productData }) => {
   };
 
   return (
-    <div className="group relative bg-white rounded-2xl pb-1 border border-gray-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 min-w-52 max-w-60 w-full overflow-hidden flex flex-col">
+    <div className="group relative rounded-2xl pb-1 border border-gray-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 w-full min-w-30 max-w-48 sm:min-w-52 sm:max-w-60 overflow-hidden flex flex-col">
       {/* Favorite button */}
       <button
         onClick={() => handleFavorite(favorite ? "remove" : "add")}

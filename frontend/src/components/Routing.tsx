@@ -15,8 +15,9 @@ import { Orders } from "./Orders.js";
 import { OrderSuccess } from "./OrderSuccess.js";
 import { Profile } from "./Profile.js";
 import { OrderSummary } from "./OrderSummary.js";
-import { About } from "./About.js";
+import { HomeAbout } from "./HomeAbout.js";
 import { Contact } from "./Contact.js";
+import { HomeFaqs } from "./HomeFaqs.js"
 
 export const Routing = () => {
 
@@ -76,8 +77,9 @@ export const Routing = () => {
         {path: 'payment', element: <OrderSummary/>},
         { path: "orders", element: <Orders /> },
         { path: "profile", element: <Profile/>},
-        { path: "about", element: <About/>},
-        { path: "contact", element: <Contact/>}
+        { path: "about", element: <HomeAbout/>},
+        { path: "contact", element: <Contact/>},
+        { path: 'faqs', element: <HomeFaqs/>}
       ],
     },
     {

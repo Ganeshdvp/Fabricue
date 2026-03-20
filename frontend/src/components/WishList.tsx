@@ -48,39 +48,29 @@ export const WishList = () => {
   }
  
   return (
-    <div className="min-h-screen bg-gray-50 px-4 md:px-10 lg:px-16 py-10">
+    <div className="min-h-screen px-4 md:px-10 lg:px-16 py-2">
       <div className="max-w-7xl mx-auto">
  
         {data?.length > 0 ? (
           <>
             {/* Hero header */}
-            <div className="bg-white rounded-2xl border border-gray-100 px-8 py-7 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="px-4 py-7 mb-8">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center flex-shrink-0">
-                  <Heart size={22} className="text-amber-500 fill-amber-100" />
+                <div className="border-2 h-8 rounded-2xl border-amber-500">
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-amber-500 mb-0.5">
-                    My Collection
-                  </p>
-                  <h1 className="text-2xl font-semibold text-gray-900 tracking-tight leading-none">
-                    Wishlist
+                  <h1 className="text-3xl font-semibold text-gray-900 tracking-tight leading-none">
+                    My Wishlist
                   </h1>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Items you've saved for later
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 rounded-xl">
-                <Sparkles size={14} className="text-amber-400" />
-                <span className="text-sm font-semibold text-amber-600">
+                <span className="text-sm text-gray-400">
                   {data?.length} {data?.length === 1 ? "item" : "items"} saved
                 </span>
+                </div>
               </div>
             </div>
  
             {/* Cards */}
-            <div className="flex gap-x-4 gap-y-5 flex-wrap justify-start">
+            <div className="flex gap-x-2 sm:gap-x-4 gap-y-5 flex-wrap justify-start">
               {data?.map((item, index) => (
                 <Card productData={item} key={index} />
               ))}

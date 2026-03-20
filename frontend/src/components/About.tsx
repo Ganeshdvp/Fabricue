@@ -1,4 +1,3 @@
-
 export const About = () => {
   return (
     <>
@@ -14,7 +13,7 @@ export const About = () => {
             <p className="text-sm text-slate-500 text-center mt-2 max-w-lg mx-auto">
                 Fabricue is a modern fashion brand delivering trend-forward styles with premium quality and everyday comfort.
             </p>
-            <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-8 md:px-0 pt-16">
+            <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-8 lg:px-12 md:px-10 pt-16">
                 <div className="size-[520px] -top-80 left-1/2 -translate-x-1/2 rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]"></div>
                 <div className="text-white bg-linear-to-r from-amber-600 via-amber-500 to-amber-400 w-fit p-4 rounded-2xl hover:scale-102">
                     <div className="size-10 p-2 bg-amber-50 border border-amber-200 rounded">

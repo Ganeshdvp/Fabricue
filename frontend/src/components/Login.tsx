@@ -118,7 +118,7 @@ export const Login = () => {
   return (
     <>
       <div className="min-h-screen bg-[url(https://img.freepik.com/premium-photo/background-with-grip_1286621-341.jpg?semt=ais_rp_progressive&w=740&q=80)] bg-no-repeat bg-cover bg-center">
-        <div className="flex justify-center pt-15">
+        <div className="flex justify-center translate-y-[50%] sm:translate-y-[0%] sm:pt-15">
           <Formik
             key={toggle ? "Login" : "Sign up"}
             enableReinitialize
