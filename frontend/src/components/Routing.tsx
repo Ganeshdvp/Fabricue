@@ -1,23 +1,32 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Body } from "./Body";
-import { Login } from "./Login";
-import { Home } from "./Home";
-import { Cart } from "./Cart";
-import { WishList } from "./WishList";
-import { ViewProduct } from "./ViewProduct";
-import { ForgotPassword } from "./ForgotPassword";
-import { EnterOtp } from "./EnterOtp";
-import { EnterPassword } from "./EnterPassword";
 import { PrivateRoutes } from "./protectedRoutes/PrivateRoutes";
 import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
-import { Tabs } from "./Tabs.js";
-import { Orders } from "./Orders.js";
-import { OrderSuccess } from "./OrderSuccess.js";
-import { Profile } from "./Profile.js";
-import { OrderSummary } from "./OrderSummary.js";
-import { HomeAbout } from "./HomeAbout.js";
-import { Contact } from "./Contact.js";
-import { HomeFaqs } from "./HomeFaqs.js"
+import { lazy, Suspense } from "react";
+import { HeroPageShimmer } from "./errorAndLoading/HeroPageShimmer";
+import { TabsShimmer } from "./errorAndLoading/TabsShimmer";
+
+
+
+// lazy loading route level
+const Body = lazy(() => import("./Body").then(m => ({ default: m.Body })));
+const Login = lazy(() => import("./Login").then(m => ({ default: m.Login })));
+const Home = lazy(() => import("./Home").then(m => ({ default: m.Home })));
+const Cart = lazy(() => import("./Cart").then(m => ({ default: m.Cart })));
+const WishList = lazy(() => import("./WishList").then(m => ({ default: m.WishList })));
+const ViewProduct = lazy(() => import("./ViewProduct").then(m => ({ default: m.ViewProduct })));
+const ForgotPassword = lazy(() => import("./ForgotPassword").then(m => ({ default: m.ForgotPassword })));
+const EnterOtp = lazy(() => import("./EnterOtp").then(m => ({ default: m.EnterOtp })));
+const EnterPassword = lazy(() => import("./EnterPassword").then(m => ({ default: m.EnterPassword })));
+const Tabs = lazy(() => import("./Tabs").then(m => ({ default: m.Tabs })));
+const Orders = lazy(() => import("./Orders").then(m => ({ default: m.Orders })));
+const OrderSuccess = lazy(() => import("./OrderSuccess").then(m => ({ default: m.OrderSuccess })));
+const Profile = lazy(() => import("./Profile").then(m => ({ default: m.Profile })));
+const OrderSummary = lazy(() => import("./OrderSummary").then(m => ({ default: m.OrderSummary })));
+const HomeAbout = lazy(() => import("./HomeAbout").then(m => ({ default: m.HomeAbout })));
+const Contact = lazy(() => import("./Contact").then(m => ({ default: m.Contact })));
+const HomeFaqs = lazy(() => import("./HomeFaqs").then(m => ({ default: m.HomeFaqs })));
+
+
 
 export const Routing = () => {
 
@@ -26,7 +35,9 @@ export const Routing = () => {
       path: "/",
       element: (
         <PublicRoutes>
+          <Suspense fallback={<HeroPageShimmer/>}>
           <Body />
+          </Suspense>
         </PublicRoutes>
       ),
     },
@@ -34,7 +45,9 @@ export const Routing = () => {
       path: "/login",
       element: (
         <PublicRoutes>
+          <Suspense fallback={<p>Loading...</p>}>
           <Login />
+          </Suspense>
         </PublicRoutes>
       ),
     },
@@ -42,7 +55,9 @@ export const Routing = () => {
       path: "/forgot-password",
       element: (
         <PublicRoutes>
+           <Suspense fallback={<p>Loading...</p>}>
           <ForgotPassword />
+          </Suspense>
         </PublicRoutes>
       ),
     },
@@ -50,7 +65,9 @@ export const Routing = () => {
       path: "/enter-otp",
       element: (
         <PublicRoutes>
+          <Suspense fallback={<p>Loading...</p>}>
           <EnterOtp />
+          </Suspense>
         </PublicRoutes>
       ),
     },
@@ -58,7 +75,9 @@ export const Routing = () => {
       path: "/change-password",
       element: (
         <PublicRoutes>
+          <Suspense fallback={<p>Loading...</p>}>
           <EnterPassword />
+          </Suspense>
         </PublicRoutes>
       ),
     },
@@ -66,7 +85,9 @@ export const Routing = () => {
       path: "/home",
       element: (
         <PrivateRoutes>
+          <Suspense fallback={<TabsShimmer/>}>
           <Home />
+          </Suspense>
         </PrivateRoutes>
       ),
       children: [
@@ -74,7 +95,7 @@ export const Routing = () => {
         { path: "cart", element: <Cart /> },
         { path: "wishlist", element: <WishList /> },
         { path: "view/:id", element: <ViewProduct /> },
-        {path: 'payment', element: <OrderSummary/>},
+        { path: 'payment', element: <OrderSummary/>},
         { path: "orders", element: <Orders /> },
         { path: "profile", element: <Profile/>},
         { path: "about", element: <HomeAbout/>},
@@ -86,11 +107,15 @@ export const Routing = () => {
       path: "/success",
       element: (
         <PrivateRoutes>
+          <Suspense fallback={<p>Loading...</p>}>
           <OrderSuccess />
+          </Suspense>
         </PrivateRoutes>
       ),
     },
   ]);
 
-  return <RouterProvider router={routing} />;
+  return (
+    <RouterProvider router={routing} />
+  )
 };

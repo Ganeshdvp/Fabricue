@@ -23,7 +23,7 @@ export const Promotion = () => {
                 </div>
             </div>
         
-            <img className="max-w-[375px] pt-10 md:p-0" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/appDownload/excitedWomenImage.png" alt="excitedWomenImage" />
+            <img loading="lazy" decoding="async" className="max-w-[375px] pt-10 md:p-0" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/appDownload/excitedWomenImage.png" alt="excitedWomenImage" />
         </div>
 
     </>

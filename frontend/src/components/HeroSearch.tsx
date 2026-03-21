@@ -1,6 +1,5 @@
-// components/HeroSearch.jsx
 import { Search, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -12,7 +11,10 @@ export const HeroSearch = () => {
   const [searchInput, setSearchInput] = useState("");
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const [autoSuggestion, setAutoSuggestion] = useState(false);
+  const [autoSuggestionData, setAutoSuggestionData] = useState(null);
 
+  // search AI
   const {
     mutate,
     isPending: searchPending,
@@ -32,25 +34,56 @@ export const HeroSearch = () => {
     },
   });
 
+  // debounce on search
+  const { mutate: searchingMutate } = useMutation({
+    mutationFn: async (data) => {
+      const res = await axios.post(BASE_URL + "/product/searching", data, {
+        withCredentials: true,
+      });
+      return res?.data?.data;
+    },
+    onSuccess: (data) => {
+      setAutoSuggestion(true);
+      setAutoSuggestionData(data);
+    },
+    onError: () => {
+      setAutoSuggestion(false);
+    },
+  });
+  useEffect(() => {
+     // 👇 skip API call if input is empty
+  if (!searchInput.trim()) {
+    return setAutoSuggestion(false)
+  }
+    const timer = setTimeout(() => {
+      searchingMutate({query : searchInput});
+    }, 200);
+    // unmount
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
   const handleSearchClick = () => {
     if (!searchInput || !searchInput.trim()) return;
     mutate({ search: searchInput });
   };
+
 
   return (
     <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 px-4 py-12 text-center">
       <p className="text-[11px] font-semibold text-amber-500 tracking-widest uppercase mb-2">
         Fabricue Store
       </p>
-      <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
         Find Your Perfect Style
-      </h1>
+      </h2>
       <p className="text-sm text-gray-400 mb-8">
         Search from thousands of curated clothing items
       </p>
 
-      <div className="flex items-stretch gap-2 max-w-xl mx-auto">
-        <div className="flex flex-col flex-1">
+      <div className="flex flex-col sm:flex-row items-stretch gap-2 max-w-xl mx-auto">
+        <div className="flex flex-col flex-1 relative">
+          {" "}
+          {/* 👈 add relative here */}
           <div className="flex items-center gap-2 bg-white border-2 border-amber-200 rounded-2xl px-4 focus-within:border-amber-400 transition-colors">
             <Search size={16} className="text-amber-400 flex-shrink-0" />
             <input
@@ -61,23 +94,55 @@ export const HeroSearch = () => {
               className="w-full py-3.5 text-sm outline-none text-gray-700 placeholder:text-gray-400 bg-transparent"
             />
           </div>
+          {autoSuggestion && autoSuggestionData?.length > 0 && (
+            <div className="absolute top-[110%] left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl max-h-100 overflow-y-auto [&::-webkit-scrollbar]:w-1.5
+  [&::-webkit-scrollbar-track]:bg-transparent
+  [&::-webkit-scrollbar-thumb]:bg-amber-400
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  [&::-webkit-scrollbar-thumb:hover]:bg-amber-500">
+              {/* 👆 absolute + top-[110%] + left-0 right-0 matches input width */}
+              {autoSuggestionData?.map((item) => (
+                <div
+                  key={item?._id}
+                  className="flex items-center gap-x-3 px-4 py-3 hover:bg-gray-50 active:bg-gray-100 cursor-pointer transition-all duration-150 border-b border-gray-100 last:border-none"
+                >
+                  <img
+                    src={item?.image[0]}
+                    alt={item?.name}
+                    className="w-15 h-15 rounded-2xl object-cover flex-shrink-0"
+                  />
+                  <div className="flex flex-col items-start gap-y-1 min-w-0">
+                    <h2 className="text-[13px] font-semibold text-gray-800 truncate">
+                      {item?.name}
+                    </h2>
+                    <p className="text-[11px] text-gray-400 truncate">
+                      {item?.category}
+                    </p>
+                    <span className="text-[12px] font-medium text-amber-500">
+                      ₹{item?.price}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           {searchError && (
             <p className="text-red-500 text-[11px] ml-2 mt-1 text-left">
               {searchErrorData?.response?.data?.message}
             </p>
           )}
         </div>
+
         <button
           onClick={handleSearchClick}
-          className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-5 rounded-2xl text-sm font-medium transition-all cursor-pointer whitespace-nowrap"
+          className="flex items-center justify-center gap-2 h-fit w-fit mx-auto py-4 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white px-5 rounded-2xl text-sm font-medium transition-all cursor-pointer whitespace-nowrap"
         >
           {searchPending ? (
-            <Loading color={'border-white'}/>
+            <Loading color={"border-white"} />
           ) : (
             <>
               <Sparkles size={15} />
-              <span className="hidden sm:inline">AI Search</span>
-              <span className="sm:hidden">Search</span>
+              <span>AI Search</span>
             </>
           )}
         </button>

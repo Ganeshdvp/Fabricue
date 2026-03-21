@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
-export const HomeFaqs = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const faqsData = [
+ const faqsData = [
     {
       question: "How long does delivery take?",
       answer:
@@ -37,6 +34,9 @@ export const HomeFaqs = () => {
     },
   ];
 
+export const HomeFaqs = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   return (
     <section id="faqs" className="relative bg-white overflow-hidden px-5 py-20 sm:py-12">
 
@@ -68,7 +68,7 @@ export const HomeFaqs = () => {
         </div>
 
         {/* Two column layout on large screens */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
           {faqsData.map((faq, index) => {
             const isOpen = openIndex === index;
             return (

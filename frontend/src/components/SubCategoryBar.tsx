@@ -64,7 +64,7 @@ export const SubCategoryBar = memo(({ activeCategory, activeSubCategory, setActi
               : "bg-gray-50 text-gray-500 border border-gray-100 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-100"
             }`}
         >
-          <img src={sub.image} alt={sub.name} className="w-5 h-5 object-contain" />
+          <img src={sub.image} loading="lazy" decoding="async" alt={sub.name} className="w-5 h-5 object-contain" />
           {sub.name}
         </button>
       ))}

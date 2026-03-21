@@ -32,4 +32,4 @@
 
 # Performance
 - used Image compression and browser-image-compression
-- Lazy Loading (pending)
+- Lazy Loading with route based and images.

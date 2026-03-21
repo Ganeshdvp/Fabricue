@@ -3,6 +3,8 @@ import getAllProducts from '../controllers/allProducts.js';
 import getProductById from '../controllers/productById.js';
 import sortByPrice from '../controllers/sortByPrice.js';
 import searchProduct from '../controllers/searchProduct.js';
+import searchingProduct from '../controllers/searchingProduct.js';
+
 
 export const productRoute = express.Router();
 
@@ -17,3 +19,6 @@ productRoute.post('/sort', sortByPrice);
 
 // search product
 productRoute.post('/search', searchProduct);
+
+// searching product (search bar debounce)
+productRoute.post('/searching', searchingProduct);

@@ -1,4 +1,3 @@
-// components/CategoryTabs.jsx
 import { memo } from "react";
 import { useDispatch } from "react-redux";
 import { removeProduct } from "../utils/productSlice.js";
@@ -37,7 +36,7 @@ export const CategoryTabs = memo(({ activeCategory, setActiveCategory, setActive
                   : "ring-1 ring-gray-200"
                 }`}
             >
-              <img src={img} alt={label} className="w-full h-full object-cover" />
+              <img src={img} alt={label} loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <span className="text-xs font-medium">{label}</span>
           </button>

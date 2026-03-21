@@ -135,6 +135,8 @@ export const ViewProduct = () => {
           <img
             src={data?.image[imageIndex]}
             alt={data?.name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain scale-90 hover:scale-95 transition-transform duration-300"
           />
         </div>

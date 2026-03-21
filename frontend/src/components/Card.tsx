@@ -109,6 +109,8 @@ export const Card = ({ productData }) => {
           className="h-32 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
           src={image[0]}
           alt={name}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 

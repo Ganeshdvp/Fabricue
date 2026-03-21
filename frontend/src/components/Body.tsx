@@ -2,8 +2,8 @@ import { Banner } from "./Banner"
 import { Faqs } from "./Faqs"
 import { HeroPage } from "./HeroPage"
 import { NavBar } from "./NavBar"
-import { AutoScrolling } from './autoScrolling';
-import { Feature } from "./feature";
+import { AutoScrolling } from './AutoScrolling';
+import { Feature } from "./Feature";
 import { Footer } from './Footer';
 import { Promotion } from './Promotion';
 import { LatestCollections } from './LatestCollections';
