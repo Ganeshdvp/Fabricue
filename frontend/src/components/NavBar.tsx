@@ -1,59 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { Heart, ShoppingCart, User2Icon } from "lucide-react";
 import { Link } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ProfileDropDown } from "./ProfileDropDown";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants.js";
-import { addFavorite } from "../utils/wishListSlice.js";
-import { addCart } from "../utils/cartItemsSlice.js";
 import { Loading } from "./Loading.js";
+import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems.js";
+import useFetchCartItems from "../hooks/useFetchCartItems"
 
 export const NavBar = () => {
   const [toggle, setToggle] = useState(false);
   const store = useSelector((store) => store?.user);
   const wishList = useSelector((store) => store.wishList);
   const cartItems = useSelector((store) => store.cartItems);
-  const dispatch = useDispatch();
   const [dropDown, setDropDown] = useState(false);
   const dropDownRef = useRef(null);
 
   // fetch favorite items
-  useQuery({
-    queryKey: ["favorite", store?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/favorite", {
-        withCredentials: true,
-      });
-      dispatch(addFavorite(res?.data?.data));
-      return res?.data?.data;
-    },
-    enabled: !!store,
-    retryOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  useFetchFavoriteItems();
 
   // fetch cart Items
-  useQuery({
-    queryKey: ["cart", store?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/cart", {
-        withCredentials: true,
-      });
-      dispatch(addCart(res?.data?.data));
-      return res?.data?.data;
-    },
-    enabled: !!store,
-    retryOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  useFetchCartItems();
 
   const handleProfileClick = () => {
     setDropDown(!dropDown);
@@ -155,19 +121,6 @@ export const NavBar = () => {
             </Link>
           )}
         </div>
-
-        {/* Mobile hamburger */}
-        {/* <button
-          onClick={() => setToggle(!toggle)}
-          aria-label="Menu"
-          className={`${store ? 'hidden' : 'lg:hidden'} p-2 rounded-lg hover:bg-gray-100 transition-colors`}
-        >
-          <svg width="20" height="14" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="21" height="1.5" rx=".75" fill="#426287" />
-            <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
-            <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
-          </svg>
-        </button> */}
 
         {/* Mobile Menu */}
         <div

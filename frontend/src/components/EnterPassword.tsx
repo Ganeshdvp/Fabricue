@@ -1,9 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router";
-import {BASE_URL, passwordRegex} from '../utils/constants.js';
+import {passwordRegex} from '../utils/constants';
 import { useState } from "react";
-import { Loading } from "./Loading.js";
+import { Loading } from "./Loading";
+import useEnterPassword from "../hooks/useEnterPassword";
 
 export const EnterPassword = () => {
 
@@ -14,18 +13,8 @@ export const EnterPassword = () => {
     const email = location.state?.email;
 
 
-  const {mutate, isPending, isError, error} = useMutation({
-  mutationFn: async(data)=>{
-    const res = await axios.post(BASE_URL + '/user/change-password', data, {
-      withCredentials: true
-    });
-    return res?.data;
-  },
-  onSuccess: ()=>{
-    navigate('/login');
-    setPassword(null);
-  },
-});
+    // enter password api
+  const {mutate, isPending, isError, error} = useEnterPassword();
 
 const handleClick = ()=>{
 
@@ -43,7 +32,12 @@ const handleClick = ()=>{
     password : password.trim()
   }
 
-  mutate(data);
+  mutate(data, {
+    onSuccess: ()=>{
+    navigate('/login');
+    setPassword(null);
+  },
+  });
 }
       
   return (
@@ -61,7 +55,7 @@ const handleClick = ()=>{
             }
             <button type="button" className="w-full my-3 bg-amber-500 active:scale-95 transition py-2.5 rounded text-white cursor-pointer hover:bg-amber-600" onClick={handleClick}>
               {
-                isPending ? <Loading/> : "Save"
+                isPending ? <Loading color={'border-white'}/> : "Save"
               }
             </button>
             <p className="text-[12px] translate-x-10 text-center mb-2 max-w-80">Note: Make sure your password is strong and keep it secure.</p>

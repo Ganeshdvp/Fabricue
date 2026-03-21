@@ -1,72 +1,57 @@
 import { Search, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants.js";
-import { addProduct } from "../utils/productSlice.js";
 import { Loading } from "./Loading.js";
+import useSearchAI from "../hooks/useSearchAI";
+import useSearching from "../hooks/useSearching";
 
 export const HeroSearch = () => {
   const [searchInput, setSearchInput] = useState("");
-  const dispatch = useDispatch();
-  const queryClient = useQueryClient();
   const [autoSuggestion, setAutoSuggestion] = useState(false);
   const [autoSuggestionData, setAutoSuggestionData] = useState(null);
 
   // search AI
   const {
-    mutate,
+    mutate: searchAI,
     isPending: searchPending,
     isError: searchError,
     error: searchErrorData,
-  } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + "/product/search", data, {
-        withCredentials: true,
-      });
-      dispatch(addProduct(res?.data?.data));
-      return res?.data?.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["product"] });
-      setSearchInput("");
-    },
-  });
+  } = useSearchAI();
 
   // debounce on search
-  const { mutate: searchingMutate } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + "/product/searching", data, {
-        withCredentials: true,
-      });
-      return res?.data?.data;
-    },
-    onSuccess: (data) => {
-      setAutoSuggestion(true);
-      setAutoSuggestionData(data);
-    },
-    onError: () => {
-      setAutoSuggestion(false);
-    },
-  });
+  const { mutate: searchingMutate } = useSearching();
   useEffect(() => {
-     // 👇 skip API call if input is empty
-  if (!searchInput.trim()) {
-    return setAutoSuggestion(false)
-  }
+    // 👇 skip API call if input is empty
+    if (!searchInput.trim()) {
+      return setAutoSuggestion(false);
+    }
     const timer = setTimeout(() => {
-      searchingMutate({query : searchInput});
+      searchingMutate(
+        { query: searchInput },
+        {
+          onSuccess: (data) => {
+            setAutoSuggestion(true);
+            setAutoSuggestionData(data);
+          },
+          onError: () => {
+            setAutoSuggestion(false);
+          },
+        },
+      );
     }, 200);
     // unmount
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  // search button
   const handleSearchClick = () => {
     if (!searchInput || !searchInput.trim()) return;
-    mutate({ search: searchInput });
+    searchAI(
+      { search: searchInput },
+      {
+        onSuccess: () => setSearchInput(""),
+      },
+    );
   };
-
 
   return (
     <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 px-4 py-12 text-center">
@@ -95,11 +80,13 @@ export const HeroSearch = () => {
             />
           </div>
           {autoSuggestion && autoSuggestionData?.length > 0 && (
-            <div className="absolute top-[110%] left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl max-h-100 overflow-y-auto [&::-webkit-scrollbar]:w-1.5
+            <div
+              className="absolute top-[110%] left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl max-h-100 overflow-y-auto [&::-webkit-scrollbar]:w-1.5
   [&::-webkit-scrollbar-track]:bg-transparent
   [&::-webkit-scrollbar-thumb]:bg-amber-400
   [&::-webkit-scrollbar-thumb]:rounded-full
-  [&::-webkit-scrollbar-thumb:hover]:bg-amber-500">
+  [&::-webkit-scrollbar-thumb:hover]:bg-amber-500"
+            >
               {/* 👆 absolute + top-[110%] + left-0 right-0 matches input width */}
               {autoSuggestionData?.map((item) => (
                 <div

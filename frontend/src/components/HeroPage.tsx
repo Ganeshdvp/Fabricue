@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { emailRegex } from '../utils/constants.js';
+import { emailRegex } from '../utils/constants';
 
 export const HeroPage = () => {
 
@@ -149,6 +149,8 @@ export const HeroPage = () => {
                 "https://png.pngtree.com/png-clipart/20240314/original/pngtree-clothes-with-clipping-path-isolated-png-image_14583646.png"
               }
               alt="Cloth Images"
+              fetchPriority="high"
+              loading="eager"
             />
           </div>
         </div>

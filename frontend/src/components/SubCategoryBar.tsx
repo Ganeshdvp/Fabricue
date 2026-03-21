@@ -1,4 +1,3 @@
-// components/SubCategoryBar.jsx
 import { memo } from "react";
 
 const CATEGORIES = {

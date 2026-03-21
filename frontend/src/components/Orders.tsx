@@ -1,9 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants.js";
-import { OrdersShimmer } from "./errorAndLoading/OrdersShimmer.js";
-import { PageNotFound } from "./errorAndLoading/PageNotFound.js";
-import { useSelector } from "react-redux";
+import { OrdersShimmer } from "./errorAndLoading/OrdersShimmer";
+import { PageNotFound } from "./errorAndLoading/PageNotFound";
+import useOrders from "../hooks/useOrders"
 
 
 const statusConfig = {
@@ -33,24 +30,9 @@ const statusConfig = {
 
 
 export const Orders = () => {
-
-  const store = useSelector(store=> store?.user);
   
   // fetch orders
-  const { data, isPending } = useQuery({
-    queryKey: ["order", store?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/orders", {
-        withCredentials: true,
-      });
-      return res?.data?.data;
-    },
-    retryOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { data, isPending } = useOrders();
 
   if(isPending){
     return (

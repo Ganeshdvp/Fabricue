@@ -1,12 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { BASE_URL } from "../utils/constants.js";
-import axios from "axios";
-import { Loading } from "./Loading.js";
+import { Loading } from "./Loading";
 import { Info } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { addAddress } from "../utils/addressSlice.js";
+import { addAddress } from "../utils/addressSlice";
+import usePayment from "../hooks/usePayment";
+import useProfile from "../hooks/useProfile";
+
 
 export const OrderSummary = ({ totalPrice, store }) => {
   const queryClient = useQueryClient();
@@ -27,21 +28,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
   const totalAmount = price + (price * 2) / 100;
 
   // fetch profile of addresses
-  const { data } = useQuery({
-    queryKey: ["profile", userStore?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/profile", {
-        withCredentials: true,
-      });
-      dispatch(addAddress(res?.data?.data[0]?.address[0]));
-      return res?.data?.data[0];
-    },
-    retryOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { data } = useProfile();
 
   // payment
   const {
@@ -49,25 +36,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
     isPending: orderPending,
     isError,
     error,
-  } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + `/payment`, data, {
-        withCredentials: true,
-      });
-      return res?.data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["order", userStore?._id] });
-      if (data?.url) {
-        window.location.href = data?.url;
-      } else {
-        navigate("/success");
-      }
-    },
-    onError: (error) => {
-      console.error("Payment error:", error.message);
-    },
-  });
+  } = usePayment();
 
   // place order button
   const handlePlaceOrder = () => {
@@ -79,13 +48,25 @@ export const OrderSummary = ({ totalPrice, store }) => {
         color: item.color,
         quantity: item.quantity,
       }));
-    const data = {
+
+    orderMutate({
       items: itemsModify,
       cancelUrl: window.location.href,
       paymentMethod: paymentMethod,
       deliveryAddress: addressStore,
-    };
-    orderMutate(data);
+    }, {
+       onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["order", userStore?._id] });
+      if (data?.url) {
+        window.location.href = data?.url;
+      } else {
+        navigate("/success");
+      }
+    },
+    onError: (error) => {
+      console.error("Payment error:", error.message);
+    },
+    });
   };
 
   return (

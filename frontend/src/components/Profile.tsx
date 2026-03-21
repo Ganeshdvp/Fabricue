@@ -16,18 +16,19 @@ import {
 } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants.js";
+import { BASE_URL } from "../utils/constants";
 import { Loading } from "./Loading.js";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUser } from "../utils/userSlice.js";
-import { removeFavorite } from "../utils/wishListSlice.js";
-import { removeCart } from "../utils/cartItemsSlice.js";
-import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer.js";
+import { removeUser } from "../utils/userSlice";
+import { removeFavorite } from "../utils/wishListSlice";
+import { removeCart } from "../utils/cartItemsSlice";
+import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer";
 import imageCompression from "browser-image-compression";
 import { toast } from "sonner";
-import {removeProduct} from '../utils/productSlice.js';
-import {removeAddress, addAddress} from '../utils/addressSlice.js';
+import {removeProduct} from '../utils/productSlice';
+import {removeAddress, addAddress} from '../utils/addressSlice';
+import useProfile from "../hooks/useProfile";
 
 
 export const Profile = () => {
@@ -65,21 +66,7 @@ export const Profile = () => {
   const userStore = useSelector(store=> store?.user);
 
   // profile fetch
-  const { data, isPending } = useQuery({
-    queryKey: ["profile", userStore?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/profile", {
-        withCredentials: true,
-      });
-      dispatch(addAddress(res?.data?.data[0]?.address[0]))
-      return res?.data?.data[0];
-    },
-    retryOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { data, isPending } = useProfile();
 
   // edit profile
   const { mutate: editProfileMutate, isPending: editProfilePending } =

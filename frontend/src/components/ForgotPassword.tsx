@@ -1,9 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { BASE_URL, emailRegex } from '../utils/constants.js';
-import { Loading } from "./Loading.js";
+import { emailRegex } from '../utils/constants';
+import { Loading } from "./Loading";
+import useForgotPassword from "../hooks/useForgotPassword";
 
 
 export const ForgotPassword = () => {
@@ -14,33 +13,24 @@ export const ForgotPassword = () => {
 
 
     // send otp to server
-    const {mutate, isPending, isError, error} = useMutation({
-      mutationFn: async(data)=>{
-        const res = await axios.post(BASE_URL + '/user/send-otp', data, {
-          withCredentials: true
-        });
-        return res?.data;
-      },
-      onSuccess: (data)=>{
-        sessionStorage.setItem('token',data?.data);
-        navigate('/enter-otp', {state: {email}});
-        setEmail(null);
-      }
-    });
+    const {mutate, isPending, isError, error} = useForgotPassword();
 
     // send otp
     const handleSendEmail = ()=>{
       if(!email) return;
-
       setErrorSend(null);
 
       if(!emailRegex.test(email)){
         return setErrorSend('Invalid email format!');
       }
-      const data = {
-        email : email,
+
+      mutate({email: email}, {
+         onSuccess: (data)=>{
+        sessionStorage.setItem('token',data?.data);
+        navigate('/enter-otp', {state: {email}});
+        setEmail(null);
       }
-      mutate(data);
+      });
     }
 
   return (

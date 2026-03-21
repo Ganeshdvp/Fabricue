@@ -1,5 +1,3 @@
-
-
 export const Pagination = ({page, setPage, totalPages}) => {
     
     let start = Math.max(1, page-1);

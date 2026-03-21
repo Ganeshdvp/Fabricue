@@ -4,8 +4,7 @@ import axios from "axios";
 import { addUser } from './utils/userSlice.js';
 import { useDispatch } from "react-redux";
 import { BASE_URL } from './utils/constants.js';
-import { HeroPageShimmer } from "./components/errorAndLoading/HeroPageShimmer.js";
-import { TabsShimmer } from "./components/errorAndLoading/TabsShimmer.js";
+
 
 function App() {
 

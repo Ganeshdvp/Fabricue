@@ -1,32 +1,14 @@
-// components/ProductSection.jsx
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants.js";
-import { HomeCardsContainer } from "./HomeCardsContainer.js";
+import { HomeCardsContainer } from "./HomeCardsContainer";
 import { Pagination } from "./Pagination";
-import { PageNotFound } from "./errorAndLoading/PageNotFound.js";
-import { TabsShimmer } from "./errorAndLoading/TabsShimmer.js";
-import { CardShimmer } from "./errorAndLoading/cardShimmer.js";
+import { PageNotFound } from "./errorAndLoading/PageNotFound";
+import useProductSection from "../hooks/useProductSection";
+
 
 export const ProductSection = ({ activeCategory, activeSubCategory }) => {
   const [page, setPage] = useState(1);
 
-  const { data, isPending } = useQuery({
-    queryKey: ["product", activeCategory, activeSubCategory, page],
-    queryFn: async () => {
-      const res = await axios(
-        `${BASE_URL}/product?page=${page}&category=${activeCategory}&subCategory=${activeSubCategory}`,
-        { withCredentials: true }
-      );
-      return res?.data;
-    },
-    refetchOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  const { data, isPending } = useProductSection({activeCategory, activeSubCategory, page});
 
   if (isPending) return Array.from({ length: 5 }).map((_, i) => (
   <div className="max-w-7xl mx-auto px-4 py-10">

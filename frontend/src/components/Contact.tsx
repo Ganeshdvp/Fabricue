@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useRef, useState } from "react";
 import { Loading } from "./Loading";
-import { BASE_URL, emailRegex } from "../utils/constants.js";
+import useContact from "../hooks/useContact";
+import { emailRegex } from "../utils/constants";
+import { toast } from "sonner";
+import { ArrowBigRight, ArrowRight, Mail, MessageCircleCheck, User } from "lucide-react";
 
 export const Contact = () => {
   const name = useRef(null);
@@ -10,21 +11,7 @@ export const Contact = () => {
   const message = useRef(null);
   const [emailError, setEmailError] = useState(null);
 
-  const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + "/user/contact", data, {
-        withCredentials: true,
-      });
-      return res?.data;
-    },
-    onSuccess: () => {
-      if (name.current) name.current.value = "";
-      if (email.current) email.current.value = "";
-      if (message.current) message.current.value = "";
-
-      alert("Message sent successfully!");
-    },
-  });
+  const { mutate, isPending, isError, error } = useContact();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +30,24 @@ export const Contact = () => {
         email: email?.current?.value,
         message: message?.current?.value,
       };
-      mutate(data);
+      mutate(data, {
+        onSuccess: () => {
+      if (name.current) name.current.value = "";
+      if (email.current) email.current.value = "";
+      if (message.current) message.current.value = "";
+      toast.success("Message sent successfully!", {
+        style: {
+          background: "#fb923c",
+          color: "#ffffff",
+          border: "1px solid #fb923c",
+          borderRadius: "10px",
+          fontSize: "12px",
+          width: "250px",
+          height: "40px",
+        },
+      });
+    },
+      });
       setEmailError(null);
     } else {
       setEmailError("Invalid email format!");
@@ -75,18 +79,7 @@ export const Contact = () => {
             Full Name
           </label>
           <div className="flex items-center mt-2 mb-4 h-10 pl-3 border border-slate-300 rounded-full focus-within:ring-2 focus-within:ring-amber-400 transition-all overflow-hidden">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M18.311 16.406a9.64 9.64 0 0 0-4.748-4.158 5.938 5.938 0 1 0-7.125 0 9.64 9.64 0 0 0-4.749 4.158.937.937 0 1 0 1.623.938c1.416-2.447 3.916-3.906 6.688-3.906 2.773 0 5.273 1.46 6.689 3.906a.938.938 0 0 0 1.622-.938M5.938 7.5a4.063 4.063 0 1 1 8.125 0 4.063 4.063 0 0 1-8.125 0"
-                fill="#475569"
-              />
-            </svg>
+            <User size={16}/>
             <input
               type="text"
               ref={name}
@@ -100,18 +93,7 @@ export const Contact = () => {
             Email Address
           </label>
           <div className="flex items-center mt-2 mb-4 h-10 pl-3 border border-slate-300 rounded-full focus-within:ring-2 focus-within:ring-amber-400 transition-all overflow-hidden">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.5 3.438h-15a.937.937 0 0 0-.937.937V15a1.563 1.563 0 0 0 1.562 1.563h13.75A1.563 1.563 0 0 0 18.438 15V4.375a.94.94 0 0 0-.938-.937m-2.41 1.874L10 9.979 4.91 5.313zM3.438 14.688v-8.18l5.928 5.434a.937.937 0 0 0 1.268 0l5.929-5.435v8.182z"
-                fill="#475569"
-              />
-            </svg>
+            <Mail size={16}/>
             <input
               type="email"
               ref={email}
@@ -148,25 +130,11 @@ export const Contact = () => {
             className="flex items-center justify-center gap-1 mt-5 bg-amber-500 hover:bg-amber-600 text-white py-2.5 w-full rounded-full transition"
           >
             {isPending ? (
-              <Loading ml={"30%"} />
+              <Loading color={'border-white'} />
             ) : (
               <>
                 Submit
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5"
-                >
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
+                <ArrowRight size={16}/>
               </>
             )}
           </button>

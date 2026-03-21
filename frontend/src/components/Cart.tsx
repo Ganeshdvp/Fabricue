@@ -1,57 +1,29 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants.js";
-import { useDispatch, useSelector } from "react-redux";
-import { addCart } from "../utils/cartItemsSlice.js";
-import { PageNotFound } from "./errorAndLoading/PageNotFound.js";
+import { BASE_URL } from "../utils/constants";
+import { useSelector } from "react-redux";
+import { PageNotFound } from "./errorAndLoading/PageNotFound";
 import { Link, useNavigate } from "react-router";
-import { OrderSummary } from "./OrderSummary.js";
-import { CartShimmer } from "./errorAndLoading/CartShimmer.js";
+import { OrderSummary } from "./OrderSummary";
+import { CartShimmer } from "./errorAndLoading/CartShimmer";
+import useFetchCart from "../hooks/useFetchCartItems";
+import useIncreaseQuantity from "../hooks/useIncreaseQuantity";
+import useDeleteCart from "../hooks/useDeleteCart";
 
 export const Cart = () => {
   const queryClient = useQueryClient();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const store = useSelector((store) => store?.cartItems);
   const userStore = useSelector(store=> store?.user);
 
   // fetching all cart items
-  const { data, isPending } = useQuery({
-    queryKey: ["cart", userStore?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/cart", {
-        withCredentials: true,
-      });
-      dispatch(addCart(res?.data?.data));
-      return res?.data?.data;
-    },
-  });
+  const { data, isPending } = useFetchCart();
 
   // increase quantity
-  const { mutate: quantityMutate } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + `/cart/quantity`, data, {
-        withCredentials: true,
-      });
-      return res?.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
-    },
-  });
+  const { mutate: quantityMutate } = useIncreaseQuantity();
 
   // delete cart item
-  const { mutate } = useMutation({
-    mutationFn: async (id) => {
-      const res = await axios.delete(BASE_URL + `/cart/remove/${id}`, {
-        withCredentials: true,
-      });
-      return res?.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
-    },
-  });
+  const { mutate } = useDeleteCart();
 
   const totalPrice = data?.reduce((acc, item) => {
     return acc + item?.productId?.discountPrice * item?.quantity;
@@ -59,7 +31,11 @@ export const Cart = () => {
 
   // remove item
   const handleRemoveItem = (id) => {
-    mutate(id);
+    mutate(id, {
+       onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
+    },
+    });
   };
 
   const increase = (id) => {
@@ -67,7 +43,11 @@ export const Cart = () => {
       id: id,
       type: "inc",
     };
-    quantityMutate(data);
+    quantityMutate(data, {
+      onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
+        },
+    });
   };
 
   const decrease = (id, currentQty) => {
@@ -76,7 +56,11 @@ export const Cart = () => {
         id: id,
         type: "dec",
       };
-      quantityMutate(data);
+      quantityMutate(data, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
+        },
+      });
     }
   };
 
@@ -97,7 +81,7 @@ export const Cart = () => {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-6">
             Shopping Cart{" "}
             <span className="text-base text-orange-500 font-normal">
-              {store.length} item{store.length !== 1 ? "s" : ""}
+              {store?.length} item{store?.length !== 1 ? "s" : ""}
             </span>
           </h1>
  
@@ -178,8 +162,8 @@ export const Cart = () => {
                         </p>
                       </Link>
                       <p className="text-xs text-gray-400 mt-1">
-                        {product?.productId?.description.length > 40
-                          ? product?.productId?.description.slice(0, 40) + "..."
+                        {product?.productId?.description?.length > 40
+                          ? product?.productId?.description?.slice(0, 40) + "..."
                           : product?.productId?.description}
                       </p>
                       <div className="flex items-center gap-0 bg-orange-50 border border-orange-100 rounded-lg overflow-hidden h-7 w-fit mt-2">

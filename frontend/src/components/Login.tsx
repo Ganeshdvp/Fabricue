@@ -4,11 +4,11 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../utils/userSlice.js";
-import { BASE_URL } from "../utils/constants.js";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { Loading } from "./Loading.js";
+import { addUser } from "../utils/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
+import { Loading } from "./Loading";
+import useSignUp from "../hooks/useSignUp";
+import useLogin from "../hooks/useLogin"
 
 export const Login = () => {
 
@@ -69,34 +69,16 @@ export const Login = () => {
     isPending: signUpPending,
     isError: signUpErrorBoolean,
     error: signUpError,
-  } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + "/user/register", data);
-      return res.data;
-    },
-    onSuccess: () => {
-      setToggle(true);
-    },
-  });
+  } = useSignUp();
 
   const {
     mutate: loginMutate,
     isPending: loginPending,
     isError: loginErrorBoolean,
     error: loginError,
-  } = useMutation({
-    mutationFn: async (data) => {
-      const res = await axios.post(BASE_URL + "/user/login", data, {
-        withCredentials: true,
-      });
-      return res.data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ["user"]});
-      dispatch(addUser(data?.data));
-      navigate("/home");
-    },
-  });
+  } = useLogin();
+
+
   // Submittion
   const handleSignUpSubmit = (values) => {
     const data = {
@@ -106,12 +88,22 @@ export const Login = () => {
       role: role,
     };
     // register api
-    signUpMutate(data);
+    signUpMutate(data, {
+      onSuccess: () => {
+      setToggle(true);
+    },
+    });
   };
 
   const handleLoginSubmit = (values) => {
     // Login api
-    loginMutate(values);
+    loginMutate(values, {
+      onSuccess: (data) => {
+      queryClient.invalidateQueries({queryKey: ["user"]});
+      dispatch(addUser(data?.data));
+      navigate("/home");
+    },
+    });
   };
 
 

@@ -1,13 +1,12 @@
 // components/Tabs.jsx
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleCookie } from "../utils/cookieSlice.js";
-import { Cookie } from "./Cookie.js";
-import { TabsShimmer } from "./errorAndLoading/TabsShimmer.js";
-import { HeroSearch } from "./HeroSearch.jsx";
-import { CategoryTabs } from "./CategoryTabs.jsx";
-import { SubCategoryBar } from "./SubCategoryBar.jsx";
-import { ProductSection } from "./ProductSection.jsx";
+import { toggleCookie } from "../utils/cookieSlice";
+import { Cookie } from "./Cookie";
+import { HeroSearch } from "./HeroSearch";
+import { CategoryTabs } from "./CategoryTabs";
+import { SubCategoryBar } from "./SubCategoryBar";
+import { ProductSection } from "./ProductSection";
 
 export const Tabs = () => {
   const [activeCategory, setActiveCategory] = useState("all");

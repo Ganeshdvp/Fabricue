@@ -1,12 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router";
-import { BASE_URL } from "../utils/constants.js";
-import { Loading } from "./Loading.js";
+import { Loading } from "./Loading";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import useAddToCart from "../hooks/useAddToCart";
+import useAddOrRemoveFavorite from "../hooks/useAddOrRemoveFavorite";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 export const Card = ({ productData }) => {
   const {
@@ -30,18 +31,15 @@ export const Card = ({ productData }) => {
   const queryClient = useQueryClient();
 
   // add to cart
-  const { mutate: cartMutate, isPending: cartPending } = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post(
-        BASE_URL + `/cart/add/${_id}`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-      return res?.data;
-    },
-    onSuccess: () => {
+  const { mutate: cartMutate, isPending: cartPending } = useAddToCart();
+
+  // add or remove favorite items
+  const { mutate: favoriteMutate, isPending: favoritePending } = useAddOrRemoveFavorite();
+
+  // handle item to cart
+  const handleCart = () => {
+    cartMutate(_id, {
+      onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart", store?._id] });
       toast.success("Successfully added to cart", {
         style: {
@@ -55,35 +53,18 @@ export const Card = ({ productData }) => {
         },
       });
     },
-  });
-
-  // add or remove favorite items
-  const { mutate: favoriteMutate, isPending: favoritePending } = useMutation({
-    mutationFn: async (type) => {
-      const res = await axios.post(
-        BASE_URL + `/favorite/${type}/${_id}`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-      return res?.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorite", store?._id] });
-      queryClient.invalidateQueries({ queryKey: ["product"] });
-       setFavorite(prev => !prev);
-    },
-  });
-
-  // handle item to cart
-  const handleCart = () => {
-    cartMutate();
+    });
   };
 
   // handle favorite items
   const handleFavorite = (type) => {
-    favoriteMutate(type);
+    favoriteMutate({type, _id}, {
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ["favorite", store?._id] });
+      queryClient.invalidateQueries({ queryKey: ["product"] });
+       setFavorite(prev => !prev);
+    },
+    });
   };
 
   return (
