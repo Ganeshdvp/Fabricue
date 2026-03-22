@@ -1,15 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Edit2Icon, HeartIcon, LogOut, ShoppingBag, ShoppingCart } from "lucide-react";
-import { BASE_URL } from '../utils/constants.js';
 import { useDispatch } from "react-redux";
-import {removeUser} from '../utils/userSlice.js';
-import {removeFavorite} from '../utils/wishListSlice.js';
-import {removeCart} from '../utils/cartItemsSlice.js';
+import {removeUser} from '../utils/userSlice';
+import {removeFavorite} from '../utils/wishListSlice';
+import {removeCart} from '../utils/cartItemsSlice';
 import { Link, useNavigate } from "react-router";
-import { Loading } from "./Loading.js";
-import {removeProduct} from '../utils/productSlice.js';
-import {removeAddress} from '../utils/addressSlice.js';
+import { Loading } from "./Loading";
+import {removeProduct} from '../utils/productSlice';
+import {removeAddress} from '../utils/addressSlice';
+import useLogout from "../hooks/useLogout";
 
 
 
@@ -19,14 +17,11 @@ export const ProfileDropDown = () => {
     const navigate = useNavigate();
     
 
-    const {mutate, isPending, isError, error} = useMutation({
-        mutationFn: async ()=>{
-            const res = await axios.post(BASE_URL + '/user/logout', {}, {
-                withCredentials: true
-            });
-            return res?.data
-        },
-        onSuccess: ()=>{
+    const {mutate, isPending, isError, error} = useLogout();
+
+    const handleLogout = ()=>{
+        mutate(undefined, {
+            onSuccess: ()=>{
             dispatch(removeUser());
             dispatch(removeFavorite());
             dispatch(removeCart());
@@ -34,10 +29,7 @@ export const ProfileDropDown = () => {
             dispatch(removeAddress());
             navigate('/');
         }
-    })
-
-    const handleLogout = ()=>{
-        mutate();
+        });
     }
   return (
     <>

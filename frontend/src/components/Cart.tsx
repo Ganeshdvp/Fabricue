@@ -1,20 +1,66 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { PageNotFound } from "./errorAndLoading/PageNotFound";
 import { Link, useNavigate } from "react-router";
 import { OrderSummary } from "./OrderSummary";
 import { CartShimmer } from "./errorAndLoading/CartShimmer";
-import useFetchCart from "../hooks/useFetchCartItems";
+import useFetchCart from "../hooks/useFetchCart";
 import useIncreaseQuantity from "../hooks/useIncreaseQuantity";
 import useDeleteCart from "../hooks/useDeleteCart";
+import type { FC } from "react";
 
-export const Cart = () => {
+interface ProductId {
+  _id: string,
+  sellerId: string,
+  name: string,
+  brand: string,
+  category: string,
+  subCategory: string,
+  price: number,
+  discountPrice: number,
+  currency: string,
+  sizes: string[],
+  colors: string[],
+  stock: number,
+  rating: number,
+  numReviews: number,
+  description: string,
+  image: string[],
+  isNewArrival: boolean,
+  isFavorite: boolean,
+}
+
+interface CartItems {
+  _id: string,
+  userId: string,
+  productId: ProductId,
+  quantity: number,
+  size: string,
+  color: string,
+  createdAt: string,
+  updatedAt: string
+}
+
+interface CartState {
+  cartItems: CartItems
+}
+
+interface UserState {
+  user: {
+    _id: string
+  };
+}
+
+interface Data {
+  id: string,
+  type: "inc" | "dec"
+}
+
+export const Cart:FC = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const store = useSelector((store) => store?.cartItems);
-  const userStore = useSelector(store=> store?.user);
+  const store = useSelector((store: CartState) => store?.cartItems);
+  const userStore = useSelector((store: UserState)=> store?.user);
 
   // fetching all cart items
   const { data, isPending } = useFetchCart();
@@ -25,12 +71,12 @@ export const Cart = () => {
   // delete cart item
   const { mutate } = useDeleteCart();
 
-  const totalPrice = data?.reduce((acc, item) => {
+  const totalPrice: number = data?.reduce((acc: number, item: CartItems) => {
     return acc + item?.productId?.discountPrice * item?.quantity;
   }, 0);
 
   // remove item
-  const handleRemoveItem = (id) => {
+  const handleRemoveItem = (id: string): void => {
     mutate(id, {
        onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart", userStore?._id] });
@@ -38,8 +84,8 @@ export const Cart = () => {
     });
   };
 
-  const increase = (id) => {
-    const data = {
+  const increase = (id: string): void => {
+    const data: Data = {
       id: id,
       type: "inc",
     };
@@ -50,9 +96,9 @@ export const Cart = () => {
     });
   };
 
-  const decrease = (id, currentQty) => {
+  const decrease = (id: string, currentQty: number): void => {
     if (currentQty > 1) {
-      const data = {
+      const data: Data = {
         id: id,
         type: "dec",
       };
@@ -96,14 +142,14 @@ export const Cart = () => {
  
           {/* Cart Items */}
           <div className="space-y-3 mt-3">
-            {data?.map((product, index) => (
+            {data?.map((product: CartItems, index: number) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-sm hover:shadow-orange-50 transition-all duration-200 p-4"
               >
                 {/* Mobile layout */}
                 <div className="flex gap-4 md:hidden">
-                  <div className="w-20 h-20 rounded-xl border border-orange-100 overflow-hidden flex-shrink-0 bg-orange-50">
+                  <div className="w-20 h-20 rounded-xl border border-orange-100 overflow-hidden shrink-0 bg-orange-50">
                     <img
                       src={product?.productId?.image[0]}
                       alt={product?.productId?.name}
@@ -125,7 +171,7 @@ export const Cart = () => {
                           onClick={() => decrease(product?._id, product?.quantity)}
                           className="px-2.5 h-full text-amber-500 hover:bg-orange-100 transition-colors font-medium"
                         >−</button>
-                        <span className="text-xs font-medium text-gray-700 min-w-[20px] text-center">{product?.quantity}</span>
+                        <span className="text-xs font-medium text-gray-700 min-w-5 text-center">{product?.quantity}</span>
                         <button
                           onClick={() => increase(product?._id)}
                           className="px-2.5 h-full text-amber-500 hover:bg-orange-100 transition-colors font-medium"
@@ -133,7 +179,7 @@ export const Cart = () => {
                       </div>
                       <div className="flex items-center gap-3">
                         <p className="text-sm font-bold text-amber-500">
-                          ${product?.productId?.discountPrice * product?.quantity}
+                          &#8377;{product?.productId?.discountPrice * product?.quantity}
                         </p>
                         <button onClick={() => handleRemoveItem(product?._id)} className="cursor-pointer hover:scale-120">
                           <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -148,7 +194,7 @@ export const Cart = () => {
                 {/* Desktop layout */}
                 <div className="hidden md:grid grid-cols-[3fr_0.7fr_0.7fr_0.7fr_0.5fr] items-center gap-2">
                   <div className="flex items-center gap-4">
-                    <div className="w-20 h-20 rounded-xl border border-orange-100 overflow-hidden flex-shrink-0 bg-orange-50">
+                    <div className="w-20 h-20 rounded-xl border border-orange-100 overflow-hidden shrink-0 bg-orange-50">
                       <img
                         src={product?.productId?.image[0]}
                         alt={product?.productId?.name}
@@ -171,7 +217,7 @@ export const Cart = () => {
                           onClick={() => decrease(product?._id, product?.quantity)}
                           className="px-2.5 h-full text-amber-500 hover:bg-orange-100 transition-colors font-medium text-sm"
                         >−</button>
-                        <span className="text-xs font-medium text-gray-700 min-w-[20px] text-center">{product?.quantity}</span>
+                        <span className="text-xs font-medium text-gray-700 min-w-5 text-center">{product?.quantity}</span>
                         <button
                           onClick={() => increase(product?._id)}
                           className="px-2.5 h-full text-amber-500 hover:bg-orange-100 transition-colors font-medium text-sm"
@@ -191,7 +237,7 @@ export const Cart = () => {
                   </div>
  
                   <p className="text-center text-sm font-bold text-amber-500">
-                    ${product?.productId?.discountPrice * product?.quantity}
+                    &#8377;{product?.productId?.discountPrice * product?.quantity}
                   </p>
  
                   <div className="flex justify-center">
@@ -222,7 +268,7 @@ export const Cart = () => {
         </div>
  
         {/* Order Summary */}
-        <div className="lg:w-[360px] w-full">
+        <div className="lg:w-90 w-full">
           <OrderSummary totalPrice={totalPrice} store={store} />
         </div>
  

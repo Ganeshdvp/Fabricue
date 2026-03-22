@@ -2,13 +2,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PrivateRoutes } from "./protectedRoutes/PrivateRoutes";
 import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
 import { lazy, Suspense } from "react";
-import { HeroPageShimmer } from "./errorAndLoading/HeroPageShimmer";
 import { TabsShimmer } from "./errorAndLoading/TabsShimmer";
+import { Body } from "./Body";
 
 
 
 // lazy loading route level
-const Body = lazy(() => import("./Body").then(m => ({ default: m.Body })));
 const Login = lazy(() => import("./Login").then(m => ({ default: m.Login })));
 const Home = lazy(() => import("./Home").then(m => ({ default: m.Home })));
 const Cart = lazy(() => import("./Cart").then(m => ({ default: m.Cart })));
@@ -35,9 +34,7 @@ export const Routing = () => {
       path: "/",
       element: (
         <PublicRoutes>
-          <Suspense fallback={<HeroPageShimmer/>}>
           <Body />
-          </Suspense>
         </PublicRoutes>
       ),
     },

@@ -1,34 +1,12 @@
-import { useQuery } from "@tanstack/react-query"
-import { Card } from "./Card"
-import axios from "axios";
-import { BASE_URL } from '../utils/constants.js';
-import { useDispatch, useSelector } from "react-redux";
-import { addFavorite } from '../utils/wishListSlice.js';
-import { PageNotFound } from './errorAndLoading/PageNotFound.js';
-import { CardShimmer } from "./errorAndLoading/cardShimmer.js";
-import { Heart, Sparkles } from "lucide-react";
- 
+import { Card } from "./Card";
+import { PageNotFound } from './errorAndLoading/PageNotFound';
+import { CardShimmer } from "./errorAndLoading/cardShimmer";
+import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems";
  
 export const WishList = () => {
  
-  const dispatch = useDispatch();
-  const store = useSelector(store => store?.user);
- 
-  const { data, isPending } = useQuery({
-    queryKey: ['favorite', store?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + '/favorite', {
-        withCredentials: true
-      });
-      dispatch(addFavorite(res?.data?.data));
-      return res?.data?.data;
-    },
-    retryOnMount: true,
-    retry: 2,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 30,
-  });
+  // fetch favorite
+  const { data, isPending } = useFetchFavoriteItems();
  
   if (isPending) {
     return (

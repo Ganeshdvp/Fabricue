@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { Loading } from "./Loading.js";
 import useSearchAI from "../hooks/useSearchAI";
 import useSearching from "../hooks/useSearching";
+import { useNavigate } from "react-router";
 
 export const HeroSearch = () => {
   const [searchInput, setSearchInput] = useState("");
   const [autoSuggestion, setAutoSuggestion] = useState(false);
   const [autoSuggestionData, setAutoSuggestionData] = useState(null);
+  const navigate = useNavigate();
 
   // search AI
   const {
@@ -91,6 +93,7 @@ export const HeroSearch = () => {
               {autoSuggestionData?.map((item) => (
                 <div
                   key={item?._id}
+                  onClick={() => navigate(`/home/view/${item._id}`)}
                   className="flex items-center gap-x-3 px-4 py-3 hover:bg-gray-50 active:bg-gray-100 cursor-pointer transition-all duration-150 border-b border-gray-100 last:border-none"
                 >
                   <img
@@ -106,7 +109,7 @@ export const HeroSearch = () => {
                       {item?.category}
                     </p>
                     <span className="text-[12px] font-medium text-amber-500">
-                      ₹{item?.price}
+                      ₹{item?.discountPrice}
                     </span>
                   </div>
                 </div>

@@ -62,7 +62,7 @@ export const payment = async (req, res)=>{
       );
       return {
         price_data: {
-          currency: "usd",
+          currency: "inr",
           product_data: {
             name: product.name,
             images: product.image ? [product.image[0]] : [],
@@ -100,7 +100,6 @@ export const payment = async (req, res)=>{
 
   }
   catch(err){
-    console.error("Payment error:", err.message);
     return res.status(500).json({message: 'Payment Failed!'}) 
   }
 }

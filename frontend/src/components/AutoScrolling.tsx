@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 
-const cardData = [
+interface Card {
+  title: string,
+  image: string
+}
+
+const cardData: Card[] = [
   {
     title: "Mens Collections",
     image: "https://img.freepik.com/premium-photo/confident-businessman-blazer-with-sunglasses-studio-corporate-fashion-clothes-pride-employee-eyewear-work-with-pose-professional-style-classy-outfit-by-white-background_590464-487371.jpg?w=740&q=80",
@@ -19,8 +24,8 @@ const cardData = [
   },
 ];
 
-export const AutoScrolling = () => {
-  const [stopScroll, setStopScroll] = useState(false);
+export const AutoScrolling:FC = () => {
+  const [stopScroll, setStopScroll] = useState<boolean>(false);
 
   return (
     <section id="top-collections" className="overflow-hidden w-full max-w-6xl mx-auto mt-36">

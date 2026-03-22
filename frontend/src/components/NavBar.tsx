@@ -4,8 +4,8 @@ import { Link } from "react-router";
 import { useSelector } from "react-redux";
 import { ProfileDropDown } from "./ProfileDropDown";
 import { Loading } from "./Loading.js";
-import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems.js";
-import useFetchCartItems from "../hooks/useFetchCartItems"
+import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems";
+import useFetchCart from "../hooks/useFetchCart"
 
 export const NavBar = () => {
   const [toggle, setToggle] = useState(false);
@@ -19,7 +19,7 @@ export const NavBar = () => {
   useFetchFavoriteItems();
 
   // fetch cart Items
-  useFetchCartItems();
+  useFetchCart();
 
   const handleProfileClick = () => {
     setDropDown(!dropDown);

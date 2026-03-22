@@ -3,13 +3,52 @@ import { useNavigate } from "react-router";
 import { Loading } from "./Loading";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, type ComponentType, type FC } from "react";
 import useAddToCart from "../hooks/useAddToCart";
 import useAddOrRemoveFavorite from "../hooks/useAddOrRemoveFavorite";
 import { useQueryClient } from "@tanstack/react-query";
 
+interface ProductData {
+   _id: string;
+  name: string;
+  brand: string;
+  price: number;
+  discountPrice: number;
+  rating: number;
+  description: string;
+  image: string[];
+  isFavorite: boolean;
+  category: string,
+  colors: string[],
+  currency: string,
+  isNewArrival:boolean,
+  numReviews: number,
+  sellerId: string,
+  sizes: string[],
+  stock: number,
+  subCategory: string,
+  createdAt: string,
+  updatedAt: string,
+}
 
-export const Card = ({ productData }) => {
+interface CardProps {
+  productData: ProductData;
+}
+
+interface User {
+  user: {
+    _id: string
+  };
+}
+
+interface RootState {
+  wishList: {
+    _id: string
+  }[];
+}
+
+
+export const Card:FC<CardProps> = ({ productData }) => {
   const {
     _id,
     name,
@@ -21,11 +60,12 @@ export const Card = ({ productData }) => {
     image,
     isFavorite
   } = productData;
+
   const navigate = useNavigate();
-  const store = useSelector(store=> store?.user);
-  const wishList = useSelector(store => store?.wishList);
-  const [favorite, setFavorite] = useState(
-  wishList?.some(item => item._id === _id) ?? isFavorite
+  const store = useSelector((store: User)=> store?.user);
+  const wishList = useSelector((store: RootState) => store?.wishList);
+  const [favorite, setFavorite] = useState<boolean>(
+  wishList?.some(item => item?._id === _id) ?? isFavorite
 );
 
   const queryClient = useQueryClient();
@@ -37,7 +77,7 @@ export const Card = ({ productData }) => {
   const { mutate: favoriteMutate, isPending: favoritePending } = useAddOrRemoveFavorite();
 
   // handle item to cart
-  const handleCart = () => {
+  const handleCart = (): void => {
     cartMutate(_id, {
       onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart", store?._id] });
@@ -57,7 +97,7 @@ export const Card = ({ productData }) => {
   };
 
   // handle favorite items
-  const handleFavorite = (type) => {
+  const handleFavorite = (type: "add" | "remove"): void => {
     favoriteMutate({type, _id}, {
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: ["favorite", store?._id] });
@@ -75,7 +115,7 @@ export const Card = ({ productData }) => {
         className="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm border border-gray-100 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 cursor-pointer"
       >
         {favoritePending ? (
-          <Loading />
+          <Loading color={'border-amber-500'}/>
         ) : (
           <Heart
             size={13}
@@ -156,10 +196,10 @@ export const Card = ({ productData }) => {
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
           <div className="flex gap-x-1 items-center">
             <p className="text-base font-semibold text-amber-500 leading-none">
-              ${discountPrice}
+              &#8377;{discountPrice}
             </p>
             <p className="text-[11px] text-gray-400 line-through mt-0.5">
-              ${price}
+              &#8377;{price}
             </p>
           </div>
 
@@ -169,7 +209,7 @@ export const Card = ({ productData }) => {
             className="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-600 text-xs font-medium px-3 h-8 rounded-xl transition-colors cursor-pointer disabled:opacity-60"
           >
             {cartPending ? (
-              <Loading />
+              <Loading color={'border-amber-500'}/>
             ) : (
               <>
                 <ShoppingCart size={13} /> Add
@@ -182,9 +222,11 @@ export const Card = ({ productData }) => {
   );
 };
 
+
+
 // Higher-order Component with New-arrival label.
-export const NewArrivalCard = (Card) => {
-  return (props) => {
+export const NewArrivalCard = (Card: ComponentType<CardProps>): FC<CardProps> => {
+  return (props: CardProps) => {
     return (
       <>
         <div className="relative">

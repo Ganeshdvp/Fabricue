@@ -1,6 +1,7 @@
 import { BaggageClaim, Gift, ShieldCheck } from 'lucide-react';
+import type { FC } from 'react';
 
-export const Banner = () => {
+export const Banner:FC = () => {
   return (
     <>
        <div className="w-full py-2 font-medium text-sm text-white bg-linear-to-r from-amber-400 via-amber-500 to-amber-600">

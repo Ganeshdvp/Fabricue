@@ -175,7 +175,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
             <div className="space-y-2.5">
               <div className="flex justify-between text-sm text-gray-500">
                 <span>Price</span>
-                <span className="font-medium text-gray-700">${price}</span>
+                <span className="font-medium text-gray-700">&#8377;{price}</span>
               </div>
               <div className="flex justify-between text-sm text-gray-500">
                 <span>Shipping Fee</span>
@@ -184,7 +184,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
               <div className="flex justify-between text-sm text-gray-500">
                 <span>Tax (2%)</span>
                 <span className="font-medium text-gray-700">
-                  ${((price * 2) / 100).toFixed(2)}
+                  &#8377;{((price * 2) / 100).toFixed(2)}
                 </span>
               </div>
 
@@ -194,7 +194,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
                   Total Amount
                 </span>
                 <span className="text-lg font-bold text-amber-500">
-                  ${totalAmount.toFixed(2)}
+                  &#8377;{totalAmount.toFixed(2)}
                 </span>
               </div>
             </div>

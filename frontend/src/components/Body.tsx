@@ -11,11 +11,12 @@ import { NewArrivals } from './NewArrivals';
 import { About } from "./About";
 import { Contact } from "./Contact";
 import { AlertBanner } from './AlertBanner';
+import type { FC } from "react";
 
 
 
 
-export const Body = () => {
+export const Body:FC = () => {
   return (
     <>
     <Banner/>

@@ -14,10 +14,8 @@ import {
   LogOut,
   X,
 } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants";
-import { Loading } from "./Loading.js";
+import { useQueryClient } from "@tanstack/react-query";
+import { Loading } from "./Loading";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../utils/userSlice";
@@ -27,9 +25,13 @@ import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer";
 import imageCompression from "browser-image-compression";
 import { toast } from "sonner";
 import {removeProduct} from '../utils/productSlice';
-import {removeAddress, addAddress} from '../utils/addressSlice';
+import {removeAddress} from '../utils/addressSlice';
 import useProfile from "../hooks/useProfile";
-
+import useEditProfile from "../hooks/useEditProfile";
+import useEditAddress from "../hooks/useEditAddress";
+import useAddAddress from "../hooks/useAddAddress";
+import useDeleteAddress from "../hooks/useDeleteAddress";
+import useLogout from "../hooks/useLogout"
 
 export const Profile = () => {
   const queryClient = useQueryClient();
@@ -69,54 +71,10 @@ export const Profile = () => {
   const { data, isPending } = useProfile();
 
   // edit profile
-  const { mutate: editProfileMutate, isPending: editProfilePending } =
-    useMutation({
-      mutationFn: async (formData) => {
-        await axios.patch(BASE_URL + "/profile/edit", formData, {
-          withCredentials: true,
-        });
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
-        setEditProfile(false);
-        toast.success("updated profile successfully!", {
-          style: {
-            background: "#fb923c",
-            color: "#ffffff",
-            border: "1px solid #fb923c",
-            borderRadius: "10px",
-            fontSize: "12px",
-            width: "250px",
-            height: "40px",
-          },
-        });
-      },
-    });
+  const { mutate: editProfileMutate, isPending: editProfilePending } = useEditProfile();
 
   // edit address
-  const { mutate: editAddressMutate, isPending: editAddressPending } =
-    useMutation({
-      mutationFn: async (data) => {
-        await axios.patch(BASE_URL + "/profile/address-edit", data, {
-          withCredentials: true,
-        });
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
-        setEditAddress(false);
-        toast.success("updated address successfully!", {
-          style: {
-            background: "#fb923c",
-            color: "#ffffff",
-            border: "1px solid #fb923c",
-            borderRadius: "10px",
-            fontSize: "12px",
-            width: "250px",
-            height: "40px",
-          },
-        });
-      },
-    });
+  const { mutate: editAddressMutate, isPending: editAddressPending } = useEditAddress();
 
   // add address
   const {
@@ -125,81 +83,13 @@ export const Profile = () => {
     isError: addAddressIsError,
     error: addAddressError,
     reset: resetAddAddress,
-  } = useMutation({
-    mutationFn: async (data) => {
-      await axios.post(BASE_URL + "/profile/address-add", data, {
-        withCredentials: true,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
-      setAddAddress(false);
-      setAddAddressData({
-        addressType: "Home",
-        landMark: "",
-        city: "",
-        state: "",
-        pinCode: "",
-        country: "",
-      });
-      toast.success("successfully address added!", {
-        style: {
-          background: "#fb923c",
-          color: "#ffffff",
-          border: "1px solid #fb923c",
-          borderRadius: "10px",
-          fontSize: "12px",
-          width: "250px",
-          height: "40px",
-        },
-      });
-    },
-  });
+  } = useAddAddress();
 
   // delete address
-  const { mutate: deleteAddressMutate } = useMutation({
-    mutationFn: async (id) => {
-      await axios.delete(BASE_URL + `/profile/address-delete/${id}`, {
-        withCredentials: true,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
-      toast.success("deleted address successfully!", {
-        style: {
-          background: "#fb923c",
-          color: "#ffffff",
-          border: "1px solid #fb923c",
-          borderRadius: "10px",
-          fontSize: "12px",
-          width: "250px",
-          height: "40px",
-        },
-      });
-    },
-  });
+  const { mutate: deleteAddressMutate, isPending: deleteAddressPending } = useDeleteAddress();
 
   // logout
-  const { mutate: logoutMutate, isPending: logoutPending } = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post(
-        BASE_URL + "/user/logout",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      return res?.data;
-    },
-    onSuccess: ()=>{
-            dispatch(removeUser());
-            dispatch(removeFavorite());
-            dispatch(removeCart());
-            dispatch(removeProduct());
-            dispatch(removeAddress());
-            navigate('/');
-        }
-  });
+  const { mutate: logoutMutate, isPending: logoutPending } = useLogout();
 
   if (isPending) return <ProfileShimmer />;
 
@@ -223,29 +113,109 @@ export const Profile = () => {
       formData.append("image", compressedImage, editProfileData.image.name);
     }
 
-    editProfileMutate(formData);
+    editProfileMutate(formData, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
+        setEditProfile(false);
+        toast.success("updated profile successfully!", {
+          style: {
+            background: "#fb923c",
+            color: "#ffffff",
+            border: "1px solid #fb923c",
+            borderRadius: "10px",
+            fontSize: "12px",
+            width: "250px",
+            height: "40px",
+          },
+        });
+      },
+    });
   };
 
   // edit address button
   const handleEditAddress = (e) => {
     e.preventDefault();
-    editAddressMutate(editAddressData);
+    editAddressMutate(editAddressData, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
+        setEditAddress(false);
+        toast.success("updated address successfully!", {
+          style: {
+            background: "#fb923c",
+            color: "#ffffff",
+            border: "1px solid #fb923c",
+            borderRadius: "10px",
+            fontSize: "12px",
+            width: "250px",
+            height: "40px",
+          },
+        });
+      },
+    });
   };
 
   // add address button
   const handleAddAddress = (e) => {
     e.preventDefault();
-    addAddressMutate(addAddressData);
+    addAddressMutate(addAddressData, {
+      onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
+      setAddAddress(false);
+      setAddAddressData({
+        addressType: "Home",
+        landMark: "",
+        city: "",
+        state: "",
+        pinCode: "",
+        country: "",
+      });
+      toast.success("successfully address added!", {
+        style: {
+          background: "#fb923c",
+          color: "#ffffff",
+          border: "1px solid #fb923c",
+          borderRadius: "10px",
+          fontSize: "12px",
+          width: "250px",
+          height: "40px",
+        },
+      });
+    },
+    });
   };
 
   // delete address button
   const handleAddressDelete = (id) => {
-    deleteAddressMutate(id);
+    deleteAddressMutate(id, {
+       onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
+      toast.success("deleted address successfully!", {
+        style: {
+          background: "#fb923c",
+          color: "#ffffff",
+          border: "1px solid #fb923c",
+          borderRadius: "10px",
+          fontSize: "12px",
+          width: "250px",
+          height: "40px",
+        },
+      });
+    },
+    });
   };
 
   // logout
   const handleLogout = () => {
-    logoutMutate();
+    logoutMutate(undefined, {
+      onSuccess: ()=>{
+            dispatch(removeUser());
+            dispatch(removeFavorite());
+            dispatch(removeCart());
+            dispatch(removeProduct());
+            dispatch(removeAddress());
+            navigate('/');
+        }
+    });
   };
 
   /* ─── shared input className ─────────────────────────────── */
@@ -372,7 +342,7 @@ export const Profile = () => {
                     type="submit"
                     className="flex-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {editProfilePending ? <Loading /> : "Save Changes"}
+                    {editProfilePending ? <Loading color={'border-white'}/> : "Save Changes"}
                   </button>
                 </div>
               </form>
@@ -463,11 +433,17 @@ export const Profile = () => {
                       </button>
                     </div>
                   </div>
-                  <Trash
+                  {
+                    deleteAddressPending ? (
+                      <p className="opacity-0 group-hover:opacity-100 hover:bg-red-100 p-2 rounded-xl transition-all cursor-pointer text-red-400 flex-shrink-0"><Loading/></p>
+                    ) : (
+                      <Trash
                     onClick={() => handleAddressDelete(addr._id)}
                     size={32}
                     className="opacity-0 group-hover:opacity-100 hover:bg-red-100 p-2 rounded-xl transition-all cursor-pointer text-red-400 flex-shrink-0"
                   />
+                    )
+                  }
                 </div>
               ))
             ) : (
@@ -630,7 +606,7 @@ export const Profile = () => {
                     type="submit"
                     className="flex-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {addAddressPending ? <Loading /> : "Save Address"}
+                    {addAddressPending ? <Loading color={'border-white'}/> : "Save Address"}
                   </button>
                 </div>
                 {addAddressIsError && (
@@ -772,7 +748,7 @@ export const Profile = () => {
                     type="submit"
                     className="flex-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {editAddressPending ? <Loading /> : "Update Address"}
+                    {editAddressPending ? <Loading color={'border-white'} /> : "Update Address"}
                   </button>
                 </div>
               </form>
@@ -811,7 +787,7 @@ export const Profile = () => {
                 <LogOut size={15} className="text-red-400" />
               </div>
               <span className="text-sm font-medium text-red-500">
-                {logoutPending ? "Logging out…" : "Log Out"}
+                {logoutPending ? <Loading color={'border-red-600'}/> : "Log Out"}
               </span>
             </button>
           </div>

@@ -146,7 +146,7 @@ export const Orders = () => {
                         {/* Price */}
                         <div className="text-right flex-shrink-0">
                           <p className="text-lg font-bold text-amber-500">
-                            ${itemTotal.toFixed(2)}
+                            &#8377;{itemTotal.toFixed(2)}
                           </p>
                           <p className="text-xs text-gray-400 mt-0.5">incl. 2% tax</p>
                         </div>

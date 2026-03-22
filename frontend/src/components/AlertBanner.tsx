@@ -1,10 +1,10 @@
 import { TriangleAlert, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
  
-export const AlertBanner = () => {
- const [visible, setVisible] = useState(true);
-  const [fadeIn, setFadeIn] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
+export const AlertBanner: FC = () => {
+ const [visible, setVisible] = useState<boolean>(true);
+  const [fadeIn, setFadeIn] = useState<boolean>(false);
+  const [fadeOut, setFadeOut] = useState<boolean>(false);
 
   useEffect(() => {
     const enter = setTimeout(() => setFadeIn(true), 100);
@@ -18,10 +18,12 @@ export const AlertBanner = () => {
   return (
    <div
       className={`fixed bottom-4 right-4 z-[100] max-w-md transition-all duration-500 ${
-        fadeOut
-          ? "opacity-0 translate-y-4"
-          : "opacity-100 translate-y-0"
-      }`}
+  fadeOut
+    ? "opacity-0 translate-y-4"
+    : fadeIn
+    ? "opacity-100 translate-y-0"
+    : "opacity-0 translate-y-4"  // initial hidden state before fade-in
+}`}
     >
       <div className="bg-amber-500 border border-gray-200 rounded-sm shadow-lg shadow-amber-100 p-4 py-6">
         <div className="flex items-start justify-between gap-3">
