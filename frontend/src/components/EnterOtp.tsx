@@ -1,18 +1,18 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type FC } from "react";
 import { Loading } from "./Loading";
 import { useLocation, useNavigate } from "react-router";
 import useEnterOtp from "../hooks/useEnterOtp";
 
-export const EnterOtp = () => {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [otpError, setOtpError] = useState(null);
+export const EnterOtp:FC = () => {
+  const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
+  const [otpError, setOtpError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email;
-  const inputRefs = useRef([]);
+  const email = location.state?.email as string;
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // otp change
-  const handleOtpChange = (value, index) => {
+  const handleOtpChange = (value: string, index: number): void => {
     if (!/^\d?$/.test(value)) return; // allow only numbers
 
     const newOtp = [...otp];
@@ -22,14 +22,14 @@ export const EnterOtp = () => {
 
     // move focus to next input
     if (value && index < 5) {
-      inputRefs.current[index + 1].focus();
+      inputRefs.current[index + 1]?.focus();
     }
   };
 
   const { mutate, isPending, isError, error } = useEnterOtp();
 
   // verify otp
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = (): void => {
     const otpValue = otp.join("").trim();
     const token = sessionStorage.getItem("token");
 
@@ -59,7 +59,7 @@ export const EnterOtp = () => {
   return (
     <>
       <div className="min-h-screen w-full flex items-center justify-center bg-[url(https://img.freepik.com/premium-photo/background-with-grip_1286621-341.jpg?semt=ais_rp_progressive&w=740&q=80)] bg-no-repeat bg-cover bg-center">
-        <div className="flex flex-col items-center md:max-w-[423px] w-[380px] bg-white rounded-2xl shadow-lg p-6 sm:p-10">
+        <div className="flex flex-col items-center md:max-w-105.75 w-95 bg-white rounded-2xl shadow-lg p-6 sm:p-10">
           <p className="text-2xl font-semibold text-gray-900">
             Email Verify OTP
           </p>
@@ -72,19 +72,19 @@ export const EnterOtp = () => {
             share this code with anyone.
           </p>
           <div className="grid grid-cols-6 gap-2 sm:gap-3 w-11/12 mt-8">
-            {otp.map((digit, index) => (
+            {otp.map((digit: string, index: number) => (
               <input
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
+                ref={(el) => {inputRefs.current[index] = el}}
                 type="text"
                 value={digit}
                 onChange={(e) => handleOtpChange(e.target.value, index)}
                 onKeyDown={(e) => {
                   if (e.key === "Backspace" && !otp[index] && index > 0) {
-                    inputRefs.current[index - 1].focus();
+                    inputRefs.current[index - 1]?.focus();
                   }
                 }}
-                maxLength="1"
+                maxLength={1}
                 className="w-full h-12 bg-indigo-50 text-gray-900 text-xl rounded-md outline-none text-center focus:border border-amber-500"
               />
             ))}

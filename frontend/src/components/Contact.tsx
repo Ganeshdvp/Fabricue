@@ -1,34 +1,32 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState, type FC } from "react";
 import { Loading } from "./Loading";
 import useContact from "../hooks/useContact";
 import { emailRegex } from "../utils/constants";
 import { toast } from "sonner";
-import { ArrowBigRight, ArrowRight, Mail, MessageCircleCheck, User } from "lucide-react";
+import { ArrowRight, Mail, User } from "lucide-react";
 
-export const Contact = () => {
-  const name = useRef(null);
-  const email = useRef(null);
-  const message = useRef(null);
-  const [emailError, setEmailError] = useState(null);
+export const Contact:FC = () => {
+  const name = useRef<HTMLInputElement>(null);
+  const email = useRef<HTMLInputElement>(null);
+  const message = useRef<HTMLTextAreaElement>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const { mutate, isPending, isError, error } = useContact();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    if (
-      !name?.current?.value ||
-      !email?.current?.value ||
-      !message?.current?.value
-    ) {
-      return;
-    }
+    const nameVal = name.current?.value.trim();
+  const emailVal = email.current?.value.trim();
+  const messageVal = message.current?.value.trim();
 
-    if (emailRegex.test(email?.current.value)) {
+   if(!nameVal || !emailVal || !messageVal) return;
+
+    if (emailRegex.test(emailVal)) {
       const data = {
-        name: name?.current?.value,
-        email: email?.current?.value,
-        message: message?.current?.value,
+        name: nameVal,
+        email: emailVal,
+        message: messageVal,
       };
       mutate(data, {
         onSuccess: () => {
@@ -107,7 +105,7 @@ export const Contact = () => {
             Message
           </label>
           <textarea
-            rows="4"
+            rows={4}
             ref={message}
             className="w-full mt-2 p-2 bg-transparent border border-slate-300 rounded-lg resize-none outline-none focus:ring-2 focus-within:ring-amber-400 transition-all"
             placeholder="Enter your message"

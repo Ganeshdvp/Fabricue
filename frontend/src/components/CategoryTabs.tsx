@@ -1,21 +1,35 @@
-import { memo } from "react";
+import { memo, type FC } from "react";
 import { useDispatch } from "react-redux";
-import { removeProduct } from "../utils/productSlice.js";
+import { removeProduct } from "../utils/productSlice";
 
-const TAB_LIST = [
-  { key: "all",   label: "All",   img: "../../public/all.webp" },
-  { key: "men",   label: "Men",   img: "../../public/men.webp" },
-  { key: "women", label: "Women", img: "../../public/women.webp" },
-  { key: "kids",  label: "Kids",  img: "../../public/kids.webp" },
+
+interface Tabs {
+  key: string,
+  label: string,
+  img: string
+}
+
+interface CategoryTabsProps {
+  activeCategory: string;
+  setActiveCategory: (category: string)=> void;
+  setActiveSubCategory: (subCategory: string)=> void;
+}
+
+
+const TAB_LIST: Tabs[] = [
+  { key: "all",   label: "All",   img: "https://res.cloudinary.com/dyakynych/image/upload/w_200,q_auto,f_auto/v1774282214/all_kiogly.webp" },
+  { key: "men",   label: "Men",   img: "https://res.cloudinary.com/dyakynych/image/upload/w_200,q_auto,f_auto/v1774282239/men_gpykzg.webp" },
+  { key: "women", label: "Women", img: "https://res.cloudinary.com/dyakynych/image/upload/w_200,q_auto,f_auto/v1774282270/women_kmupur.webp" },
+  { key: "kids",  label: "Kids",  img: "https://res.cloudinary.com/dyakynych/image/upload/w_200,q_auto,f_auto/v1774282226/kids_ltybv5.webp" },
 ];
 
-export const CategoryTabs = memo(({ activeCategory, setActiveCategory, setActiveSubCategory }) => {
+export const CategoryTabs:FC<CategoryTabsProps> = memo(({ activeCategory, setActiveCategory, setActiveSubCategory }) => {
   const dispatch = useDispatch();
 
   return (
     <div className="border-b border-gray-100 bg-white">
       <div className="max-w-2xl mx-auto px-4 flex justify-center gap-1 overflow-x-auto scrollbar-hide">
-        {TAB_LIST.map(({ key, label, img }) => (
+        {TAB_LIST.map(({ key, label, img }: Tabs) => (
           <button
             key={key}
             onClick={() => {
@@ -23,7 +37,7 @@ export const CategoryTabs = memo(({ activeCategory, setActiveCategory, setActive
               setActiveSubCategory("");
               dispatch(removeProduct());
             }}
-            className={`flex flex-col items-center gap-2 px-5 sm:px-8 py-4 border-b-2 flex-shrink-0 transition-all cursor-pointer
+            className={`flex flex-col items-center gap-2 px-5 sm:px-8 py-4 border-b-2 shrink-0 transition-all cursor-pointer
               ${activeCategory === key
                 ? "border-amber-500 text-amber-600"
                 : "border-transparent text-gray-400 hover:text-amber-500 hover:border-amber-200"

@@ -1,7 +1,21 @@
-export const HomeAbout = () => {
-  const features = [
+import type { FC } from "react";
+
+interface Features {
+  icon: string,
+  alt: string,
+  number: string,
+  title: string,
+  description: string
+}
+
+interface Stats {
+  value: string,
+  label: string
+}
+
+const features: Features[] = [
     {
-      icon: "../../public/badge.png",
+      icon: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282216/badge_h3siv0.png",
       alt: "badge-icon",
       number: "01",
       title: "Premium Quality Materials",
@@ -9,7 +23,7 @@ export const HomeAbout = () => {
         "We source high-quality fabrics to ensure comfort, durability, and long-lasting style in every single piece we craft.",
     },
     {
-      icon: "../../public/trending.png",
+      icon: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282264/trending_ovcb5b.png",
       alt: "trending-icon",
       number: "02",
       title: "Trend-Driven Collections",
@@ -17,7 +31,7 @@ export const HomeAbout = () => {
         "Stay ahead with fresh arrivals inspired by the latest global fashion trends, curated every season.",
     },
     {
-      icon: "../../public/diamond.png",
+      icon: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282217/diamond_lraiph.png",
       alt: "luxury-icon",
       number: "03",
       title: "Affordable Luxury",
@@ -25,7 +39,7 @@ export const HomeAbout = () => {
         "Experience premium fashion at prices that don't break your budget — quality without compromise.",
     },
     {
-      icon: "../../public/shield.png",
+      icon: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282252/shield_snj4yk.png",
       alt: "secure-icon",
       number: "04",
       title: "Secure & Seamless Checkout",
@@ -33,7 +47,7 @@ export const HomeAbout = () => {
         "Fast, safe, and encrypted payment process for a smooth, worry-free shopping experience every time.",
     },
     {
-      icon: "../../public/tracking.png",
+      icon: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282263/tracking_a16s10.png",
       alt: "fast-icon",
       number: "05",
       title: "Fast & Reliable Delivery",
@@ -41,7 +55,7 @@ export const HomeAbout = () => {
         "Quick dispatch and reliable shipping across India with real-time order tracking at your fingertips.",
     },
     {
-      icon: "../../public/resend.png",
+      icon: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282248/resend_ahyvl9.png",
       alt: "return-icon",
       number: "06",
       title: "Easy Returns & Support",
@@ -50,14 +64,14 @@ export const HomeAbout = () => {
     },
   ];
 
-  const stats = [
+  const stats: Stats[] = [
     { value: "50K+", label: "Happy Customers" },
     { value: "1200+", label: "Styles Available" },
     { value: "4.9★", label: "Average Rating" },
     { value: "24h", label: "Support Response" },
   ];
 
-  const promises = [
+  const promises: string[] = [
     "Ethically Sourced",
     "Size Inclusive",
     "Pan-India Delivery",
@@ -66,14 +80,16 @@ export const HomeAbout = () => {
     "Secure Payments",
   ];
 
+export const HomeAbout: FC = () => {
+
   return (
     <div id="about" className="bg-white overflow-x-hidden">
       {/* ── Hero ── */}
       <section className="relative px-6 pt-28 pb-24 overflow-hidden">
         {/* Background texture */}
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#fffbeb,#ffffff)] pointer-events-none" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-100 rounded-full blur-[120px] opacity-40 pointer-events-none -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-amber-50 rounded-full blur-[80px] opacity-60 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-125 h-125 bg-amber-100 rounded-full blur-[120px] opacity-40 pointer-events-none -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-75 h-75 bg-amber-50 rounded-full blur-[80px] opacity-60 pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left */}
@@ -91,7 +107,7 @@ export const HomeAbout = () => {
               Meets{" "}
               <span className="relative inline-block">
                 <span className="relative z-10 text-amber-500">Quality</span>
-                <span className="absolute bottom-1 left-0 right-0 h-3 bg-amber-100 -z-0 rounded" />
+                <span className="absolute bottom-1 left-0 right-0 h-3 bg-amber-100 z-0 rounded" />
               </span>
             </h1>
 
@@ -112,7 +128,7 @@ export const HomeAbout = () => {
                   <span className="text-xl font-bold text-gray-900 tabular-nums">
                     {s.value}
                   </span>
-                  <span className="text-xs text-gray-400 font-medium leading-tight max-w-[60px]">
+                  <span className="text-xs text-gray-400 font-medium leading-tight max-w-15">
                     {s.label}
                   </span>
                 </div>
@@ -121,12 +137,12 @@ export const HomeAbout = () => {
           </div>
 
           {/* Right — decorative card stack */}
-          <div className="hidden lg:flex items-center justify-center relative h-[480px]">
+          <div className="hidden lg:flex items-center justify-center relative h-120">
             {/* Glow blob behind everything */}
             <div className="absolute w-72 h-72 bg-amber-200 rounded-full blur-3xl opacity-40 pointer-events-none" />
 
             {/* Back card — rotated */}
-            <div className="absolute w-72 h-44 bg-gradient-to-br from-amber-400 to-amber-500 rounded-3xl rotate-[-8deg] top-6 left-4 shadow-lg border border-amber-300">
+            <div className="absolute w-72 h-44 bg-linear-to-br from-amber-400 to-amber-500 rounded-3xl rotate-[-8deg] top-6 left-4 shadow-lg border border-amber-300">
               <div className="p-6">
                 <div className="w-8 h-8 rounded-full bg-white/20 mb-3" />
                 <div className="h-2.5 w-32 bg-white/30 rounded-full mb-2" />
@@ -135,8 +151,8 @@ export const HomeAbout = () => {
             </div>
 
             {/* Middle card — slightly rotated */}
-            <div className="absolute w-64 h-36 bg-gradient-to-br from-amber-50 to-white rounded-2xl rotate-[4deg] bottom-16 right-2 shadow-md border border-amber-100 p-5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0">
+            <div className="absolute w-64 h-36 bg-linear-to-br from-amber-50 to-white rounded-2xl rotate-[4deg] bottom-16 right-2 shadow-md border border-amber-100 p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center shrink-0">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -167,7 +183,7 @@ export const HomeAbout = () => {
             </div>
 
             {/* Main front card */}
-            <div className="relative w-80 h-[340px] bg-white rounded-3xl border border-gray-200 shadow-2xl shadow-amber-100 p-7 flex flex-col justify-between z-10">
+            <div className="relative w-80 h-85 bg-white rounded-3xl border border-gray-200 shadow-2xl shadow-amber-100 p-7 flex flex-col justify-between z-10">
               {/* Top badge */}
               <div className="flex items-center justify-between mb-4">
                 <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-3 py-1">
@@ -188,7 +204,7 @@ export const HomeAbout = () => {
               </div>
 
               {/* Illustration area */}
-              <div className="flex-1 bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl flex flex-col items-center justify-center gap-3 border border-amber-100 mb-5 relative overflow-hidden">
+              <div className="flex-1 bg-linear-to-br from-amber-50 to-amber-100/50 rounded-2xl flex flex-col items-center justify-center gap-3 border border-amber-100 mb-5 relative overflow-hidden">
                 {/* Decorative circles */}
                 <div className="absolute -top-6 -right-6 w-24 h-24 bg-amber-200 rounded-full opacity-30" />
                 <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-amber-300 rounded-full opacity-20" />
@@ -260,7 +276,7 @@ export const HomeAbout = () => {
 
             {/* Floating stat pill — top right */}
             <div className="absolute top-4 right-0 bg-white border border-gray-200 rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 z-20">
-              <div className="w-8 h-8 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-center shrink-0">
                 <svg
                   className="w-4 h-4 text-amber-500"
                   fill="none"
@@ -287,7 +303,7 @@ export const HomeAbout = () => {
 
             {/* Floating pill — bottom left */}
             <div className="absolute bottom-8 left-0 bg-amber-500 rounded-2xl shadow-lg shadow-amber-200 px-4 py-3 flex items-center gap-2.5 z-20">
-              <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
                 <svg
                   className="w-3.5 h-3.5 text-white"
                   fill="none"
@@ -328,7 +344,7 @@ export const HomeAbout = () => {
                   key={t}
                   className="inline-flex items-center gap-3 text-white text-sm font-semibold tracking-wide"
                 >
-                  <span className="w-1 h-1 rounded-full bg-amber-200 flex-shrink-0" />
+                  <span className="w-1 h-1 rounded-full bg-amber-200 shrink-0" />
                   {t}
                 </span>
               ))}
@@ -374,7 +390,7 @@ export const HomeAbout = () => {
                   <span className="text-5xl font-bold text-gray-100 group-hover:text-amber-100 transition-colors leading-none select-none">
                     {f.number}
                   </span>
-                  <div className="w-11 h-11 flex items-center justify-center rounded-xl bg-amber-50 border border-amber-200 p-2.5 group-hover:bg-amber-500 group-hover:border-amber-500 transition-all duration-300 flex-shrink-0">
+                  <div className="w-11 h-11 flex items-center justify-center rounded-xl bg-amber-50 border border-amber-200 p-2.5 group-hover:bg-amber-500 group-hover:border-amber-500 transition-all duration-300 shrink-0">
                     <img
                       src={f.icon}
                       alt={f.alt}
@@ -392,7 +408,7 @@ export const HomeAbout = () => {
               </div>
 
               {/* Bottom line */}
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-400 to-amber-300 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-amber-400 to-amber-300 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
             </div>
           ))}
         </div>
@@ -415,7 +431,7 @@ export const HomeAbout = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 relative">
             {/* Connector */}
-            <div className="hidden sm:block absolute top-10 left-[calc(16%+40px)] right-[calc(16%+40px)] h-px bg-gradient-to-r from-amber-200 via-amber-300 to-amber-200" />
+            <div className="hidden sm:block absolute top-10 left-[calc(16%+40px)] right-[calc(16%+40px)] h-px bg-linear-to-r from-amber-200 via-amber-300 to-amber-200" />
 
             {[
               {
@@ -456,7 +472,7 @@ export const HomeAbout = () => {
                   <h3 className="text-base font-bold text-gray-900 mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed max-w-[220px] mx-auto">
+                  <p className="text-sm text-gray-400 leading-relaxed max-w-55 mx-auto">
                     {item.desc}
                   </p>
                 </div>
@@ -491,7 +507,7 @@ export const HomeAbout = () => {
                 key={pill}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide text-white bg-white/10 border border-white/20 hover:bg-white/20 transition-colors cursor-default backdrop-blur-sm"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
                 {pill}
               </span>
             ))}

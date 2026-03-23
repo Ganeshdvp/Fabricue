@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const OrderSuccess = () => {
+export const OrderSuccess: FC = () => {
   const navigate = useNavigate();
-  const [timer, setTimer] = useState(true);
+  const [timer, setTimer] = useState<boolean>(true);
 
   useEffect(() => {
     setTimeout(() => {

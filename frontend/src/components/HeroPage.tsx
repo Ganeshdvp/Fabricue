@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useNavigate } from "react-router";
 import { emailRegex } from '../utils/constants';
 
-export const HeroPage = () => {
+export const HeroPage: FC = () => {
 
-  const [heroPageEmail, setHeroPageEmail] = useState("");
-  const [error, setError] = useState(null);
+  const [heroPageEmail, setHeroPageEmail] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
-  const handleSubmit = ()=>{
+  const handleSubmit = (): void=>{
     if(emailRegex.test(heroPageEmail)){
       setHeroPageEmail(heroPageEmail);
     navigate('/login', {state: {heroPageEmail}});
@@ -21,7 +21,6 @@ export const HeroPage = () => {
 
 
   return (
-    <>
       <section className='w-full bg-cover bg-center bg-no-repeat px-4 pb-10 -mt-20'>
         <div className="w-full md:px-16 lg:px-24 xl:px-32 mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-8 py-20">
           {/* Left */}
@@ -54,7 +53,7 @@ export const HeroPage = () => {
               </p>
             </a>
 
-            <h1 className="text-center lg:text-left text-neutral-900 text-4xl md:text-5xl lg:text-[52px]/16 leading-tight font-semibold max-w-[610px] mt-4">
+            <h1 className="text-center lg:text-left text-neutral-900 text-4xl md:text-5xl lg:text-[52px]/16 leading-tight font-semibold max-w-152.5 mt-4">
               Discover Your Style. Redefine Your Confidence.
             </h1>
             <p className="text-center lg:text-left text-base/7 text-neutral-600 max-w-md mt-4 mx-auto md:mx-0">
@@ -63,7 +62,7 @@ export const HeroPage = () => {
               — everything you need in one place.
             </p>
 
-            <div className="flex flex-col items-start max-w-[440px] w-full mx-auto md:mx-0">
+            <div className="flex flex-col items-start max-w-110 w-full mx-auto md:mx-0">
               <div className="flex items-center border gap-2 border-neutral-300 h-13 rounded-full overflow-hidden mt-6">
                  <input
                 type="email"
@@ -155,6 +154,5 @@ export const HeroPage = () => {
           </div>
         </div>
       </section>
-    </>
   );
 };

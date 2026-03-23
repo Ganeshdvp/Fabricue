@@ -1,8 +1,12 @@
-import { useState } from "react"
+import { useState, type FC } from "react"
 
-export const Faqs = () => {
-    const [openIndex, setOpenIndex] = useState(null)
-    const faqsData = [
+
+interface Faqs {
+    question : string,
+    answer : string
+}
+
+const faqsData: Faqs[] = [
         {
             question: 'How long does delivery take?',
             answer: 'We typically deliver within 3–7 business days depending on your location. You’ll receive tracking details once your order is shipped.'
@@ -24,6 +28,9 @@ export const Faqs = () => {
             answer: 'You can reach our support team via email or through the contact form on our website. We’re here to help you with any questions or concerns.'
         }
     ]
+
+export const Faqs: FC = () => {
+    const [openIndex, setOpenIndex] = useState<number | null>(null)
   return (
     <>
     <div id="faqs" className='flex flex-col items-center text-center text-slate-800 px-3 mt-36 mb-36'>
@@ -40,7 +47,7 @@ export const Faqs = () => {
                                     <path d="m4.5 7.2 3.793 3.793a1 1 0 0 0 1.414 0L13.5 7.2" stroke="#1D293D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
-                            <p className={`text-sm text-slate-500 px-4 transition-all duration-500 ease-in-out ${openIndex === index ? "opacity-100 max-h-[300px] translate-y-0 pt-4" : "opacity-0 max-h-0 -translate-y-2"}`} >
+                            <p className={`text-sm text-slate-500 px-4 transition-all duration-500 ease-in-out ${openIndex === index ? "opacity-100 max-h-75 translate-y-0 pt-4" : "opacity-0 max-h-0 -translate-y-2"}`} >
                                 {faq.answer}
                             </p>
                         </div>

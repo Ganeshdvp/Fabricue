@@ -7,6 +7,7 @@ import { HeroSearch } from "./HeroSearch";
 import { CategoryTabs } from "./CategoryTabs";
 import { SubCategoryBar } from "./SubCategoryBar";
 import { ProductSection } from "./ProductSection";
+import ChatBot from "./ChatBot";
 
 export const Tabs = () => {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -37,6 +38,7 @@ export const Tabs = () => {
         activeSubCategory={activeSubCategory}
       />
 
+        <ChatBot/>
       {store && <Cookie setIsActive={() => dispatch(toggleCookie(false))} />}
     </>
   );

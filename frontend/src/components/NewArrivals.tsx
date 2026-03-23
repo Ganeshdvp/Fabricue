@@ -1,6 +1,15 @@
+import type { FC } from "react";
 import { Link } from "react-router";
 
-const products = [
+
+interface Products {
+  id: number,
+  name: string,
+  price: number,
+  image: string
+}
+
+const products: Products[] = [
   {
     id: 1,
     name: "Polyester Winter Jacket",
@@ -33,7 +42,7 @@ const products = [
   },
 ];
 
-export const NewArrivals = () => {
+export const NewArrivals: FC = () => {
   return (
     <section className="mt-36 px-4">
       <h1 className="text-3xl font-medium text-slate-800 text-center mb-2">
@@ -44,7 +53,7 @@ export const NewArrivals = () => {
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-6">
-        {products.map((product) => (
+        {products.map((product: Products) => (
           <Link to="/login" key={product.id}>
             <div className="w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-105 hover:shadow-lg transition-all duration-300 cursor-pointer">
               <img

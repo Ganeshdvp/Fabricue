@@ -2,11 +2,38 @@ import { Card } from "./Card";
 import { PageNotFound } from './errorAndLoading/PageNotFound';
 import { CardShimmer } from "./errorAndLoading/cardShimmer";
 import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems";
- 
-export const WishList = () => {
+import type { FC } from "react";
+
+
+interface ProductData {
+   _id: string;
+  name: string;
+  brand: string;
+  price: number;
+  discountPrice: number;
+  rating: number;
+  description: string;
+  image: string[];
+  isFavorite: boolean;
+  category: string,
+  colors: string[],
+  currency: string,
+  isNewArrival:boolean,
+  numReviews: number,
+  sellerId: string,
+  sizes: string[],
+  stock: number,
+  subCategory: string,
+  createdAt: string,
+  updatedAt: string,
+}
+
+
+export const WishList: FC = () => {
  
   // fetch favorite
-  const { data, isPending } = useFetchFavoriteItems();
+  const { data, isPending } = useFetchFavoriteItems<ProductData[]>();
+
  
   if (isPending) {
     return (
@@ -49,7 +76,7 @@ export const WishList = () => {
  
             {/* Cards */}
             <div className="flex gap-x-2 sm:gap-x-4 gap-y-5 flex-wrap justify-start">
-              {data?.map((item, index) => (
+              {data?.map((item: ProductData, index: number) => (
                 <Card productData={item} key={index} />
               ))}
             </div>

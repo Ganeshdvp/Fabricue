@@ -141,3 +141,42 @@
     @apply font-sans;
   }
 }
+
+
+
+/* Floating slow bounce */
+@keyframes floatBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: floatBounce 2.5s ease-in-out infinite;
+}
+
+/* Chat open animation */
+@keyframes chatFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chat-open {
+  animation: chatFadeIn 0.3s ease forwards;
+}
+
+/* Chat close (optional smooth hide) */
+.chat-close {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  pointer-events: none;
+}

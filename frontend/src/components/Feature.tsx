@@ -1,6 +1,7 @@
 import { ChartNoAxesColumnDecreasing, ChevronsUp, ShieldCheck } from "lucide-react"
+import type { FC } from "react"
 
-export const Feature = () => {
+export const Feature: FC = () => {
   return (
     <>
         <style>{`
@@ -12,7 +13,7 @@ export const Feature = () => {
             `}</style>
             <h2 className="text-2xl font-semibold text-center mt-36">What we provided</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-18">
-                <div className="size-[520px] top-0 left-1/2 -translate-x-1/2 rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]/70"></div>
+                <div className="size-130 top-0 left-1/2 -translate-x-1/2 rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]/70"></div>
                 <div className="flex flex-col items-center justify-center max-w-80 mx-auto">
                     <div className="p-6 aspect-square bg-amber-100 rounded-full">
                         <ChartNoAxesColumnDecreasing/>

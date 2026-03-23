@@ -1,14 +1,39 @@
 import { Search, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Loading } from "./Loading.js";
+import { useEffect, useState, type FC } from "react";
+import { Loading } from "./Loading";
 import useSearchAI from "../hooks/useSearchAI";
 import useSearching from "../hooks/useSearching";
 import { useNavigate } from "react-router";
 
-export const HeroSearch = () => {
-  const [searchInput, setSearchInput] = useState("");
-  const [autoSuggestion, setAutoSuggestion] = useState(false);
-  const [autoSuggestionData, setAutoSuggestionData] = useState(null);
+
+interface ProductData {
+   _id: string;
+  name: string;
+  brand: string;
+  price: number;
+  discountPrice: number;
+  rating: number;
+  description: string;
+  image: string[];
+  isFavorite: boolean;
+  category: string,
+  colors: string[],
+  currency: string,
+  isNewArrival:boolean,
+  numReviews: number,
+  sellerId: string,
+  sizes: string[],
+  stock: number,
+  subCategory: string,
+  createdAt: string,
+  updatedAt: string,
+}
+
+
+export const HeroSearch: FC = () => {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [autoSuggestion, setAutoSuggestion] = useState<boolean>(false);
+  const [autoSuggestionData, setAutoSuggestionData] = useState<ProductData[]>([]);
   const navigate = useNavigate();
 
   // search AI
@@ -22,7 +47,7 @@ export const HeroSearch = () => {
   // debounce on search
   const { mutate: searchingMutate } = useSearching();
   useEffect(() => {
-    // 👇 skip API call if input is empty
+    // skip API call if input is empty
     if (!searchInput.trim()) {
       return setAutoSuggestion(false);
     }
@@ -30,7 +55,7 @@ export const HeroSearch = () => {
       searchingMutate(
         { query: searchInput },
         {
-          onSuccess: (data) => {
+          onSuccess: (data: ProductData[]) => {
             setAutoSuggestion(true);
             setAutoSuggestionData(data);
           },
@@ -42,10 +67,10 @@ export const HeroSearch = () => {
     }, 200);
     // unmount
     return () => clearTimeout(timer);
-  }, [searchInput]);
+  }, [searchInput, searchingMutate]);
 
   // search button
-  const handleSearchClick = () => {
+  const handleSearchClick = (): void => {
     if (!searchInput || !searchInput.trim()) return;
     searchAI(
       { search: searchInput },
@@ -56,7 +81,7 @@ export const HeroSearch = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 px-4 py-12 text-center">
+    <div className="bg-linear-to-br from-amber-50 via-orange-50 to-yellow-50 px-4 py-12 text-center">
       <p className="text-[11px] font-semibold text-amber-500 tracking-widest uppercase mb-2">
         Fabricue Store
       </p>
@@ -72,7 +97,7 @@ export const HeroSearch = () => {
           {" "}
           {/* 👈 add relative here */}
           <div className="flex items-center gap-2 bg-white border-2 border-amber-200 rounded-2xl px-4 focus-within:border-amber-400 transition-colors">
-            <Search size={16} className="text-amber-400 flex-shrink-0" />
+            <Search size={16} className="text-amber-400 shrink-0" />
             <input
               type="text"
               value={searchInput}
@@ -99,7 +124,7 @@ export const HeroSearch = () => {
                   <img
                     src={item?.image[0]}
                     alt={item?.name}
-                    className="w-15 h-15 rounded-2xl object-cover flex-shrink-0"
+                    className="w-15 h-15 rounded-2xl object-cover shrink-0"
                   />
                   <div className="flex flex-col items-start gap-y-1 min-w-0">
                     <h2 className="text-[13px] font-semibold text-gray-800 truncate">

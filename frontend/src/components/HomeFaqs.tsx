@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { Link } from "react-router";
 
- const faqsData = [
+
+interface Faqs {
+  question: string,
+  answer: string
+}
+
+
+ const faqsData: Faqs[] = [
     {
       question: "How long does delivery take?",
       answer:
@@ -34,14 +41,14 @@ import { Link } from "react-router";
     },
   ];
 
-export const HomeFaqs = () => {
+export const HomeFaqs: FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <section id="faqs" className="relative bg-white overflow-hidden px-5 py-20 sm:py-12">
 
       {/* Background blobs */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-amber-50 rounded-full blur-3xl opacity-70 pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-175 h-75 bg-amber-50 rounded-full blur-3xl opacity-70 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-amber-100 rounded-full blur-3xl opacity-40 pointer-events-none translate-x-1/3 translate-y-1/3" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
@@ -82,7 +89,7 @@ export const HomeFaqs = () => {
                   }`}
               >
                 {/* Accent left bar */}
-                <div className={`absolute left-0 top-0 bottom-0 w-[3px] bg-amber-500 transition-all duration-300
+                <div className={`absolute left-0 top-0 bottom-0 w-0.75 bg-amber-500 transition-all duration-300
                   ${isOpen ? "opacity-100" : "opacity-0 group-hover:opacity-40"}`}
                 />
 
@@ -102,7 +109,7 @@ export const HomeFaqs = () => {
                   </div>
 
                   {/* Icon */}
-                  <div className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center border transition-all duration-300
+                  <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center border transition-all duration-300
                     ${isOpen
                       ? "bg-amber-500 border-amber-500"
                       : "bg-gray-50 border-gray-200 group-hover:border-amber-200 group-hover:bg-amber-50"
@@ -138,7 +145,7 @@ export const HomeFaqs = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-6 bg-gradient-to-r from-amber-50 to-amber-100/60 border border-amber-200 rounded-2xl px-8 py-7">
+        <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-6 bg-linear-to-r from-amber-50 to-amber-100/60 border border-amber-200 rounded-2xl px-8 py-7">
           <div className="text-center sm:text-left">
             <p className="text-base font-bold text-gray-900 mb-1">
               Still have questions?
@@ -149,7 +156,7 @@ export const HomeFaqs = () => {
           </div>
           <Link
             to="/home/contact"
-            className="flex-shrink-0 inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 active:scale-95 transition-all text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-sm shadow-amber-200"
+            className="shrink-0 inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 active:scale-95 transition-all text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-sm shadow-amber-200"
           >
             Contact Support
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">

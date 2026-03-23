@@ -1,7 +1,16 @@
 import { Link } from "react-router";
 import { ExternalLink } from "lucide-react";
+import type { FC } from "react";
 
-const collections = [
+
+interface Collections {
+  id: number,
+  name: string,
+  image: string
+}
+
+
+const collections: Collections[] = [
   {
     id: 1,
     name: "Shirts",
@@ -44,7 +53,7 @@ const collections = [
   },
 ];
 
-export const LatestCollections = () => {
+export const LatestCollections: FC = () => {
   return (
     <section className="mt-32 px-4">
       <h1 id="latest-collections" className="text-3xl font-semibold text-center mx-auto">
@@ -56,7 +65,7 @@ export const LatestCollections = () => {
       </p>
 
       <div className="flex flex-wrap items-center justify-center mt-10 gap-6 max-w-7xl mx-auto">
-        {collections.map((item) => (
+        {collections.map((item: Collections) => (
           <div key={item.id} className="relative group rounded-lg overflow-hidden">
             <img
               src={item.image}

@@ -1,19 +1,50 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Heart, ShoppingCart, User2Icon } from "lucide-react";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
 import { ProfileDropDown } from "./ProfileDropDown";
-import { Loading } from "./Loading.js";
+import { Loading } from "./Loading";
 import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems";
 import useFetchCart from "../hooks/useFetchCart"
 
-export const NavBar = () => {
-  const [toggle, setToggle] = useState(false);
-  const store = useSelector((store) => store?.user);
-  const wishList = useSelector((store) => store.wishList);
-  const cartItems = useSelector((store) => store.cartItems);
-  const [dropDown, setDropDown] = useState(false);
-  const dropDownRef = useRef(null);
+
+interface User {
+  user: {
+    _id: string | null
+  }
+}
+
+interface WishList {
+  wishList: {
+    _id: string | null
+  }[]
+}
+
+interface CartItems {
+  cartItems: {
+    _id: string | null
+  }[]
+}
+
+interface BadgeProps {
+  count: ReactNode;
+}
+
+
+const Badge: FC<BadgeProps> = ({ count }) => (
+    <span className="absolute -top-2 -right-2.5 min-w-4.5 h-4.5 flex items-center justify-center text-[10px] font-semibold text-white bg-amber-500 rounded-full px-0.5">
+      {count}
+    </span>
+  );
+
+
+export const NavBar: FC = () => {
+  const [toggle, setToggle] = useState<boolean>(false);
+  const store = useSelector((store: User) => store?.user);
+  const wishList = useSelector((store: WishList) => store.wishList);
+  const cartItems = useSelector((store: CartItems) => store.cartItems);
+  const [dropDown, setDropDown] = useState<boolean>(false);
+  const dropDownRef = useRef<HTMLElement | null>(null);
 
   // fetch favorite items
   useFetchFavoriteItems();
@@ -21,13 +52,14 @@ export const NavBar = () => {
   // fetch cart Items
   useFetchCart();
 
-  const handleProfileClick = () => {
+  const handleProfileClick = (): void => {
     setDropDown(!dropDown);
   };
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropDownRef.current && !dropDownRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (dropDownRef.current && !dropDownRef.current.contains(target)) {
         setDropDown(false);
       }
     };
@@ -37,24 +69,18 @@ export const NavBar = () => {
     };
   }, []);
 
-  const navLinkCls = "text-sm text-gray-600 hover:text-amber-500 transition-colors font-medium";
-
-  const Badge = ({ count }) => (
-    <span className="absolute -top-2 -right-2.5 min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold text-white bg-amber-500 rounded-full px-0.5">
-      {count}
-    </span>
-  );
+  const navLinkCls: string = "text-sm text-gray-600 hover:text-amber-500 transition-colors font-medium";
 
   return (
     <>
       <nav
         ref={dropDownRef}
-        className="sticky top-0 z-50 flex items-center justify-between max-w-screen px-16 sm:px-20 md:px-20 lg:px-20 xl:px-24 py-5 bg-white border-b border-gray-200 relative transition-all"
+        className="sticky top-0 z-50 flex items-center justify-between max-w-screen px-16 sm:px-20 md:px-20 lg:px-20 xl:px-24 py-5 bg-white border-b border-gray-200 transition-all"
       >
         {/* Logo */}
         <Link to='/home'>
         <img
-          src="../../public/Fabricue.png"
+          src="https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282219/Fabricue_y4qvws.png"
           alt="logo"
           className="w-15 h-auto object-contain scale-300"
         />
@@ -85,7 +111,7 @@ export const NavBar = () => {
               <Link to="/home/wishlist">
                 <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
                   <Heart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-                  <Badge count={!wishList ? <Loading /> : wishList?.length || 0} />
+                  <Badge count={!wishList ? <Loading color={'border-white'} /> : wishList?.length || 0} />
                 </div>
               </Link>
 
@@ -93,7 +119,7 @@ export const NavBar = () => {
               <Link to="/home/cart">
                 <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
                   <ShoppingCart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-                  <Badge count={!cartItems ? <Loading /> : cartItems?.length || 0} />
+                  <Badge count={!cartItems ? <Loading color="border-white"/> : cartItems?.length || 0} />
                 </div>
               </Link>
             </>
@@ -156,13 +182,13 @@ export const NavBar = () => {
 
         {/* Mobile: icons if logged in, hamburger if not */}
 {store ? (
-  <div className="md:hidden flex items-center gap-6 -mr-10">
+  <div className="md:hidden flex items-center gap-6 -mr-10 ">
     
     {/* Wishlist */}
     <Link to="/home/wishlist">
       <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
         <Heart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-        <Badge count={!wishList ? <Loading /> : wishList?.length || 0} />
+        <Badge count={!wishList ? <Loading color="border-white"/> : wishList?.length || 0} />
       </div>
     </Link>
 
@@ -170,7 +196,7 @@ export const NavBar = () => {
     <Link to="/home/cart">
       <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
         <ShoppingCart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-        <Badge count={!cartItems ? <Loading /> : cartItems?.length || 0} />
+        <Badge count={!cartItems ? <Loading color="border-white"/> : cartItems?.length || 0} />
       </div>
     </Link>
 

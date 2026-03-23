@@ -1,4 +1,10 @@
-export const Cookie = ({setIsActive}) => {
+import type { FC } from "react";
+
+interface CookieProps {
+  setIsActive: (value: boolean) => void;
+}
+
+export const Cookie: FC<CookieProps> = ({setIsActive}) => {
   return (
     <>
     <div className="fixed bottom-5 right-10 flex flex-col items-center w-96 bg-white text-gray-500 text-center p-6 rounded-lg border border-gray-500/30 text-sm shadow-2xl z-100">

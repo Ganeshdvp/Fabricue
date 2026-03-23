@@ -1,9 +1,92 @@
 import { OrdersShimmer } from "./errorAndLoading/OrdersShimmer";
 import { PageNotFound } from "./errorAndLoading/PageNotFound";
 import useOrders from "../hooks/useOrders"
+import type { FC } from "react";
 
 
-const statusConfig = {
+interface StatusConfig {
+  paid: {
+    label: string,
+    bg: string,
+    text: string,
+    border: string,
+    dot: string
+  },
+  COD: {
+    label: string,
+    bg: string,
+    text: string,
+    border: string,
+    dot: string
+  },
+  failed: {
+    label: string,
+    bg: string,
+    text: string,
+    border: string,
+    dot: string
+  }
+}
+
+interface User {
+  fullName: string,
+  _id: string
+}
+
+interface Address {
+  _id: string,
+  addressType: string,
+  city: string,
+  country: string,
+  landMark: string,
+  pinCode: number,
+  state: string
+}
+
+interface ProductId {
+  _id: string,
+  sellerId: string,
+  name: string,
+  brand: string,
+  category: string,
+  subCategory: string,
+  price: number,
+  discountPrice: number,
+  currency: string,
+  sizes: string[],
+  colors: string[],
+  stock: number,
+  rating: number,
+  numReviews: number,
+  description: string,
+  image: string[],
+  isNewArrival: boolean,
+  isFavorite: boolean,
+}
+
+interface Items {
+  _id: string,
+  color: string,
+  quantity: number,
+  size: string,
+  productId: ProductId
+}
+
+type OrderStatus = "paid" | "COD" | "failed";
+
+interface Order {
+  _id: string,
+  createdAt: string,
+  updatedAt: string,
+  status: OrderStatus | string,
+  paymentMethod: string,
+  paymentDate: string,
+  items: Items[],
+  deliveryAddress: Address,
+  userId: User
+}
+
+const statusConfig: StatusConfig = {
   paid: {
     label: "Paid",
     bg: "bg-orange-50",
@@ -26,20 +109,17 @@ const statusConfig = {
     dot: "bg-red-500",
   },
 };
- 
 
-
-export const Orders = () => {
+export const Orders: FC = () => {
   
   // fetch orders
-  const { data, isPending } = useOrders();
+  const { data, isPending } = useOrders<Order[]>();
 
   if(isPending){
     return (
       <div className="max-w-6xl mx-auto md:p-10 p-4 space-y-5"> <h2 className="text-2xl font-semibold text-gray-800 mb-6"> Orders List </h2> {Array(5) .fill(0) .map((_, index) => ( <OrdersShimmer key={index} /> ))} </div>
     )
   }
-
   
   if (!data?.length) return <PageNotFound title="Orders" />;
 
@@ -65,7 +145,7 @@ export const Orders = () => {
  
       {/* Orders List */}
       <div className="space-y-4">
-        {data?.map((order) =>
+        {data?.map((order: Order) =>
           order?.items?.map((item, index) => {
             const status = statusConfig[order.status] || statusConfig.failed;
             const itemTotal =
@@ -109,7 +189,7 @@ export const Orders = () => {
                   <div className="flex flex-col sm:flex-row gap-4">
  
                     {/* Product Image */}
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                       <img
                         src={item?.productId?.image?.[0]}
                         alt={item?.productId?.name}
@@ -144,7 +224,7 @@ export const Orders = () => {
                         </div>
  
                         {/* Price */}
-                        <div className="text-right flex-shrink-0">
+                        <div className="text-right shrink-0">
                           <p className="text-lg font-bold text-amber-500">
                             &#8377;{itemTotal.toFixed(2)}
                           </p>
@@ -156,7 +236,7 @@ export const Orders = () => {
                       <div className="pt-4 border-t border-orange-50">
                         <div className="flex items-start gap-2">
                           <svg
-                            className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0"
+                            className="w-4 h-4 text-orange-400 mt-0.5 shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"

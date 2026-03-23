@@ -1,8 +1,13 @@
+import type { FC } from "react";
 
+interface FooterItems {
+    title: string,
+    links: string[]
+}
 
-export const Footer = () => {
+export const Footer: FC = () => {
 
-    const linkSections = [
+    const linkSections: FooterItems[] = [
         {
             title: "Quick Links",
             links: ["Home", "Shop", "New Arrivals","Top Collections"]
@@ -22,8 +27,8 @@ export const Footer = () => {
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-32">
             <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b border-gray-500/30 text-gray-500">
                 <div>
-                    <img className="w-34 md:w-32 scale-120" src="../../public/Fabricue.png" alt="dummyLogoColored" />
-                    <p className="max-w-[410px] mt-6">Fabricue is your destination for trend-forward fashion, premium quality, and everyday comfort — designed to elevate your style effortlessly.</p>
+                    <img className="w-34 md:w-32 scale-120" src="https://res.cloudinary.com/dyakynych/image/upload/v1774282219/Fabricue_y4qvws.png" alt="dummyLogoColored" />
+                    <p className="max-w-102.5 mt-6">Fabricue is your destination for trend-forward fashion, premium quality, and everyday comfort — designed to elevate your style effortlessly.</p>
                 </div>
                 <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5">
                     {linkSections.map((section, index) => (

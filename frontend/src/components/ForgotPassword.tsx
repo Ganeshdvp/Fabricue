@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useNavigate } from "react-router";
 import { emailRegex } from '../utils/constants';
 import { Loading } from "./Loading";
 import useForgotPassword from "../hooks/useForgotPassword";
 
 
-export const ForgotPassword = () => {
+export const ForgotPassword: FC = () => {
 
     const navigate = useNavigate();
-    const [email, setEmail] = useState(null);
-    const [errorSend, setErrorSend] = useState(null);
+    const [email, setEmail] = useState<string>("");
+    const [errorSend, setErrorSend] = useState<string | null>(null);
 
 
     // send otp to server
     const {mutate, isPending, isError, error} = useForgotPassword();
 
     // send otp
-    const handleSendEmail = ()=>{
+    const handleSendEmail = (): void=>{
       if(!email) return;
       setErrorSend(null);
 
@@ -25,10 +25,10 @@ export const ForgotPassword = () => {
       }
 
       mutate({email: email}, {
-         onSuccess: (data)=>{
+         onSuccess: (data: {data: string}): void=>{
         sessionStorage.setItem('token',data?.data);
         navigate('/enter-otp', {state: {email}});
-        setEmail(null);
+        setEmail("");
       }
       });
     }

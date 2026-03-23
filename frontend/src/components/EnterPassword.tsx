@@ -1,22 +1,22 @@
 import { Link, useLocation, useNavigate } from "react-router";
 import {passwordRegex} from '../utils/constants';
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { Loading } from "./Loading";
 import useEnterPassword from "../hooks/useEnterPassword";
 
-export const EnterPassword = () => {
+export const EnterPassword: FC = () => {
 
     const navigate = useNavigate();
-    const [password, setPassword] = useState(null);
-    const [passwordError, setPasswordError] = useState(null);
+    const [password, setPassword] = useState<string>("");
+    const [passwordError, setPasswordError] = useState<string | null>(null);
     const location = useLocation();
-    const email = location.state?.email;
+    const email = location.state?.email as string;
 
 
     // enter password api
   const {mutate, isPending, isError, error} = useEnterPassword();
 
-const handleClick = ()=>{
+const handleClick = (): void=>{
 
   if(!password || !password.trim()) return;
 
@@ -35,7 +35,7 @@ const handleClick = ()=>{
   mutate(data, {
     onSuccess: ()=>{
     navigate('/login');
-    setPassword(null);
+    setPassword("");
   },
   });
 }
@@ -45,7 +45,7 @@ const handleClick = ()=>{
     <div className="w-full flex items-center justify-center h-screen bg-[url(https://img.freepik.com/premium-photo/background-with-grip_1286621-341.jpg?semt=ais_rp_progressive&w=740&q=80)] bg-no-repeat bg-cover bg-center">
           <div className="bg-white text-gray-500 w-110 h-90 mx-4 md:p-6 p-4 text-left text-sm rounded-lg shadow-[0px_0px_10px_5px] shadow-black/10">
             <h2 className="text-2xl font-semibold mb-2 text-center text-gray-800">Create a New Password</h2>
-            <p className="text-[12px] mb-8 translate-x-22 text-center mb-8 max-w-60">Enter a new password for your account to continue securely.</p>
+            <p className="text-[12px] mb-8 translate-x-22 text-center max-w-60">Enter a new password for your account to continue securely.</p>
             <label htmlFor="password">New Password</label>
             <input id="password" value={password} onChange={e=> setPassword(e.target.value)} className="w-full border mt-1 border-gray-500/30 focus:border-amber-500 outline-none rounded py-2.5 px-4" type="text" placeholder="Enter your new password" />
             {

@@ -1,10 +1,42 @@
 import { useSelector } from "react-redux";
 import { Card, NewArrivalCard } from "./Card";
+import type { FC } from "react";
 
 
-export const HomeCardsContainer = ({data}) => {
+interface ProductData {
+   _id: string;
+  name: string;
+  brand: string;
+  price: number;
+  discountPrice: number;
+  rating: number;
+  description: string;
+  image: string[];
+  isFavorite: boolean;
+  category: string,
+  colors: string[],
+  currency: string,
+  isNewArrival:boolean,
+  numReviews: number,
+  sellerId: string,
+  sizes: string[],
+  stock: number,
+  subCategory: string,
+  createdAt: string,
+  updatedAt: string,
+}
 
-    const productStore = useSelector((store) => store.product);
+interface HomeCardsContainerProps {
+  data: ProductData[];
+}
+
+interface RootState {
+  product: ProductData[]
+}
+
+export const HomeCardsContainer: FC<HomeCardsContainerProps> = ({data}) => {
+
+    const productStore = useSelector((store: RootState) => store.product);
 
     // higer order component
     const IsNewArrivalCard = NewArrivalCard(Card);

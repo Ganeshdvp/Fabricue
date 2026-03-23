@@ -98,7 +98,7 @@ export const ViewProduct = () => {
         <div className="max-w-6xl w-full px-4 md:px-8 mx-auto mt-10 mb-16">
           <div className="flex flex-col lg:flex-row gap-10 mt-4">
             {/* LEFT — Images */}
-            <div className="flex gap-3 flex-shrink-0">
+            <div className="flex gap-3 shrink-0">
               {/* Thumbnails */}
               <div className="flex flex-col gap-2">
                 {data?.image?.map((image, index) => (
@@ -122,7 +122,7 @@ export const ViewProduct = () => {
               </div>
 
               {/* Main Image */}
-              <div className="w-72 md:w-96 h-80 md:h-[420px] rounded-2xl bg-amber-50 border border-amber-100 overflow-hidden flex items-center justify-center">
+              <div className="w-72 md:w-96 h-80 md:h-105 rounded-2xl bg-amber-50 border border-amber-100 overflow-hidden flex items-center justify-center">
                 <img
                   src={data?.image[imageIndex]}
                   alt={data?.name}
@@ -313,7 +313,7 @@ export const ViewProduct = () => {
                   disabled={cartPending}
                   className="flex-1 py-3.5 rounded-2xl border-2 border-amber-200 bg-amber-50 text-amber-700 font-semibold text-sm hover:bg-amber-100 transition cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  {cartPending ? <Loading /> : `Add to Cart`}
+                  {cartPending ? <Loading color="border-amber-500"/> : `Add to Cart`}
                 </button>
                 <button
                   onClick={handleBuyButton}
