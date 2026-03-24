@@ -1,4 +1,6 @@
-export const CartShimmer = () => {
+import type { FC } from "react";
+
+export const CartShimmer: FC = () => {
   return (
     <>
       <div className="flex flex-col md:flex-row py-16 max-w-7xl w-full px-6 mx-auto gap-10 animate-pulse">
@@ -51,7 +53,7 @@ export const CartShimmer = () => {
   </div>
 
   {/* RIGHT SIDE - ORDER SUMMARY */}
-  <div className="max-w-[360px] w-full bg-gray-100/40 p-5 border border-gray-300/70">
+  <div className="max-w-90 w-full bg-gray-100/40 p-5 border border-gray-300/70">
 
     <div className="h-6 w-40 bg-gray-300 rounded"></div>
 

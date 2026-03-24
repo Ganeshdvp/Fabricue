@@ -1,10 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import type { CartItem } from '../types';
+
+const initialState = null as CartItem[] | null;
 
 const cartItemsSlice = createSlice({
     name: 'cart',
-    initialState:null,
+    initialState,
     reducers: {
-        addCart: (state, action)=>{
+        addCart: (_state, action: PayloadAction<CartItem[]>)=>{
             return action.payload;
         },
         removeCart: ()=>{

@@ -1,4 +1,6 @@
-export const ProfileShimmer = () => {
+import type { FC } from "react"
+
+export const ProfileShimmer: FC = () => {
   return (
     <>
     <section className="max-w-7xl mx-auto px-4 md:px-10 lg:px-16 py-10 animate-pulse">

@@ -32,7 +32,7 @@ export const AlertBanner: FC = () => {
       <div className="bg-amber-500 border border-gray-200 rounded-sm shadow-lg shadow-amber-100 p-4 py-6">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0 animate-bounce">
+            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 animate-bounce">
               <TriangleAlert size={18} className="text-red-500" />
             </div>
             <div>
@@ -48,7 +48,7 @@ export const AlertBanner: FC = () => {
               setFadeOut(true);
               setTimeout(() => setVisible(false), 500);
             }}
-            className="p-0.5 rounded-full hover:bg-gray-100 text-gray-50 hover:text-gray-600 transition-colors cursor-pointer flex-shrink-0"
+            className="p-0.5 rounded-full hover:bg-gray-100 text-gray-50 hover:text-gray-600 transition-colors cursor-pointer shrink-0"
           >
             <X size={20} />
           </button>

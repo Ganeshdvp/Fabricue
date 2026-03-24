@@ -39,7 +39,7 @@ export const Faqs: FC = () => {
                     Proactively answering FAQs boosts user confidence and cuts down on support tickets.
                 </p>
                 <div className='max-w-4xl w-full mt-6 flex flex-col gap-4 items-start text-left'>
-                    {faqsData.map((faq, index) => (
+                    {faqsData.map((faq: Faqs, index: number) => (
                         <div key={index} className='flex flex-col items-start w-full'>
                             <div className='flex items-center justify-between w-full cursor-pointer border border-indigo-100 p-4 rounded' onClick={() => setOpenIndex(openIndex === index ? null : index)}>
                                 <h2 className='text-sm'>{faq.question}</h2>

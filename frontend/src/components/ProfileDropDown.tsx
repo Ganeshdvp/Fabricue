@@ -8,10 +8,11 @@ import { Loading } from "./Loading";
 import {removeProduct} from '../utils/productSlice';
 import {removeAddress} from '../utils/addressSlice';
 import useLogout from "../hooks/useLogout";
+import type { FC } from "react";
 
 
 
-export const ProfileDropDown = () => {
+export const ProfileDropDown: FC = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ export const ProfileDropDown = () => {
 
     const {mutate, isPending, isError, error} = useLogout();
 
-    const handleLogout = ()=>{
+    const handleLogout = (): void=>{
         mutate(undefined, {
             onSuccess: ()=>{
             dispatch(removeUser());
@@ -39,7 +40,7 @@ export const ProfileDropDown = () => {
                     Profile
                     <Edit2Icon size={18}/>
                 </Link>
-                <Link to='/home/wishlist' className="flex items-center justify-between gap-3 hover:bg-gray-500/20 cursor-pointer px-3 py-2 rounded hover:bg-gray-500/20 transition">
+                <Link to='/home/wishlist' className="flex items-center justify-between gap-3 hover:bg-gray-500/20 cursor-pointer px-3 py-2 rounded transition">
                     Wishlist
                     <HeartIcon size={18}/>
                 </Link>
@@ -56,7 +57,7 @@ export const ProfileDropDown = () => {
                 <li onClick={handleLogout} className="flex items-center text-red-600/80 justify-between gap-3 cursor-pointer px-3 py-2 rounded hover:bg-red-600/20 transition">
                     <button disabled={isPending}>
                         {
-                            isPending ? <Loading/> : "Logout"
+                            isPending ? <Loading color="border-red-500"/> : "Logout"
                         }
                     </button>
                     <LogOut size={18}/>

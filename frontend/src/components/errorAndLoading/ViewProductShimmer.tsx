@@ -1,4 +1,6 @@
-export const ViewProductShimmer = () => {
+import type { FC } from "react"
+
+export const ViewProductShimmer: FC = () => {
   return (
     <>
     <div className="max-w-6xl w-full px-6 mx-auto mt-20 animate-pulse">

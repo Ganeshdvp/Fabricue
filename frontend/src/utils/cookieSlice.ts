@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const cookieSlice = createSlice({
     name: 'cookie',
     initialState:true,
     reducers: {
-        toggleCookie: (state, action)=>{
+        toggleCookie: (_state, action: PayloadAction<boolean>)=>{
             return action.payload;
         },
     }

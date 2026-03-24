@@ -1,6 +1,22 @@
-import { memo } from "react";
+import { memo, type Dispatch, type FC, type SetStateAction } from "react";
 
-const CATEGORIES = {
+
+type CategoryKey = "all" | "men" | "women" | "kids";
+
+interface CategoryItem {
+  readonly image: string;
+  readonly name: string;
+}
+
+type Category = Record<CategoryKey, CategoryItem[]>;
+
+interface SubCategoryProps {
+  activeCategory: CategoryKey;
+  activeSubCategory: string;
+  setActiveSubCategory: Dispatch<SetStateAction<string>>;
+}
+
+const CATEGORIES: Category = {
   all: [
     { image: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282247/MenTshirt_gashao.webp", name: "T-shirts" },
     { image: "https://res.cloudinary.com/dyakynych/image/upload/w_300,q_auto,f_auto/v1774282243/menShirt_eb0n9b.webp",  name: "Shirts" },
@@ -50,10 +66,11 @@ const CATEGORIES = {
   ],
 };
 
-export const SubCategoryBar = memo(({ activeCategory, activeSubCategory, setActiveSubCategory }) => (
+export const SubCategoryBar: FC<SubCategoryProps> = memo(({ activeCategory, activeSubCategory, setActiveSubCategory }) => (
   <div className="bg-white border-b border-gray-100 py-4 px-4">
     <div className="max-w-3xl mx-auto flex flex-wrap justify-center gap-2">
       {CATEGORIES[activeCategory].map((sub, i) => (
+        <>
         <button
           key={i}
           onClick={() => setActiveSubCategory(sub.name)}
@@ -66,6 +83,7 @@ export const SubCategoryBar = memo(({ activeCategory, activeSubCategory, setActi
           <img src={sub.image} loading="lazy" decoding="async" alt={sub.name} className="w-5 h-5 object-contain" />
           {sub.name}
         </button>
+        </>
       ))}
     </div>
   </div>

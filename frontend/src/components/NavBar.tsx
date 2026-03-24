@@ -6,28 +6,10 @@ import { ProfileDropDown } from "./ProfileDropDown";
 import { Loading } from "./Loading";
 import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems";
 import useFetchCart from "../hooks/useFetchCart"
-
-
-interface User {
-  user: {
-    _id: string | null
-  }
-}
-
-interface WishList {
-  wishList: {
-    _id: string | null
-  }[]
-}
-
-interface CartItems {
-  cartItems: {
-    _id: string | null
-  }[]
-}
+import type { RootState } from "../types";
 
 interface BadgeProps {
-  count: ReactNode;
+  readonly count: number | ReactNode;
 }
 
 
@@ -40,11 +22,11 @@ const Badge: FC<BadgeProps> = ({ count }) => (
 
 export const NavBar: FC = () => {
   const [toggle, setToggle] = useState<boolean>(false);
-  const store = useSelector((store: User) => store?.user);
-  const wishList = useSelector((store: WishList) => store.wishList);
-  const cartItems = useSelector((store: CartItems) => store.cartItems);
+  const store = useSelector((store: RootState) => store?.user);
+  const wishList = useSelector((store: RootState) => store.wishList);
+  const cartItems = useSelector((store: RootState) => store.cartItems);
   const [dropDown, setDropDown] = useState<boolean>(false);
-  const dropDownRef = useRef<HTMLElement | null>(null);
+  const dropDownRef = useRef<HTMLElement>(null);
 
   // fetch favorite items
   useFetchFavoriteItems();
@@ -69,7 +51,7 @@ export const NavBar: FC = () => {
     };
   }, []);
 
-  const navLinkCls: string = "text-sm text-gray-600 hover:text-amber-500 transition-colors font-medium";
+  const navLinkCls: string= "text-sm text-gray-600 hover:text-amber-500 transition-colors font-medium";
 
   return (
     <>
@@ -111,7 +93,7 @@ export const NavBar: FC = () => {
               <Link to="/home/wishlist">
                 <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
                   <Heart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-                  <Badge count={!wishList ? <Loading color={'border-white'} /> : wishList?.length || 0} />
+                  <Badge count={!wishList ? <Loading color={'border-white'} /> : wishList?.length ?? 0} />
                 </div>
               </Link>
 
@@ -119,7 +101,7 @@ export const NavBar: FC = () => {
               <Link to="/home/cart">
                 <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
                   <ShoppingCart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-                  <Badge count={!cartItems ? <Loading color="border-white"/> : cartItems?.length || 0} />
+                  <Badge count={!cartItems ? <Loading color="border-white"/> : cartItems?.length ?? 0} />
                 </div>
               </Link>
             </>
@@ -188,7 +170,7 @@ export const NavBar: FC = () => {
     <Link to="/home/wishlist">
       <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
         <Heart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-        <Badge count={!wishList ? <Loading color="border-white"/> : wishList?.length || 0} />
+        <Badge count={!wishList ? <Loading color="border-white"/> : wishList?.length ?? 0} />
       </div>
     </Link>
 
@@ -196,7 +178,7 @@ export const NavBar: FC = () => {
     <Link to="/home/cart">
       <div className="relative cursor-pointer hover:scale-110 transition-transform p-1">
         <ShoppingCart size={18} className="text-gray-600 hover:text-amber-500 transition-colors" />
-        <Badge count={!cartItems ? <Loading color="border-white"/> : cartItems?.length || 0} />
+        <Badge count={!cartItems ? <Loading color="border-white"/> : cartItems?.length ?? 0} />
       </div>
     </Link>
 

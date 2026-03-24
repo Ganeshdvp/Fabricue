@@ -1,4 +1,6 @@
-export const TabsShimmer = () => {
+import type { FC } from "react";
+
+export const TabsShimmer: FC = () => {
   return (
     <>
       <nav className="flex items-center justify-between px-16 md:px-16 lg:px-24 xl:px-32 py-8 border-gray-300 bg-white animate-pulse">
@@ -77,7 +79,7 @@ export const TabsShimmer = () => {
                   key={i}
                   className="rounded-lg p-4 shadow-sm bg-white animate-pulse"
                 >
-                  <div className="w-full h-[180px] bg-gray-200 rounded-md"></div>
+                  <div className="w-full h-45 bg-gray-200 rounded-md"></div>
 
                   <div className="mt-4 space-y-2">
                     <div className="h-4 bg-gray-200 rounded w-3/4"></div>

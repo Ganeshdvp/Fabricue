@@ -8,48 +8,8 @@ import useFetchCart from "../hooks/useFetchCart";
 import useIncreaseQuantity from "../hooks/useIncreaseQuantity";
 import useDeleteCart from "../hooks/useDeleteCart";
 import type { FC } from "react";
+import type { RootState, CartItem } from "../types";
 
-interface ProductId {
-  _id: string,
-  sellerId: string,
-  name: string,
-  brand: string,
-  category: string,
-  subCategory: string,
-  price: number,
-  discountPrice: number,
-  currency: string,
-  sizes: string[],
-  colors: string[],
-  stock: number,
-  rating: number,
-  numReviews: number,
-  description: string,
-  image: string[],
-  isNewArrival: boolean,
-  isFavorite: boolean,
-}
-
-interface CartItems {
-  _id: string,
-  userId: string,
-  productId: ProductId,
-  quantity: number,
-  size: string,
-  color: string,
-  createdAt: string,
-  updatedAt: string
-}
-
-interface CartState {
-  cartItems: CartItems
-}
-
-interface UserState {
-  user: {
-    _id: string
-  };
-}
 
 interface Data {
   id: string,
@@ -59,8 +19,8 @@ interface Data {
 export const Cart:FC = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const store = useSelector((store: CartState) => store?.cartItems);
-  const userStore = useSelector((store: UserState)=> store?.user);
+  const store = useSelector((store: RootState) => store?.cartItems);
+  const userStore = useSelector((store: RootState)=> store?.user);
 
   // fetching all cart items
   const { data, isPending } = useFetchCart();
@@ -71,7 +31,7 @@ export const Cart:FC = () => {
   // delete cart item
   const { mutate } = useDeleteCart();
 
-  const totalPrice: number = data?.reduce((acc: number, item: CartItems) => {
+  const totalPrice: number = data?.reduce((acc: number, item: CartItem) => {
     return acc + item?.productId?.discountPrice * item?.quantity;
   }, 0);
 
@@ -127,7 +87,7 @@ export const Cart:FC = () => {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-6">
             Shopping Cart{" "}
             <span className="text-base text-orange-500 font-normal">
-              {store?.length} item{store?.length !== 1 ? "s" : ""}
+              {data?.length} item{data?.length !== 1 ? "s" : ""}
             </span>
           </h1>
  
@@ -142,7 +102,7 @@ export const Cart:FC = () => {
  
           {/* Cart Items */}
           <div className="space-y-3 mt-3">
-            {data?.map((product: CartItems, index: number) => (
+            {data?.map((product: CartItem, index: number) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-sm hover:shadow-orange-50 transition-all duration-200 p-4"

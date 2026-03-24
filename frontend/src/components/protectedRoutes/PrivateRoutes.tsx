@@ -1,9 +1,15 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import type { RootState } from "../../types";
+import type { FC, ReactNode } from "react";
 
-export const PrivateRoutes = ({ children }) => {
+interface PrivateRoutesProps {
+  children: ReactNode
+}
 
-  const store = useSelector(store=> store.user);
+export const PrivateRoutes: FC<PrivateRoutesProps> = ({ children }) => {
+
+  const store = useSelector((store: RootState)=> store.user);
 
   if (!store) {
     return <Navigate to="/" replace />;

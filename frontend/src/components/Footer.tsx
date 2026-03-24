@@ -31,7 +31,7 @@ export const Footer: FC = () => {
                     <p className="max-w-102.5 mt-6">Fabricue is your destination for trend-forward fashion, premium quality, and everyday comfort — designed to elevate your style effortlessly.</p>
                 </div>
                 <div className="flex flex-wrap justify-between w-full md:w-[45%] gap-5">
-                    {linkSections.map((section, index) => (
+                    {linkSections.map((section: FooterItems , index: number) => (
                         <div key={index}>
                             <h3 className="font-semibold text-base text-gray-900 md:mb-5 mb-2">{section.title}</h3>
                             <ul className="text-sm space-y-1">

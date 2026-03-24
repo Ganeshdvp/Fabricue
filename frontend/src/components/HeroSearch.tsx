@@ -4,31 +4,7 @@ import { Loading } from "./Loading";
 import useSearchAI from "../hooks/useSearchAI";
 import useSearching from "../hooks/useSearching";
 import { useNavigate } from "react-router";
-
-
-interface ProductData {
-   _id: string;
-  name: string;
-  brand: string;
-  price: number;
-  discountPrice: number;
-  rating: number;
-  description: string;
-  image: string[];
-  isFavorite: boolean;
-  category: string,
-  colors: string[],
-  currency: string,
-  isNewArrival:boolean,
-  numReviews: number,
-  sellerId: string,
-  sizes: string[],
-  stock: number,
-  subCategory: string,
-  createdAt: string,
-  updatedAt: string,
-}
-
+import type {ProductData} from "../types";
 
 export const HeroSearch: FC = () => {
   const [searchInput, setSearchInput] = useState<string>("");

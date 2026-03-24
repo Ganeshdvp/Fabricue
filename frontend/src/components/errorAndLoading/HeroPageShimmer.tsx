@@ -1,4 +1,6 @@
-export const HeroPageShimmer = () => {
+import type { FC } from "react";
+
+export const HeroPageShimmer: FC = () => {
   return (
     <>
     <nav className="flex items-center justify-between px-16 md:px-16 lg:px-24 xl:px-32 py-8 border-gray-300 bg-white animate-pulse">
@@ -59,7 +61,7 @@ export const HeroPageShimmer = () => {
           </div>
 
           {/* Search bar */}
-          <div className="flex items-center gap-2 border border-gray-200 h-13 rounded-full overflow-hidden mt-6 w-full max-w-[440px]">
+          <div className="flex items-center gap-2 border border-gray-200 h-13 rounded-full overflow-hidden mt-6 w-full max-w-110">
             <div className="h-full w-full bg-gray-200"></div>
             <div className="h-10 w-32 bg-gray-300 rounded-full mr-2"></div>
           </div>
@@ -95,7 +97,7 @@ export const HeroPageShimmer = () => {
 
         {/* RIGHT SIDE IMAGE */}
         <div className="w-full max-w-md md:max-w-lg">
-          <div className="w-full h-[350px] bg-gray-200 rounded-lg"></div>
+          <div className="w-full h-87.5 bg-gray-200 rounded-lg"></div>
         </div>
       </div>
     </section>

@@ -1,0 +1,108 @@
+[
+  {
+    "id": "order_track",
+    "category": "Orders",
+    "tags": ["order", "tracking"],
+    "priority": 1,
+    "questions": [
+      "track my order",
+      "where is my order",
+      "order status",
+      "how to track order"
+    ],
+    "keywords": ["track", "order", "status"],
+    "answer": {
+      "title": "Track Your Order",
+      "description": "You can easily track your order using these steps:",
+      "steps": [
+        "Go to My Orders",
+        "Select your order",
+        "Click on Track button"
+      ]
+    }
+  },
+  {
+    "id": "order_cancel",
+    "category": "Orders",
+    "tags": ["order", "cancel"],
+    "priority": 2,
+    "questions": [
+      "cancel my order",
+      "how to cancel order",
+      "stop my order"
+    ],
+    "keywords": ["cancel", "order"],
+    "answer": {
+      "title": "Cancel Order",
+      "description": "You can cancel your order before it is shipped.",
+      "note": "Once shipped, cancellation is not possible."
+    }
+  },
+  {
+    "id": "refund_status",
+    "category": "Payments",
+    "tags": ["refund", "payment"],
+    "priority": 1,
+    "questions": [
+      "refund status",
+      "when will i get refund",
+      "money back status"
+    ],
+    "keywords": ["refund", "money"],
+    "answer": {
+      "title": "Refund Information",
+      "description": "Refunds are processed within 5–7 business days.",
+      "extra": "Amount will be credited to original payment method."
+    }
+  },
+  {
+    "id": "payment_issue",
+    "category": "Payments",
+    "tags": ["payment", "error"],
+    "priority": 2,
+    "questions": [
+      "payment failed",
+      "payment issue",
+      "transaction failed"
+    ],
+    "keywords": ["payment", "failed"],
+    "answer": {
+      "title": "Payment Issue",
+      "description": "Your payment might have failed due to network or bank issues.",
+      "steps": [
+        "Retry payment",
+        "Use different method",
+        "Check bank balance"
+      ]
+    }
+  },
+  {
+    "id": "delivery_time",
+    "category": "Shipping",
+    "tags": ["delivery"],
+    "priority": 1,
+    "questions": [
+      "delivery time",
+      "how long delivery",
+      "when will my order arrive"
+    ],
+    "keywords": ["delivery", "time"],
+    "answer": {
+      "title": "Delivery Time",
+      "description": "Delivery usually takes 3–7 days depending on your location."
+    }
+  },
+  {
+    "id": "fallback",
+    "category": "General",
+    "tags": ["fallback"],
+    "priority": 99,
+    "questions": [],
+    "keywords": [],
+    "answer": {
+      "title": "Need Help?",
+      "description": "Sorry, I didn’t understand your question.",
+      "extra": "Please select one of the options below 👇"
+    }
+  }
+]

@@ -1,5 +1,5 @@
 // components/Tabs.jsx
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleCookie } from "../utils/cookieSlice";
 import { Cookie } from "./Cookie";
@@ -8,11 +8,13 @@ import { CategoryTabs } from "./CategoryTabs";
 import { SubCategoryBar } from "./SubCategoryBar";
 import { ProductSection } from "./ProductSection";
 import ChatBot from "./ChatBot";
+import type { RootState } from "../types";
 
-export const Tabs = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [activeSubCategory, setActiveSubCategory] = useState("");
-  const store = useSelector((store) => store.cookieToggle);
+
+export const Tabs: FC = () => {
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeSubCategory, setActiveSubCategory] = useState<string>("");
+  const store = useSelector((store: RootState) => store.cookieToggle);
   const dispatch = useDispatch();
 
   return (

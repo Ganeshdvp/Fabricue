@@ -3,36 +3,13 @@ import { PageNotFound } from './errorAndLoading/PageNotFound';
 import { CardShimmer } from "./errorAndLoading/cardShimmer";
 import useFetchFavoriteItems from "../hooks/useFetchFavoriteItems";
 import type { FC } from "react";
-
-
-interface ProductData {
-   _id: string;
-  name: string;
-  brand: string;
-  price: number;
-  discountPrice: number;
-  rating: number;
-  description: string;
-  image: string[];
-  isFavorite: boolean;
-  category: string,
-  colors: string[],
-  currency: string,
-  isNewArrival:boolean,
-  numReviews: number,
-  sellerId: string,
-  sizes: string[],
-  stock: number,
-  subCategory: string,
-  createdAt: string,
-  updatedAt: string,
-}
+import type { ProductData } from "../types";
 
 
 export const WishList: FC = () => {
  
   // fetch favorite
-  const { data, isPending } = useFetchFavoriteItems<ProductData[]>();
+  const { data, isPending } = useFetchFavoriteItems();
 
  
   if (isPending) {

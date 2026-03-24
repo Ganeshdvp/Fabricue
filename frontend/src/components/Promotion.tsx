@@ -1,6 +1,7 @@
+import type { FC } from "react"
 import { Link } from "react-router"
 
-export const Promotion = () => {
+export const Promotion: FC = () => {
   return (
     <>
     <div className="flex flex-col md:flex-row items-center justify-around text-sm border border-gray-200 rounded-2xl mx-auto max-w-5xl w-full bg-amber-50 mt-26">
@@ -23,7 +24,7 @@ export const Promotion = () => {
                 </div>
             </div>
         
-            <img loading="lazy" decoding="async" className="max-w-[375px] pt-10 md:p-0" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/appDownload/excitedWomenImage.png" alt="excitedWomenImage" />
+            <img loading="lazy" decoding="async" className="max-w-93.75 pt-10 md:p-0" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/appDownload/excitedWomenImage.png" alt="excitedWomenImage" />
         </div>
 
     </>

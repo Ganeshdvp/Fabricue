@@ -1,4 +1,10 @@
-export const PageNotFound = ({title}) => {
+import type { FC } from "react"
+
+interface PageNotFoundProps {
+  title: string
+}
+
+export const PageNotFound: FC<PageNotFoundProps> = ({title}) => {
   return (
     <>
     <div className="flex flex-col items-center justify-center mt-24 text-sm max-md:px-4">

@@ -2,89 +2,18 @@ import { OrdersShimmer } from "./errorAndLoading/OrdersShimmer";
 import { PageNotFound } from "./errorAndLoading/PageNotFound";
 import useOrders from "../hooks/useOrders"
 import type { FC } from "react";
+import type { CartItem, Order, OrderStatus} from "../types";
 
 
-interface StatusConfig {
-  paid: {
-    label: string,
-    bg: string,
-    text: string,
-    border: string,
-    dot: string
-  },
-  COD: {
-    label: string,
-    bg: string,
-    text: string,
-    border: string,
-    dot: string
-  },
-  failed: {
-    label: string,
-    bg: string,
-    text: string,
-    border: string,
-    dot: string
-  }
+interface StatusStyle {
+  readonly label: string;
+  readonly bg: string;
+  readonly text: string;
+  readonly border: string;
+  readonly dot: string;
 }
 
-interface User {
-  fullName: string,
-  _id: string
-}
-
-interface Address {
-  _id: string,
-  addressType: string,
-  city: string,
-  country: string,
-  landMark: string,
-  pinCode: number,
-  state: string
-}
-
-interface ProductId {
-  _id: string,
-  sellerId: string,
-  name: string,
-  brand: string,
-  category: string,
-  subCategory: string,
-  price: number,
-  discountPrice: number,
-  currency: string,
-  sizes: string[],
-  colors: string[],
-  stock: number,
-  rating: number,
-  numReviews: number,
-  description: string,
-  image: string[],
-  isNewArrival: boolean,
-  isFavorite: boolean,
-}
-
-interface Items {
-  _id: string,
-  color: string,
-  quantity: number,
-  size: string,
-  productId: ProductId
-}
-
-type OrderStatus = "paid" | "COD" | "failed";
-
-interface Order {
-  _id: string,
-  createdAt: string,
-  updatedAt: string,
-  status: OrderStatus | string,
-  paymentMethod: string,
-  paymentDate: string,
-  items: Items[],
-  deliveryAddress: Address,
-  userId: User
-}
+type StatusConfig = Record<OrderStatus, StatusStyle>;
 
 const statusConfig: StatusConfig = {
   paid: {
@@ -113,7 +42,7 @@ const statusConfig: StatusConfig = {
 export const Orders: FC = () => {
   
   // fetch orders
-  const { data, isPending } = useOrders<Order[]>();
+  const { data, isPending } = useOrders();
 
   if(isPending){
     return (
@@ -124,9 +53,7 @@ export const Orders: FC = () => {
   if (!data?.length) return <PageNotFound title="Orders" />;
 
   return (
-    <>
-
-    <div className="max-w-5xl mx-auto px-4 md:px-8 py-10">
+    <section className="max-w-5xl mx-auto px-4 md:px-8 py-10">
  
       {/* Header */}
       <div className="mb-8 pb-6 border-b border-orange-100">
@@ -146,7 +73,7 @@ export const Orders: FC = () => {
       {/* Orders List */}
       <div className="space-y-4">
         {data?.map((order: Order) =>
-          order?.items?.map((item, index) => {
+          order?.items?.map((item: CartItem, index: number) => {
             const status = statusConfig[order.status] || statusConfig.failed;
             const itemTotal =
               item?.productId?.discountPrice * item?.quantity +
@@ -276,8 +203,6 @@ export const Orders: FC = () => {
           })
         )}
       </div>
-    </div>
- 
-    </>
+    </section>
   );
 };

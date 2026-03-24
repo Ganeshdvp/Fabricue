@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../utils/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,25 +8,32 @@ import { ViewProductShimmer } from "./errorAndLoading/ViewProductShimmer";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import useFetchProduct from "../hooks/useFetchProduct";
+import type { RootState } from "../types";
 
-export const ViewProduct = () => {
+interface CardData {
+  size: string;
+  selectedColor: string;
+  quantity: number;
+}
+
+export const ViewProduct: FC = () => {
   const queryClient = useQueryClient();
 
   const { id } = useParams();
-  const [size, setSize] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState(null);
-  const [imageIndex, setImageIndex] = useState(0);
+  const [size, setSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [error, setError] = useState<string | null>(null);
+  const [imageIndex, setImageIndex] = useState<number>(0);
   const navigate = useNavigate();
-  const store = useSelector((store) => store?.user);
+  const store = useSelector((store: RootState) => store?.user);
 
   // fetch product
   const { data, isPending } = useFetchProduct({ id });
 
   // add to cart
   const { mutate: cartMutate, isPending: cartPending } = useMutation({
-    mutationFn: async (cartData) => {
+    mutationFn: async (cartData: CardData) => {
       const res = await axios.post(BASE_URL + `/cart/add/${id}`, cartData, {
         withCredentials: true,
       });
@@ -34,6 +41,7 @@ export const ViewProduct = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart", store?._id] });
+      navigate("/home/cart");
       toast.success("successfully added to cart", {
         style: {
           background: "#fb923c", // orange-600
@@ -50,7 +58,7 @@ export const ViewProduct = () => {
 
   if (isPending) return <ViewProductShimmer />;
 
-  const handleBuyButton = () => {
+  const handleBuyButton = (): void => {
     if (!size || !selectedColor) {
       return setError("all fields are required!");
     }
@@ -70,23 +78,22 @@ export const ViewProduct = () => {
     });
   };
 
-  const handleAddToCart = () => {
-    const cartData = {
+  const handleAddToCart = (): void => {
+    const cartData: CardData = {
       size: size || data?.sizes[0],
       selectedColor: selectedColor || data?.colors[0],
       quantity: quantity,
     };
     cartMutate(cartData);
-    navigate("/home/cart");
   };
 
-  const increase = () => {
+  const increase = (): void => {
     if (data?.stock > quantity) {
       setQuantity(quantity + 1);
     }
   };
 
-  const decrease = () => {
+  const decrease = (): void => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
@@ -101,7 +108,7 @@ export const ViewProduct = () => {
             <div className="flex gap-3 shrink-0">
               {/* Thumbnails */}
               <div className="flex flex-col gap-2">
-                {data?.image?.map((image, index) => (
+                {data?.image?.map((image: string, index: number) => (
                   <div
                     key={index}
                     onClick={() => setImageIndex(index)}
@@ -256,7 +263,7 @@ export const ViewProduct = () => {
                   </span>
                 </p>
                 <div className="flex gap-2 flex-wrap">
-                  {data?.colors.map((color, index) => (
+                  {data?.colors.map((color: string, index: number) => (
                     <button
                       key={index}
                       onClick={() => setSelectedColor(color)}
@@ -279,7 +286,7 @@ export const ViewProduct = () => {
                   Size
                 </p>
                 <div className="flex gap-2 flex-wrap">
-                  {data?.sizes.map((s, index) => (
+                  {data?.sizes.map((s: string, index: number) => (
                     <button
                       key={index}
                       onClick={() => setSize(s)}
@@ -313,7 +320,11 @@ export const ViewProduct = () => {
                   disabled={cartPending}
                   className="flex-1 py-3.5 rounded-2xl border-2 border-amber-200 bg-amber-50 text-amber-700 font-semibold text-sm hover:bg-amber-100 transition cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  {cartPending ? <Loading color="border-amber-500"/> : `Add to Cart`}
+                  {cartPending ? (
+                    <Loading color="border-amber-500" />
+                  ) : (
+                    `Add to Cart`
+                  )}
                 </button>
                 <button
                   onClick={handleBuyButton}

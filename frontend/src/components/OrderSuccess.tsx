@@ -1,16 +1,20 @@
 import { useEffect, useState, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 
+const REDIRECT_DELAY = 3000;
+
 export const OrderSuccess: FC = () => {
   const navigate = useNavigate();
-  const [timer, setTimer] = useState<boolean>(true);
+    const [isRedirecting, setIsRedirecting] = useState<boolean>(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setTimer(false);
+    const timeoutId = setTimeout(() => {
+      setIsRedirecting(false);
       navigate("/home/orders");
-    }, 3000);
-  }, []);
+    }, REDIRECT_DELAY);
+
+    return ()=> clearTimeout(timeoutId)
+  }, [navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 py-10 overflow-hidden">
@@ -49,10 +53,10 @@ export const OrderSuccess: FC = () => {
 
   {/* Redirect Button */}
   <button
-    disabled={timer}
+    disabled={isRedirecting}
     className="mt-6 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-amber-500 text-white rounded-lg shadow-md hover:bg-amber-600 transition disabled:opacity-50 w-full max-w-xs sm:w-auto"
   >
-    {timer && "Redirecting to orders..."}
+    {isRedirecting && "Redirecting to orders..."}
   </button>
 
 </div>

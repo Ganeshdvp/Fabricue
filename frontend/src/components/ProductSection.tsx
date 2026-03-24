@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { HomeCardsContainer } from "./HomeCardsContainer";
 import { Pagination } from "./Pagination";
 import { PageNotFound } from "./errorAndLoading/PageNotFound";
 import useProductSection from "../hooks/useProductSection";
 
+interface ProductSectionProps {
+  activeCategory: string,
+  activeSubCategory: string
+}
 
-export const ProductSection = ({ activeCategory, activeSubCategory }) => {
-  const [page, setPage] = useState(1);
+export const ProductSection: FC<ProductSectionProps> = ({ activeCategory, activeSubCategory }) => {
+  const [page, setPage] = useState<number>(1);
 
   const { data, isPending } = useProductSection({activeCategory, activeSubCategory, page});
 
@@ -20,7 +24,7 @@ export const ProductSection = ({ activeCategory, activeSubCategory }) => {
                   key={i}
                   className="rounded-lg p-4 shadow-sm bg-white animate-pulse"
                 >
-                  <div className="w-full h-[180px] bg-gray-200 rounded-md"></div>
+                  <div className="w-full h-45 bg-gray-200 rounded-md"></div>
 
                   <div className="mt-4 space-y-2">
                     <div className="h-4 bg-gray-200 rounded w-3/4"></div>

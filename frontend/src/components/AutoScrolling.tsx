@@ -1,8 +1,8 @@
 import { useState, type FC } from "react";
 
 interface Card {
-  title: string,
-  image: string
+  readonly title: string,
+  readonly image: string
 }
 
 const cardData: Card[] = [
@@ -41,7 +41,7 @@ export const AutoScrolling:FC = () => {
         onMouseLeave={() => setStopScroll(false)}
       >
         {/* Left fade */}
-        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent" />
+        <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-linear-to-r from-white to-transparent" />
 
         {/* Scrolling track */}
         <div
@@ -54,7 +54,7 @@ export const AutoScrolling:FC = () => {
           {[...cardData, ...cardData].map((card, index) => (
             <div
               key={index}
-              className="w-56 mx-4 h-80 relative group hover:scale-90 transition-all duration-300 flex-shrink-0"
+              className="w-56 mx-4 h-80 relative group hover:scale-90 transition-all duration-300 shrink-0"
             >
               <img
                 src={card.image}
@@ -71,7 +71,7 @@ export const AutoScrolling:FC = () => {
         </div>
 
         {/* Right fade */}
-        <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent" />
+        <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-linear-to-l from-white to-transparent" />
       </div>
 
       {/* Keyframe — minimal, only what's needed */}

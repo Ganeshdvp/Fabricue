@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PrivateRoutes } from "./protectedRoutes/PrivateRoutes";
 import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type FC } from "react";
 import { TabsShimmer } from "./errorAndLoading/TabsShimmer";
 import { Body } from "./Body";
 
@@ -27,7 +27,7 @@ const HomeFaqs = lazy(() => import("./HomeFaqs").then(m => ({ default: m.HomeFaq
 
 
 
-export const Routing = () => {
+export const Routing: FC = () => {
 
   const routing = createBrowserRouter([
     {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FC, type FormEvent } from "react";
 import {
   MapPin,
   Mail,
@@ -32,18 +32,44 @@ import useEditAddress from "../hooks/useEditAddress";
 import useAddAddress from "../hooks/useAddAddress";
 import useDeleteAddress from "../hooks/useDeleteAddress";
 import useLogout from "../hooks/useLogout"
+import type { RootState } from "../types";
 
-export const Profile = () => {
+interface EditProfile {
+  fullName: string,
+  image: string | null
+}
+
+interface AddAddress {
+  addressType: string,
+    landMark: string,
+    city: string,
+    state: string,
+    pinCode: string,
+    country: string,
+}
+
+interface EditAddress {
+  id: string,
+  addressType: string,
+    landMark: string,
+    city: string,
+    state: string,
+    pinCode: string,
+    country: string,
+}
+
+
+export const Profile: FC = () => {
   const queryClient = useQueryClient();
 
-  const [editProfile, setEditProfile] = useState(false);
-  const [editProfileData, setEditProfileData] = useState({
+  const [editProfile, setEditProfile] = useState<boolean>(false);
+  const [editProfileData, setEditProfileData] = useState<EditProfile>({
     fullName: "",
     image: null,
   });
 
-  const [addAddresss, setAddAddress] = useState(false);
-  const [addAddressData, setAddAddressData] = useState({
+  const [addAddresss, setAddAddress] = useState<boolean>(false);
+  const [addAddressData, setAddAddressData] = useState<AddAddress>({
     addressType: "Home",
     landMark: "",
     city: "",
@@ -52,8 +78,8 @@ export const Profile = () => {
     country: "",
   });
 
-  const [editAddress, setEditAddress] = useState(false);
-  const [editAddressData, setEditAddressData] = useState({
+  const [editAddress, setEditAddress] = useState<boolean>(false);
+  const [editAddressData, setEditAddressData] = useState<EditAddress>({
     id: "",
     addressType: "",
     landMark: "",
@@ -65,7 +91,7 @@ export const Profile = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userStore = useSelector(store=> store?.user);
+  const userStore = useSelector((store: RootState)=> store?.user);
 
   // profile fetch
   const { data, isPending } = useProfile();
@@ -94,7 +120,7 @@ export const Profile = () => {
   if (isPending) return <ProfileShimmer />;
 
   // profile edit button
-  const handleEditProfile = async (e) => {
+  const handleEditProfile = async (e): void => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -133,7 +159,7 @@ export const Profile = () => {
   };
 
   // edit address button
-  const handleEditAddress = (e) => {
+  const handleEditAddress = (e): void => {
     e.preventDefault();
     editAddressMutate(editAddressData, {
       onSuccess: () => {
@@ -155,7 +181,7 @@ export const Profile = () => {
   };
 
   // add address button
-  const handleAddAddress = (e) => {
+  const handleAddAddress = (e): void => {
     e.preventDefault();
     addAddressMutate(addAddressData, {
       onSuccess: () => {
@@ -185,7 +211,7 @@ export const Profile = () => {
   };
 
   // delete address button
-  const handleAddressDelete = (id) => {
+  const handleAddressDelete = (id): void => {
     deleteAddressMutate(id, {
        onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
@@ -205,7 +231,7 @@ export const Profile = () => {
   };
 
   // logout
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     logoutMutate(undefined, {
       onSuccess: ()=>{
             dispatch(removeUser());
@@ -218,8 +244,8 @@ export const Profile = () => {
     });
   };
 
-  /* ─── shared input className ─────────────────────────────── */
-  const inputCls =
+  // shared input className
+  const inputCls: string =
     "w-full border border-gray-200 bg-gray-50 rounded-xl px-3.5 py-2.5 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent focus:bg-white transition";
 
   return (

@@ -7,46 +7,11 @@ import { useState, type ComponentType, type FC } from "react";
 import useAddToCart from "../hooks/useAddToCart";
 import useAddOrRemoveFavorite from "../hooks/useAddOrRemoveFavorite";
 import { useQueryClient } from "@tanstack/react-query";
-
-interface ProductData {
-   _id: string;
-  name: string;
-  brand: string;
-  price: number;
-  discountPrice: number;
-  rating: number;
-  description: string;
-  image: string[];
-  isFavorite: boolean;
-  category: string,
-  colors: string[],
-  currency: string,
-  isNewArrival:boolean,
-  numReviews: number,
-  sellerId: string,
-  sizes: string[],
-  stock: number,
-  subCategory: string,
-  createdAt: string,
-  updatedAt: string,
-}
+import type { ProductData, RootState} from "../types";
 
 interface CardProps {
-  productData: ProductData;
+  readonly productData: ProductData;
 }
-
-interface User {
-  user: {
-    _id: string
-  };
-}
-
-interface RootState {
-  wishList: {
-    _id: string
-  }[];
-}
-
 
 export const Card:FC<CardProps> = ({ productData }) => {
   const {
@@ -62,7 +27,7 @@ export const Card:FC<CardProps> = ({ productData }) => {
   } = productData;
 
   const navigate = useNavigate();
-  const store = useSelector((store: User)=> store?.user);
+  const store = useSelector((store: RootState)=> store?.user);
   const wishList = useSelector((store: RootState) => store?.wishList);
   const [favorite, setFavorite] = useState<boolean>(
   wishList?.some(item => item?._id === _id) ?? isFavorite

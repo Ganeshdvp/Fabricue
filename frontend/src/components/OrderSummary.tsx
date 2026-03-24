@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { Loading } from "./Loading";
 import { Info } from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
@@ -7,25 +7,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { addAddress } from "../utils/addressSlice";
 import usePayment from "../hooks/usePayment";
 import useProfile from "../hooks/useProfile";
+import type { CartItem, RootState, PaymentMethod, Address } from "../types";
 
+interface OrderSummaryProps {
+  readonly totalPrice: number,
+  readonly store: CartItem[]
+}
 
-export const OrderSummary = ({ totalPrice, store }) => {
+interface OrderItem {
+  productId: string,
+  color: string,
+  quantity: number,
+  size: string
+}
+
+export const OrderSummary: FC<OrderSummaryProps> = ({ totalPrice, store }) => {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userStore = useSelector((store) => store?.user);
+  const userStore = useSelector((store: RootState) => store?.user);
 
   const location = useLocation();
-  const storeFromBuyNow = location.state?.items;
-  const totalPriceFromBuyNow = location.state?.totalPrice;
+  const storeFromBuyNow = location.state?.items as OrderItem | undefined;
+  const totalPriceFromBuyNow = location.state?.totalPrice as number;
 
-  const addressStore = useSelector((store) => store?.address);
-  const [showAddress, setShowAddress] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const addressStore = useSelector((store: RootState) => store?.address);
+  const [showAddress, setShowAddress] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("COD");
 
-  const price = totalPriceFromBuyNow || totalPrice;
-  const totalAmount = price + (price * 2) / 100;
+  const price: number = totalPriceFromBuyNow ?? totalPrice;
+  const totalAmount: number = price + (price * 2) / 100;
 
   // fetch profile of addresses
   const { data } = useProfile();
@@ -39,10 +51,10 @@ export const OrderSummary = ({ totalPrice, store }) => {
   } = usePayment();
 
   // place order button
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = (): void => {
     const itemsModify =
-      storeFromBuyNow ||
-      store.map((item) => ({
+      storeFromBuyNow ??
+      store.map((item: CartItem) => ({
         productId: item.productId._id,
         size: item.size,
         color: item.color,
@@ -71,10 +83,10 @@ export const OrderSummary = ({ totalPrice, store }) => {
 
   return (
     <>
-      <div className="w-full max-w-[360px] mx-auto mt-12">
+      <div className="w-full max-w-90 mx-auto mt-12">
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
           {/* Top strip */}
-          <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300" />
+          <div className="h-1 w-full bg-linear-to-r from-amber-500 via-amber-400 to-amber-300" />
 
           <div className="p-5">
             <h2 className="text-base font-semibold text-gray-900 mb-4">
@@ -123,7 +135,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
                   {/* Address Dropdown */}
                   {showAddress && (
                     <div className="absolute top-full mt-1 left-0 right-0 z-50 bg-white border border-orange-100 rounded-xl shadow-lg shadow-orange-50 overflow-hidden">
-                      {data?.address?.map((address) => (
+                      {data?.address?.map((address: Address) => (
                         <div
                           key={address._id}
                           onClick={() => {
@@ -160,7 +172,7 @@ export const OrderSummary = ({ totalPrice, store }) => {
                 Payment Method
               </p>
               <select
-                onChange={(e) => setPaymentMethod(e.target.value)}
+                onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
                 className="w-full bg-amber-50 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none cursor-pointer"
               >
                 <option value="COD">Cash on Delivery</option>

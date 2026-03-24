@@ -3,8 +3,8 @@ import { Link } from "react-router";
 
 
 interface Faqs {
-  question: string,
-  answer: string
+  readonly question: string,
+  readonly answer: string
 }
 
 

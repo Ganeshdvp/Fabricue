@@ -1,30 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { Routing } from "./components/Routing"
-import axios from "axios";
-import { addUser } from './utils/userSlice.js';
-import { useDispatch } from "react-redux";
-import { BASE_URL } from './utils/constants.js';
+import type { FC } from "react";
+import { Routing } from "./components/Routing";
+import useUserCheck from "./hooks/useUserCheck";
 
 
-function App() {
-
-  const dispatch = useDispatch();
+const App: FC = () => {
 
    // fetch user
-  const {isLoading} = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/user/check", {
-        withCredentials: true,
-      });
-      dispatch(addUser(res?.data?.data))
-      return res?.data?.data;
-    },
-    retry: false,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
-    refetchOnMount: true
-  });
+  const {isLoading} = useUserCheck();
 
   if(isLoading){
       return (
@@ -38,9 +20,7 @@ function App() {
 
 
   return (
-    <>
     <Routing/>
-    </>
   )
 }
 

@@ -1,10 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Address } from '../types';
+
+
+const initialState = null as Address | null;
 
 const addressSlice = createSlice({
     name: 'address',
-    initialState:null,
+    initialState,
     reducers: {
-        addAddress: (state, action)=>{
+        addAddress: (_state, action: PayloadAction<Address>) =>{
             return action.payload;
         },
         removeAddress: ()=>{
