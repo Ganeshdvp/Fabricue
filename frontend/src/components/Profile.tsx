@@ -1,4 +1,4 @@
-import { useState, type FC, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FC, type FormEvent } from "react";
 import {
   MapPin,
   Mail,
@@ -24,40 +24,58 @@ import { removeCart } from "../utils/cartItemsSlice";
 import { ProfileShimmer } from "./errorAndLoading/ProfileShimmer";
 import imageCompression from "browser-image-compression";
 import { toast } from "sonner";
-import {removeProduct} from '../utils/productSlice';
-import {removeAddress} from '../utils/addressSlice';
+import { removeProduct } from "../utils/productSlice";
+import { removeAddress } from "../utils/addressSlice";
 import useProfile from "../hooks/useProfile";
 import useEditProfile from "../hooks/useEditProfile";
 import useEditAddress from "../hooks/useEditAddress";
 import useAddAddress from "../hooks/useAddAddress";
 import useDeleteAddress from "../hooks/useDeleteAddress";
-import useLogout from "../hooks/useLogout"
-import type { RootState } from "../types";
+import useLogout from "../hooks/useLogout";
+import type { Address, RootState, AddAddress } from "../types";
 
 interface EditProfile {
-  fullName: string,
-  image: string | null
-}
-
-interface AddAddress {
-  addressType: string,
-    landMark: string,
-    city: string,
-    state: string,
-    pinCode: string,
-    country: string,
+  readonly fullName: string;
+  readonly image: File | null;
 }
 
 interface EditAddress {
-  id: string,
-  addressType: string,
-    landMark: string,
-    city: string,
-    state: string,
-    pinCode: string,
-    country: string,
+  readonly id: string;
+  readonly addressType: string;
+  readonly landMark: string;
+  readonly city: string;
+  readonly state: string;
+  readonly pinCode: string;
+  readonly country: string;
 }
 
+interface QuickActions {
+  to: string,
+  Icon: FC<{size?: number; className?: string}>,
+  label: string,
+  sub: string
+}
+
+const quickActions: QuickActions[] = [
+  {
+    to: "/home/orders",
+    Icon: Package,
+    label: "My Orders",
+    sub: "Track your purchases",
+  },
+  {
+    to: "/home/wishlist",
+    Icon: Heart,
+    label: "Wishlist",
+    sub: "Saved products",
+  },
+  {
+    to: "/home/cart",
+    Icon: ShoppingCart,
+    label: "Cart",
+    sub: "Items in your cart",
+  },
+];
 
 export const Profile: FC = () => {
   const queryClient = useQueryClient();
@@ -91,16 +109,18 @@ export const Profile: FC = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userStore = useSelector((store: RootState)=> store?.user);
+  const userStore = useSelector((store: RootState) => store?.user);
 
   // profile fetch
   const { data, isPending } = useProfile();
 
   // edit profile
-  const { mutate: editProfileMutate, isPending: editProfilePending } = useEditProfile();
+  const { mutate: editProfileMutate, isPending: editProfilePending } =
+    useEditProfile();
 
   // edit address
-  const { mutate: editAddressMutate, isPending: editAddressPending } = useEditAddress();
+  const { mutate: editAddressMutate, isPending: editAddressPending } =
+    useEditAddress();
 
   // add address
   const {
@@ -112,7 +132,8 @@ export const Profile: FC = () => {
   } = useAddAddress();
 
   // delete address
-  const { mutate: deleteAddressMutate, isPending: deleteAddressPending } = useDeleteAddress();
+  const { mutate: deleteAddressMutate, isPending: deleteAddressPending } =
+    useDeleteAddress();
 
   // logout
   const { mutate: logoutMutate, isPending: logoutPending } = useLogout();
@@ -120,7 +141,9 @@ export const Profile: FC = () => {
   if (isPending) return <ProfileShimmer />;
 
   // profile edit button
-  const handleEditProfile = async (e): void => {
+  const handleEditProfile = async (
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -134,14 +157,16 @@ export const Profile: FC = () => {
       };
       const compressedImage = await imageCompression(
         editProfileData.image,
-        options
+        options,
       );
       formData.append("image", compressedImage, editProfileData.image.name);
     }
 
     editProfileMutate(formData, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
+        queryClient.invalidateQueries({
+          queryKey: ["profile", userStore?._id],
+        });
         setEditProfile(false);
         toast.success("updated profile successfully!", {
           style: {
@@ -159,11 +184,13 @@ export const Profile: FC = () => {
   };
 
   // edit address button
-  const handleEditAddress = (e): void => {
+  const handleEditAddress = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     editAddressMutate(editAddressData, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
+        queryClient.invalidateQueries({
+          queryKey: ["profile", userStore?._id],
+        });
         setEditAddress(false);
         toast.success("updated address successfully!", {
           style: {
@@ -181,66 +208,70 @@ export const Profile: FC = () => {
   };
 
   // add address button
-  const handleAddAddress = (e): void => {
+  const handleAddAddress = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     addAddressMutate(addAddressData, {
       onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
-      setAddAddress(false);
-      setAddAddressData({
-        addressType: "Home",
-        landMark: "",
-        city: "",
-        state: "",
-        pinCode: "",
-        country: "",
-      });
-      toast.success("successfully address added!", {
-        style: {
-          background: "#fb923c",
-          color: "#ffffff",
-          border: "1px solid #fb923c",
-          borderRadius: "10px",
-          fontSize: "12px",
-          width: "250px",
-          height: "40px",
-        },
-      });
-    },
+        queryClient.invalidateQueries({
+          queryKey: ["profile", userStore?._id],
+        });
+        setAddAddress(false);
+        setAddAddressData({
+          addressType: "Home",
+          landMark: "",
+          city: "",
+          state: "",
+          pinCode: "",
+          country: "",
+        });
+        toast.success("successfully address added!", {
+          style: {
+            background: "#fb923c",
+            color: "#ffffff",
+            border: "1px solid #fb923c",
+            borderRadius: "10px",
+            fontSize: "12px",
+            width: "250px",
+            height: "40px",
+          },
+        });
+      },
     });
   };
 
   // delete address button
-  const handleAddressDelete = (id): void => {
+  const handleAddressDelete = (id: string): void => {
     deleteAddressMutate(id, {
-       onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["profile", userStore?._id] });
-      toast.success("deleted address successfully!", {
-        style: {
-          background: "#fb923c",
-          color: "#ffffff",
-          border: "1px solid #fb923c",
-          borderRadius: "10px",
-          fontSize: "12px",
-          width: "250px",
-          height: "40px",
-        },
-      });
-    },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["profile", userStore?._id],
+        });
+        toast.success("deleted address successfully!", {
+          style: {
+            background: "#fb923c",
+            color: "#ffffff",
+            border: "1px solid #fb923c",
+            borderRadius: "10px",
+            fontSize: "12px",
+            width: "250px",
+            height: "40px",
+          },
+        });
+      },
     });
   };
 
   // logout
   const handleLogout = (): void => {
     logoutMutate(undefined, {
-      onSuccess: ()=>{
-            dispatch(removeUser());
-            dispatch(removeFavorite());
-            dispatch(removeCart());
-            dispatch(removeProduct());
-            dispatch(removeAddress());
-            navigate('/');
-        }
+      onSuccess: () => {
+        dispatch(removeUser());
+        dispatch(removeFavorite());
+        dispatch(removeCart());
+        dispatch(removeProduct());
+        dispatch(removeAddress());
+        navigate("/");
+      },
     });
   };
 
@@ -251,20 +282,26 @@ export const Profile: FC = () => {
   return (
     <section className="min-h-screen bg-gray-50 py-10 px-4 md:px-10 lg:px-16">
       <div className="max-w-5xl mx-auto space-y-8">
-
         {/* ── PROFILE HEADER ──────────────────────────────────── */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             {/* Avatar */}
-            <div className="relative flex-shrink-0">
+            <div className="relative shrink-0">
               <img
                 src={data?.image}
                 alt="profile"
                 className="w-24 h-24 md:w-28 md:h-28 rounded-2xl object-cover ring-4 ring-amber-100"
               />
               <span className="absolute -bottom-2 -right-2 bg-amber-500 rounded-full p-1.5 shadow-md border-2 border-white">
-                <svg className="w-3 h-3 text-white fill-none stroke-white stroke-2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z" />
+                <svg
+                  className="w-3 h-3 text-white fill-none stroke-white stroke-2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"
+                  />
                 </svg>
               </span>
             </div>
@@ -285,7 +322,7 @@ export const Profile: FC = () => {
                 onClick={() => {
                   setEditProfile(true);
                   setEditProfileData({
-                    fullName: data?.userId?.fullName,
+                    fullName: data?.userId?.fullName ?? "",
                     image: null,
                   });
                 }}
@@ -319,7 +356,7 @@ export const Profile: FC = () => {
                   <input
                     type="text"
                     value={editProfileData.fullName}
-                    onChange={(e) =>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setEditProfileData((prev) => ({
                         ...prev,
                         fullName: e.target.value,
@@ -347,13 +384,16 @@ export const Profile: FC = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) =>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setEditProfileData((prev) => ({
                         ...prev,
-                        image: e.target.files[0],
+                        image: e.target.files?.[0] ?? null,
                       }))
                     }
-                    className={inputCls + " cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"}
+                    className={
+                      inputCls +
+                      " cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
+                    }
                   />
                 </div>
                 <div className="flex gap-3 pt-2">
@@ -368,7 +408,11 @@ export const Profile: FC = () => {
                     type="submit"
                     className="flex-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {editProfilePending ? <Loading color={'border-white'}/> : "Save Changes"}
+                    {editProfilePending ? (
+                      <Loading color={"border-white"} />
+                    ) : (
+                      "Save Changes"
+                    )}
                   </button>
                 </div>
               </form>
@@ -382,21 +426,24 @@ export const Profile: FC = () => {
             Quick Access
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { to: "/home/orders", Icon: Package, label: "My Orders", sub: "Track your purchases" },
-              { to: "/home/wishlist", Icon: Heart, label: "Wishlist", sub: "Saved products" },
-              { to: "/home/cart", Icon: ShoppingCart, label: "Cart", sub: "Items in your cart" },
-            ].map(({ to, Icon, label, sub }) => (
+            {quickActions.map(({ to, Icon, label, sub }) => (
               <Link to={to} key={label}>
                 <div className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group cursor-pointer">
-                  <div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center group-hover:bg-amber-100 transition-colors flex-shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center group-hover:bg-amber-100 transition-colors shrink-0">
                     <Icon size={20} className="text-amber-500" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-800 text-sm">{label}</h4>
-                    <p className="text-xs text-gray-400 mt-0.5 truncate">{sub}</p>
+                    <h4 className="font-semibold text-gray-800 text-sm">
+                      {label}
+                    </h4>
+                    <p className="text-xs text-gray-400 mt-0.5 truncate">
+                      {sub}
+                    </p>
                   </div>
-                  <ChevronRight size={16} className="text-gray-300 group-hover:text-amber-400 transition-colors" />
+                  <ChevronRight
+                    size={16}
+                    className="text-gray-300 group-hover:text-amber-400 transition-colors"
+                  />
                 </div>
               </Link>
             ))}
@@ -420,13 +467,13 @@ export const Profile: FC = () => {
 
           <div className="grid md:grid-cols-2 gap-4">
             {data?.address?.length > 0 ? (
-              data?.address?.map((addr) => (
+              data?.address?.map((addr: Address) => (
                 <div
                   key={addr._id}
                   className="bg-white rounded-2xl border border-gray-100 p-5 flex items-start justify-between gap-3 group hover:shadow-sm transition-shadow"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0 mt-0.5">
                       <MapPin size={16} className="text-amber-500" />
                     </div>
                     <div>
@@ -459,17 +506,17 @@ export const Profile: FC = () => {
                       </button>
                     </div>
                   </div>
-                  {
-                    deleteAddressPending ? (
-                      <p className="opacity-0 group-hover:opacity-100 hover:bg-red-100 p-2 rounded-xl transition-all cursor-pointer text-red-400 flex-shrink-0"><Loading/></p>
-                    ) : (
-                      <Trash
-                    onClick={() => handleAddressDelete(addr._id)}
-                    size={32}
-                    className="opacity-0 group-hover:opacity-100 hover:bg-red-100 p-2 rounded-xl transition-all cursor-pointer text-red-400 flex-shrink-0"
-                  />
-                    )
-                  }
+                  {deleteAddressPending ? (
+                    <p className="opacity-0 group-hover:opacity-100 hover:bg-red-100 p-2 rounded-xl transition-all cursor-pointer text-red-400 shrink-0">
+                      <Loading color="border-red-500"/>
+                    </p>
+                  ) : (
+                    <Trash
+                      onClick={() => handleAddressDelete(addr._id)}
+                      size={32}
+                      className="opacity-0 group-hover:opacity-100 hover:bg-red-100 p-2 rounded-xl transition-all cursor-pointer text-red-400 shrink-0"
+                    />
+                  )}
                 </div>
               ))
             ) : (
@@ -506,7 +553,7 @@ export const Profile: FC = () => {
                   </label>
                   <select
                     value={addAddressData?.addressType}
-                    onChange={(e) =>
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                       setAddAddressData((prev) => ({
                         ...prev,
                         addressType: e.target.value,
@@ -524,7 +571,7 @@ export const Profile: FC = () => {
                   </label>
                   <input
                     value={addAddressData.landMark}
-                    onChange={(e) =>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setAddAddressData((prev) => ({
                         ...prev,
                         landMark: e.target.value,
@@ -542,7 +589,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={addAddressData.city}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setAddAddressData((prev) => ({
                           ...prev,
                           city: e.target.value,
@@ -560,7 +607,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={addAddressData.state}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setAddAddressData((prev) => ({
                           ...prev,
                           state: e.target.value,
@@ -579,7 +626,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={addAddressData.pinCode}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setAddAddressData((prev) => ({
                           ...prev,
                           pinCode: e.target.value,
@@ -597,7 +644,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={addAddressData.country}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setAddAddressData((prev) => ({
                           ...prev,
                           country: e.target.value,
@@ -632,7 +679,11 @@ export const Profile: FC = () => {
                     type="submit"
                     className="flex-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {addAddressPending ? <Loading color={'border-white'}/> : "Save Address"}
+                    {addAddressPending ? (
+                      <Loading color={"border-white"} />
+                    ) : (
+                      "Save Address"
+                    )}
                   </button>
                 </div>
                 {addAddressIsError && (
@@ -671,7 +722,7 @@ export const Profile: FC = () => {
                   </label>
                   <select
                     value={editAddressData.addressType}
-                    onChange={(e) =>
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                       setEditAddressData((prev) => ({
                         ...prev,
                         addressType: e.target.value,
@@ -689,7 +740,7 @@ export const Profile: FC = () => {
                   </label>
                   <input
                     value={editAddressData.landMark}
-                    onChange={(e) =>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setEditAddressData((prev) => ({
                         ...prev,
                         landMark: e.target.value,
@@ -705,7 +756,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={editAddressData.city}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setEditAddressData((prev) => ({
                           ...prev,
                           city: e.target.value,
@@ -720,7 +771,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={editAddressData.state}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setEditAddressData((prev) => ({
                           ...prev,
                           state: e.target.value,
@@ -737,7 +788,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={editAddressData.pinCode}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setEditAddressData((prev) => ({
                           ...prev,
                           pinCode: e.target.value,
@@ -752,7 +803,7 @@ export const Profile: FC = () => {
                     </label>
                     <input
                       value={editAddressData.country}
-                      onChange={(e) =>
+                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setEditAddressData((prev) => ({
                           ...prev,
                           state: e.target.value,
@@ -774,7 +825,11 @@ export const Profile: FC = () => {
                     type="submit"
                     className="flex-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {editAddressPending ? <Loading color={'border-white'} /> : "Update Address"}
+                    {editAddressPending ? (
+                      <Loading color={"border-white"} />
+                    ) : (
+                      "Update Address"
+                    )}
                   </button>
                 </div>
               </form>
@@ -801,7 +856,10 @@ export const Profile: FC = () => {
                     <Info size={13} className="text-gray-300 cursor-help" />
                   </span>
                 </div>
-                <ChevronRight size={15} className="text-gray-300 group-hover:text-amber-400 transition-colors" />
+                <ChevronRight
+                  size={15}
+                  className="text-gray-300 group-hover:text-amber-400 transition-colors"
+                />
               </div>
             </Link>
 
@@ -813,12 +871,15 @@ export const Profile: FC = () => {
                 <LogOut size={15} className="text-red-400" />
               </div>
               <span className="text-sm font-medium text-red-500">
-                {logoutPending ? <Loading color={'border-red-600'}/> : "Log Out"}
+                {logoutPending ? (
+                  <Loading color={"border-red-600"} />
+                ) : (
+                  "Log Out"
+                )}
               </span>
             </button>
           </div>
         </div>
-
       </div>
     </section>
   );

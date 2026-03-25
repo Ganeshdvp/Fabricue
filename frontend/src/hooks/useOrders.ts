@@ -2,14 +2,22 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useSelector } from "react-redux";
+import type { Order, RootState } from "../types";
+
+type OrdersResponse = Order[];
+
+interface ApiResponse {
+  data: OrdersResponse;
+}
+
 
 const useOrders = ()=>{
-    const store = useSelector(store => store?.user);
+    const store = useSelector((store: RootState) => store?.user);
 
-    const query = useQuery({
+    const query = useQuery<OrdersResponse>({
     queryKey: ["order", store?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/orders", {
+    queryFn: async (): Promise<OrdersResponse> => {
+      const res = await axios.get<ApiResponse>(BASE_URL + "/orders", {
         withCredentials: true,
       });
       return res?.data?.data;

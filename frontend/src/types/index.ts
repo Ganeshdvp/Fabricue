@@ -73,6 +73,16 @@ export interface Address {
   readonly state: string
 }
 
+// Add address
+export interface AddAddress {
+  readonly addressType: string;
+  readonly landMark: string;
+  readonly city: string;
+  readonly state: string;
+  readonly pinCode: string;
+  readonly country: string;
+}
+
 // status
 export type OrderStatus = "paid" | "COD" | "failed";
 export type PaymentMethod = "COD" | "Online";

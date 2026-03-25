@@ -34,9 +34,3 @@
 - used Image compression and browser-image-compression
 - store static images in cloudinary
 - Lazy Loading with route based and images.
-
-
-
-Image optimized
-convert react to typescript ( pending )
-chatbot ( pending )

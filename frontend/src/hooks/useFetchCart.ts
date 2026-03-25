@@ -4,16 +4,23 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addCart } from "../utils/cartItemsSlice";
 import { useEffect } from "react";
+import type { RootState, CartItem } from "../types";
+
+type CartResponse = CartItem[];
+
+interface ApiResponse {
+  data: CartResponse;
+}
 
 
 const useFetchCart = ()=>{
      const dispatch = useDispatch();
-     const userStore = useSelector(store => store?.user);
+     const userStore = useSelector((store: RootState) => store?.user);
 
-    const query = useQuery({
+    const query = useQuery<CartResponse>({
     queryKey: ["cart", userStore?._id],
-    queryFn: async () => {
-      const res = await axios.get(BASE_URL + "/cart", {
+    queryFn: async (): Promise<CartResponse> => {
+      const res = await axios.get<ApiResponse>(BASE_URL + "/cart", {
         withCredentials: true,
       });
       return res?.data?.data;
