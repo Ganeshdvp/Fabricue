@@ -39,7 +39,8 @@ const productSchema = mongoose.Schema({
     currency: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        default: "INR"
     },
     sizes: {
         type: [String],

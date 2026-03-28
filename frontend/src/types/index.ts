@@ -39,6 +39,10 @@ export interface CartItem {
   readonly color: string,
 }
 
+export interface sidebarDashboard {
+  content: string
+}
+
 // Reduxt State
 export interface RootState {
     readonly user: User | null,
@@ -46,7 +50,8 @@ export interface RootState {
     readonly cartItems: CartItem | null,
     readonly product: ProductData[] | null,
     readonly address: Address | null,
-    cookieToggle: boolean
+    cookieToggle: boolean,
+    sidebarDashboard: sidebarDashboard
 }
 
 // Order

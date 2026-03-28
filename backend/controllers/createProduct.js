@@ -1,30 +1,73 @@
 import Product from "../models/Products.js";
+import cloudinary from "../utils/cloudinary.js";
 
 const createProduct = async (req, res) => {
   try {
-    const { name, brand, category, description, discountPrice, currency, price, subCategory, stock, numReviews, rating, sizes, colors, isNewArrival, image } = req.body;
+    const {
+      name,
+      brand,
+      category,
+      description,
+      discountPrice,
+      price,
+      subCategory,
+      stock,
+      sizes,
+      colors,
+    } = req?.body;
+    const files = req.files;
 
-    const subCategoryCase = subCategory.charAt(0).toUpperCase() + subCategory.slice(1).toLowerCase();
+    // validate
+    if (!name || !brand || !category || !price || !discountPrice || !subCategory || !stock || !sizes || !colors) {
+      return res.status(400).json({
+        message: "Required fields are missing",
+      });
+    }
 
+    const categoryCase = category.slice(0).toLowerCase();
+    const subCategoryCase =
+      subCategory.charAt(0).toUpperCase() + subCategory.slice(1).toLowerCase();
+
+    if (!files || files.length === 0) {
+      return res.status(400).json({
+        message: "Images not found",
+      });
+    }
+
+    // HANDLE ARRAY VALUES (FormData fix)
+    const parsedSizes =
+      typeof sizes === "string" ? [sizes] : sizes || [];
+
+    const parsedColors =
+      typeof colors === "string" ? [colors] : colors || [];
+
+    // images save in cloudinary
+    const uploadedImages = [];
+
+    for (const file of files) {
+      const base64 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+
+      const result = await cloudinary.uploader.upload(base64, {
+        folder: "ProductImages",
+      });
+      uploadedImages.push(result.secure_url);
+    }
 
     // Create a new product instance
     const newProduct = new Product({
       sellerId: req.user?._id,
       name,
       brand,
-      category,
+      category: categoryCase,
       description,
-      discountPrice,
-      currency,
-      price,
-      subCategory : subCategoryCase,
-      stock,
-      numReviews,
-      rating,
-      sizes,
-      colors,
+      discountPrice: Number(discountPrice) ,
+      price: Number(price),
+      subCategory: subCategoryCase,
+      stock: Number(stock),
+      sizes: parsedSizes,
+      colors: parsedColors,
       isNewArrival: true,
-      image
+      image: uploadedImages,
     });
 
     // save db
@@ -34,9 +77,8 @@ const createProduct = async (req, res) => {
     res
       .status(200)
       .json({ message: "Product created successfully", data: newProduct });
-      
   } catch (err) {
-    res.status(500).json({ message: "Error creating product" });
+    res.status(500).json({ message: "Error creating product"});
   }
 };
 

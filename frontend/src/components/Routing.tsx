@@ -24,7 +24,7 @@ const OrderSummary = lazy(() => import("./OrderSummary").then(m => ({ default: m
 const HomeAbout = lazy(() => import("./HomeAbout").then(m => ({ default: m.HomeAbout })));
 const Contact = lazy(() => import("./Contact").then(m => ({ default: m.Contact })));
 const HomeFaqs = lazy(() => import("./HomeFaqs").then(m => ({ default: m.HomeFaqs })));
-
+const Dashboard = lazy(()=> import("./seller/Dashboard").then(m=> ({ default: m.Dashboard})));
 
 
 export const Routing: FC = () => {
@@ -97,7 +97,8 @@ export const Routing: FC = () => {
         { path: "profile", element: <Profile/>},
         { path: "about", element: <HomeAbout/>},
         { path: "contact", element: <Contact/>},
-        { path: 'faqs', element: <HomeFaqs/>}
+        { path: 'faqs', element: <HomeFaqs/>},
+        { path: 'dashboard', element: <Dashboard/>}
       ],
     },
     {

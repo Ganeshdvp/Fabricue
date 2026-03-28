@@ -1,5 +1,5 @@
-import { Edit2Icon, HeartIcon, LogOut, ShoppingBag, ShoppingCart } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { Blocks, Edit2Icon, HeartIcon, LogOut, ShoppingBag, ShoppingCart } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import {removeUser} from '../utils/userSlice';
 import {removeFavorite} from '../utils/wishListSlice';
 import {removeCart} from '../utils/cartItemsSlice';
@@ -9,6 +9,7 @@ import {removeProduct} from '../utils/productSlice';
 import {removeAddress} from '../utils/addressSlice';
 import useLogout from "../hooks/useLogout";
 import type { FC } from "react";
+import type { RootState } from "../types";
 
 
 
@@ -16,6 +17,7 @@ export const ProfileDropDown: FC = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const store = useSelector((store: RootState)=> store.user);
     
 
     const {mutate, isPending, isError, error} = useLogout();
@@ -36,10 +38,19 @@ export const ProfileDropDown: FC = () => {
     <>
      <div className="z-100 text-sm w-44 p-3 bg-white border border-gray-500/30 text-gray-800/80 rounded-md font-medium shadow-2xl">
             <ul className="flex flex-col gap-px">
-                <Link to='/home/profile' className="flex items-center justify-between gap-2 cursor-pointer px-3 py-2 rounded hover:bg-gray-500/20 transition">
+                {
+                    store?.role === "seller" ? (
+                        <Link to='/home/dashboard' className="flex items-center justify-between gap-2 cursor-pointer px-3 py-2 rounded hover:bg-gray-500/20 transition">
+                    Dashboard
+                    <Blocks size={18}/>
+                </Link>
+                    ) : (
+                        <Link to='/home/profile' className="flex items-center justify-between gap-2 cursor-pointer px-3 py-2 rounded hover:bg-gray-500/20 transition">
                     Profile
                     <Edit2Icon size={18}/>
                 </Link>
+                    )
+                }
                 <Link to='/home/wishlist' className="flex items-center justify-between gap-3 hover:bg-gray-500/20 cursor-pointer px-3 py-2 rounded transition">
                     Wishlist
                     <HeartIcon size={18}/>

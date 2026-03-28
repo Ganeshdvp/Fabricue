@@ -5,6 +5,7 @@ import cartItemsSlice from './cartItemsSlice';
 import cookieSlice from './cookieSlice';
 import productSlice from './productSlice';
 import addressSlice from './addressSlice';
+import SideBarDashboardSlice from './SideBarDashboardSlice';
 
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
         cookieToggle : cookieSlice,
         product: productSlice,
         address: addressSlice,
+        sidebarDashboard: SideBarDashboardSlice,
     }
 })
 

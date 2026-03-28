@@ -16,7 +16,9 @@ interface ProductSectionResponse {
 }
 
 interface ApiResponse {
-  data: ProductSectionResponse;
+  message: string,
+  data: ProductData[],
+  totalPages: number
 }
 
 const useProductSection = ({
@@ -31,7 +33,7 @@ const useProductSection = ({
         `${BASE_URL}/product?page=${page}&category=${activeCategory}&subCategory=${activeSubCategory}`,
         { withCredentials: true }
       );
-      return res.data.data;
+      return res.data;
     },
     enabled: !!activeCategory,
     refetchOnMount: true,

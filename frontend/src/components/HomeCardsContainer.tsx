@@ -15,6 +15,7 @@ export const HomeCardsContainer: FC<HomeCardsContainerProps> = ({data}) => {
     // higer order component
     const IsNewArrivalCard = NewArrivalCard(Card);
 
+
   return (
     <>
     <div className="flex justify-center gap-x-2 sm:gap-x-6 gap-y-4 px-4 flex-wrap sm:max-w-8xl mx-auto">

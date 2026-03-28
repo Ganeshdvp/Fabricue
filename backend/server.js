@@ -15,7 +15,7 @@ import { paymentRouter } from './routes/PaymentRouter.js';
 import { ordersRouter } from './routes/ordersRouter.js';
 import { profileRouter } from './routes/profileRouter.js';
 import {stripeWebhook} from './controllers/stripeWebhook.js';
-
+import {sellerRouter} from './routes/sellerRouter.js';
 
 // enable .env variables
 dotenv.config();
@@ -63,6 +63,7 @@ app.use('/cart', cartLimit, CartRouter);
 app.use('/favorite', favoriteLimit, FavoriteRouter);
 app.use('/payment', paymentLimit, paymentRouter);
 app.use('/orders', orderLimit, ordersRouter);
+app.use('/seller', sellerRouter)
 
 // Database connection
 connectDB().then(()=>{

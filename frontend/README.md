@@ -9,7 +9,7 @@
 - TenStack Query
 - Formik & Yup
 - browser-image-compression ( sending compressed images to server, it leads for fast.)
-
+- Recharts
 
 # Pages
 - Developed Hero page related content.
@@ -23,6 +23,7 @@
 - Developed HomeAbout page
 - Developed HomeFaqs page
 - Implemented Shimmer UI for all pages
+- Developed Seller Dashboard
 
 
 # Configuration

@@ -4,10 +4,12 @@ import { Pagination } from "./Pagination";
 import { PageNotFound } from "./errorAndLoading/PageNotFound";
 import useProductSection from "../hooks/useProductSection";
 
+
 interface ProductSectionProps {
   activeCategory: string,
   activeSubCategory: string
 }
+
 
 export const ProductSection: FC<ProductSectionProps> = ({ activeCategory, activeSubCategory }) => {
   const [page, setPage] = useState<number>(1);
