@@ -1,15 +1,15 @@
-import { MainDashboard } from "./MainDashboard"
-import { SidebarDashboard } from "./SidebarDashboard"
+import { MainDashboard } from "./MainDashboard";
+import { SidebarDashboard } from "./SidebarDashboard";
 
 export const Dashboard = () => {
   return (
     <>
-    <div className="flex h-screen">
+      <div className="flex h-screen">
         {/* sidebar */}
-    <SidebarDashboard/>
-    {/* main */}
-    <MainDashboard/>
-    </div>
+        <SidebarDashboard />
+        {/* main */}
+        <MainDashboard />
+      </div>
     </>
-  )
-}
+  );
+};

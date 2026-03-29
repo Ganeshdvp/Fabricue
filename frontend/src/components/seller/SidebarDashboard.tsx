@@ -16,7 +16,7 @@ const menuData: MenuItem[] = [
   {
     id: 2,
     title: "Orders Management",
-    children: ["Orders", "Revenue"],
+    children: ["Orders"],
   },
   {
     id: 3,

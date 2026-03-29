@@ -2,15 +2,28 @@ import Product from "../models/Products.js";
 
 const getSellerProducts = async (req, res) => {
   try {
+    const loggedInUser = req.user;
+
     // check if user is authenticated
-    if (!req.user) {
+    if (!loggedInUser) {
       return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    if (loggedInUser.role !== "seller") {
+      return res
+        .status(403)
+        .json({
+          message: "Access denied. Only sellers can access this resource.",
+        });
     }
 
     const sellerId = req.user?._id;
 
     // fetch products from database
-    const products = await Product.find({ sellerId }).populate("sellerId", "_id fullName email");
+    const products = await Product.find({ sellerId }).populate(
+      "sellerId",
+      "_id fullName email",
+    );
 
     if (!products || products.length === 0) {
       return res

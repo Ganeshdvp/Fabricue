@@ -29,6 +29,7 @@
 - PATCH admin/products/updateProduct/:id
 - DELETE admin/products/deleteProduct/:id
 - GET admin/products/allProducts
+- GET seller/orders
 
 -- Cart --
 - GET cart/
@@ -77,6 +78,7 @@
 - created paymentRouter.js
 - created ordersRouter.js
 - created profileRouter.js
+- created sellerRouter.js
 
 # Create Controllers
 
@@ -108,6 +110,7 @@
 - created updateProduct.js
 - created deleteProduct.js
 - created sellerProducts.js
+- created ordersBySeller.js
 
 -- Cart Items --
 - created addCart.js

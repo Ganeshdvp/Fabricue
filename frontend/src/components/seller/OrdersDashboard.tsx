@@ -1,154 +1,320 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
-
-type Order = {
-  id: string;
-  customer: string;
-  date: string;
-  amount: number;
-  status: "Delivered" | "Pending" | "Cancelled";
-};
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 
 export const OrdersDashboard = () => {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("All");
-  const [dateFilter, setDateFilter] = useState<string>("7days");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [dateFilter, setDateFilter] = useState("7days");
 
-  const orders: Order[] = [
-    { id: "#ORD1234", customer: "Rahul", date: "2026-03-25", amount: 2500, status: "Delivered" },
-    { id: "#ORD1235", customer: "Anjali", date: "2026-03-20", amount: 1200, status: "Pending" },
-    { id: "#ORD1236", customer: "Vikram", date: "2026-02-15", amount: 3800, status: "Cancelled" },
-    { id: "#ORD1237", customer: "Priya", date: "2026-01-10", amount: 900, status: "Delivered" },
-  ];
+  /* Fetch */
+  const { data, isLoading } = useQuery({
+    queryKey: ["sellerOrders"],
+    queryFn: async () => {
+      const res = await axios.get(BASE_URL + "/seller/orders", {
+        withCredentials: true,
+      });
+      return res.data?.data || [];
+    },
+  });
 
-  // 📅 Date Filter Logic
-  const filterByDate = (orderDate: string) => {
+  /* Date Filter */
+  const filterByDate = (date: string) => {
     const now = new Date();
-    const order = new Date(orderDate);
+    const order = new Date(date);
+    const diff = (now.getTime() - order.getTime()) / (1000 * 60 * 60 * 24);
 
-    const diffDays = (now.getTime() - order.getTime()) / (1000 * 60 * 60 * 24);
-
-    if (dateFilter === "7days") return diffDays <= 7;
-    if (dateFilter === "month") return diffDays <= 30;
-    if (dateFilter === "6months") return diffDays <= 180;
-    if (dateFilter === "year") return diffDays <= 365;
+    if (dateFilter === "7days") return diff <= 7;
+    if (dateFilter === "month") return diff <= 30;
+    if (dateFilter === "6months") return diff <= 180;
+    if (dateFilter === "year") return diff <= 365;
 
     return true;
   };
 
-  // 🔍 Combined Filtering
-  const filteredOrders = orders.filter((order) => {
-    const matchesSearch =
-      order.customer.toLowerCase().includes(search.toLowerCase()) ||
-      order.id.toLowerCase().includes(search.toLowerCase());
+  /* FILTER (FIXED SEARCH) */
+  const filteredOrders = useMemo(() => {
+    const searchText = search.trim().toLowerCase();
 
-    const matchesStatus =
-      statusFilter === "All" || order.status === statusFilter;
+    return data?.filter((order: any) => {
+      const matchesSearch =
+        !searchText ||
+        order.items?.some((item: any) => {
+          const name = item?.productId?.name || "";
+          return name.toLowerCase().includes(searchText);
+        });
 
-    const matchesDate = filterByDate(order.date);
+      const matchesStatus =
+        statusFilter === "All" ||
+        order.status === statusFilter;
 
-    return matchesSearch && matchesStatus && matchesDate;
-  });
+      const matchesDate = filterByDate(order.createdAt);
 
-  const statusStyles = {
-    Delivered: "bg-green-100 text-green-600",
-    Pending: "bg-amber-100 text-amber-600",
-    Cancelled: "bg-red-100 text-red-500",
+      return matchesSearch && matchesStatus && matchesDate;
+    });
+  }, [data, search, statusFilter, dateFilter]);
+
+  /* Stats */
+  const stats = useMemo(() => {
+    let revenue = 0;
+    let paid = 0;
+    let failed = 0;
+    let COD = 0;
+
+    filteredOrders?.forEach((order: any) => {
+      order.items?.forEach((item: any) => {
+        revenue +=
+          (item?.productId?.discountPrice || 0) *
+          (item?.quantity || 0);
+      });
+
+      if (order.status === "paid") paid++;
+      else if (order.status === "COD") COD++;
+      else failed++;
+    });
+
+    const total = filteredOrders?.length;
+    const avg = total ? Math.round(revenue / total) : 0;
+
+    return { revenue, total, avg, paid, failed, COD };
+  }, [filteredOrders]);
+
+  /* COLORS (Professional) */
+  const COLORS = ["#FFC107", "#FFCA28", "#F44336"];
+
+  const pieData = [
+    { name: "paid", value: stats.paid },
+    { name: "COD", value: stats.COD },
+    { name: "failed", value: stats.failed },
+  ];
+
+  /* Mini Pie */
+  const MiniPie = ({ value }: { value: number }) => {
+    const data = [{ value }, { value: Math.max(stats.total - value, 0) }];
+
+    return (
+      <div className="w-12 h-12">
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie data={data} dataKey="value" innerRadius={14} outerRadius={25}>
+              <Cell fill="#FFC107" />
+               <Cell fill="#FFCA28" />
+              <Cell fill="#e5e7eb" />
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    );
   };
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
+
   return (
-    <>
-    <section className="w-full px-6 pb-6">
-      <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <section className="w-full px-4 py-4">
+      <div className="bg-white border rounded-2xl p-6 shadow-sm">
 
         {/* Header */}
         <div className="mb-6">
-          <h3 className="text-base font-semibold text-gray-800">
-            Orders Management
+          <h3 className="text-lg font-semibold text-gray-800">
+            Orders Dashboard
           </h3>
-          <p className="text-xs text-gray-500">
-            Filter and manage your orders efficiently
-          </p>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-gray-50 border rounded-xl p-4 flex justify-between items-center">
+            <div>
+              <p className="text-xs text-gray-400">Total Orders</p>
+              <h4 className="text-xl font-semibold">{stats.total}</h4>
+            </div>
+            <MiniPie value={stats.total} />
+          </div>
+
+          <div className="bg-gray-50 border rounded-xl p-4 flex justify-between items-center">
+            <div>
+              <p className="text-xs text-gray-400">Revenue</p>
+              <h4 className="text-xl font-semibold">₹{stats.revenue}</h4>
+            </div>
+            <MiniPie value={stats.paid} />
+          </div>
+
+          <div className="bg-gray-50 border rounded-xl p-4 flex justify-between items-center">
+            <div>
+              <p className="text-xs text-gray-400">Avg Order</p>
+              <h4 className="text-xl font-semibold">₹{stats.avg}</h4>
+            </div>
+            <MiniPie value={stats.COD} />
+          </div>
+
+          <div className="bg-gray-50 border rounded-xl p-2 flex items-center justify-center">
+            <p className="text-sm ml-2 font-semibold">Overall</p>
+            <ResponsiveContainer width="100%" height={100}>
+              <PieChart>
+                <Pie data={pieData} dataKey="value" outerRadius={40}>
+                  {pieData.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Filters */}
         <div className="flex flex-col md:flex-row gap-3 mb-6">
-
-          {/* Search */}
           <div className="relative flex-1">
             <input
-              type="text"
-              placeholder="Search by order ID or customer..."
+              placeholder="Search by Product..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="w-full border border-gray-200 bg-gray-50 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-400"
             />
             <Search
+              className="absolute left-2 top-2.5 text-gray-400"
               size={16}
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400"
             />
           </div>
 
-          {/* Date Filter */}
           <select
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-400"
+            className="border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 text-sm"
           >
-            <option value="7days">Past 7 Days</option>
-            <option value="month">Last Month</option>
-            <option value="6months">Last 6 Months</option>
-            <option value="year">Last Year</option>
+            <option value="7days">7 Days</option>
+            <option value="month">1 Month</option>
+            <option value="6months">6 Months</option>
+            <option value="year">1 Year</option>
           </select>
 
-          {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-400"
+            className="border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 text-sm"
           >
-            <option value="All">All Status</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Pending">Pending</option>
-            <option value="Cancelled">Cancelled</option>
+            <option value="All">All</option>
+            <option value="paid">Paid</option>
+            <option value="COD">COD</option>
           </select>
         </div>
 
-        {/* Orders List */}
-        <div className="space-y-3">
-          {filteredOrders.length > 0 ? (
-            filteredOrders.map((order) => (
-              <div
-                key={order.id}
-                className="flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition rounded-xl p-3"
-              >
-                <div>
-                  <p className="text-sm font-medium text-gray-700">
-                    {order.id}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {order.customer}
-                  </p>
-                </div>
+        {/* Orders Table */}
+        <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
 
-                <p className="text-sm text-gray-500">
-                  ₹{order.amount}
-                </p>
+          <div className="hidden md:grid grid-cols-6 px-4 py-3 bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            <span>Order ID</span>
+            <span>Product</span>
+            <span>Customer</span>
+            <span>Date</span>
+            <span className="text-center">Amount</span>
+            <span className="text-center">Status</span>
+          </div>
 
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ${statusStyles[order.status]}`}
-                >
-                  {order.status}
-                </span>
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-gray-500 text-center">
-              No orders found
-            </p>
-          )}
+          <div className="divide-y divide-gray-100">
+            {filteredOrders.length > 0 ? (
+              filteredOrders.map((order: any) =>
+                order?.items?.map((item: any, index: number) => {
+
+                  const price =
+                    (item?.productId?.discountPrice || 0) *
+                    (item?.quantity || 0);
+
+                  const finalPrice = Math.round(price * 1.02);
+
+                  return (
+                    <div key={index}>
+
+                      {/* Mobile */}
+                      <div className="md:hidden p-4 flex flex-col gap-3">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={item?.productId?.image?.[0]}
+                            className="w-12 h-12 rounded-md object-cover"
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-800 truncate">
+                              {item?.productId?.name}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              #{order._id.slice(-6)}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-500">
+                            {order?.userId?.fullName || "Customer"}
+                          </span>
+                          <span className="text-gray-400 text-xs">
+                            {new Date(order.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-gray-900">
+                            ₹{finalPrice}
+                          </span>
+
+                          <span className="flex items-center gap-2 text-xs font-medium text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+                            <span className="w-2 h-2 bg-amber-600 rounded-full"></span>
+                            {order.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Desktop */}
+                      <div className="hidden md:grid grid-cols-6 items-center px-4 py-4 text-sm hover:bg-gray-50 transition">
+                        <span className="text-gray-700 font-medium truncate">
+                          #{order._id.slice(-6)}
+                        </span>
+
+                        <div className="flex items-center gap-3 min-w-0">
+                          <img
+                            src={item?.productId?.image?.[0]}
+                            className="w-10 h-10 rounded-md object-cover"
+                          />
+                          <p className="text-gray-800 truncate">
+                            {item?.productId?.name}
+                          </p>
+                        </div>
+
+                        <span className="text-gray-600">
+                          {order?.userId?.fullName || "Customer"}
+                        </span>
+
+                        <span className="text-gray-500 text-xs">
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </span>
+
+                        <span className="text-center font-semibold text-gray-900">
+                          ₹{finalPrice}
+                        </span>
+
+                        <div className="flex justify-center">
+                          <span className="flex items-center gap-2 text-xs font-medium text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+                            <span className="w-2 h-2 bg-amber-600 rounded-full"></span>
+                            {order.status}
+                          </span>
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })
+              )
+            ) : (
+              <p className="text-center text-gray-400 py-10">
+                No orders found
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </section>
-    </>
-  )
-}
+  );
+};

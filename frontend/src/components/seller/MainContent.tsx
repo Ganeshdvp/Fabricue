@@ -5,8 +5,7 @@ import { OrdersDashboard } from "./OrdersDashboard";
 import { ProductDashboard } from "./ProductDashboard";
 import { InventoryDashboard } from "./InventoryDashboard";
 import { SelesDashboard } from "./SelesDashboard";
-import { OrdersRevenue } from "./OrdersRevenue";
-import { CreateProductDashboard } from "./CreateProductDashboard";
+import { Profile } from "../Profile";
 
 export const MainContent = () => {
 
@@ -27,7 +26,7 @@ export const MainContent = () => {
       content === "Sales" && <SelesDashboard/>
     }
     {
-      content === "Revenue" && <OrdersRevenue/>
+      content === "Profile Info" && <Profile/>
     }
     </>
   )

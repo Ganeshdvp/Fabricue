@@ -23,6 +23,7 @@
 - Developed HomeAbout page
 - Developed HomeFaqs page
 - Implemented Shimmer UI for all pages
+- Implemented chatbot and faq.json
 - Developed Seller Dashboard
 
 

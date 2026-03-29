@@ -21,22 +21,27 @@ const updateProduct = async (req, res) => {
 
     const files = req.files;
 
+    if (loggedInUser.role !== "seller") {
+      return res
+        .status(403)
+        .json({
+          message: "Access denied. Only sellers can access this resource.",
+        });
+    }
+
     // category formatting
     const categoryCase = category
       ? category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
       : undefined;
 
     const subCategoryCase = subCategory
-      ? subCategory.charAt(0).toUpperCase() +
-        subCategory.slice(1).toLowerCase()
+      ? subCategory.charAt(0).toUpperCase() + subCategory.slice(1).toLowerCase()
       : undefined;
 
     // array handling
-    const parsedSizes =
-      typeof sizes === "string" ? [sizes] : sizes || [];
+    const parsedSizes = typeof sizes === "string" ? [sizes] : sizes || [];
 
-    const parsedColors =
-      typeof colors === "string" ? [colors] : colors || [];
+    const parsedColors = typeof colors === "string" ? [colors] : colors || [];
 
     // upload images ONLY if provided
     const uploadedImages = [];
@@ -44,7 +49,7 @@ const updateProduct = async (req, res) => {
     if (files && files.length > 0) {
       for (const file of files) {
         const base64 = `data:${file.mimetype};base64,${file.buffer.toString(
-          "base64"
+          "base64",
         )}`;
 
         const result = await cloudinary.uploader.upload(base64, {
@@ -73,17 +78,14 @@ const updateProduct = async (req, res) => {
 
     // only update images if new ones uploaded
     if (uploadedImages.length > 0) {
-        updateData.image = [
-            ...existingProduct.image,
-            ...uploadedImages
-        ]
+      updateData.image = [...existingProduct.image, ...uploadedImages];
     }
 
     // update DB
     const product = await Product.findOneAndUpdate(
       { _id: id, sellerId: loggedInUser._id },
       { $set: updateData },
-      { new: true }
+      { new: true },
     );
 
     if (!product) {

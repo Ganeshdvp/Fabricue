@@ -16,12 +16,31 @@ const createProduct = async (req, res) => {
       colors,
     } = req?.body;
     const files = req.files;
+    const loggedInUser = req.user;
 
     // validate
-    if (!name || !brand || !category || !price || !discountPrice || !subCategory || !stock || !sizes || !colors) {
+    if (
+      !name ||
+      !brand ||
+      !category ||
+      !price ||
+      !discountPrice ||
+      !subCategory ||
+      !stock ||
+      !sizes ||
+      !colors
+    ) {
       return res.status(400).json({
         message: "Required fields are missing",
       });
+    }
+    // if the user is a seller
+    if (loggedInUser.role !== "seller") {
+      return res
+        .status(403)
+        .json({
+          message: "Access denied. Only sellers can access this resource.",
+        });
     }
 
     const categoryCase = category.slice(0).toLowerCase();
@@ -35,11 +54,9 @@ const createProduct = async (req, res) => {
     }
 
     // HANDLE ARRAY VALUES (FormData fix)
-    const parsedSizes =
-      typeof sizes === "string" ? [sizes] : sizes || [];
+    const parsedSizes = typeof sizes === "string" ? [sizes] : sizes || [];
 
-    const parsedColors =
-      typeof colors === "string" ? [colors] : colors || [];
+    const parsedColors = typeof colors === "string" ? [colors] : colors || [];
 
     // images save in cloudinary
     const uploadedImages = [];
@@ -60,7 +77,7 @@ const createProduct = async (req, res) => {
       brand,
       category: categoryCase,
       description,
-      discountPrice: Number(discountPrice) ,
+      discountPrice: Number(discountPrice),
       price: Number(price),
       subCategory: subCategoryCase,
       stock: Number(stock),
@@ -78,7 +95,7 @@ const createProduct = async (req, res) => {
       .status(200)
       .json({ message: "Product created successfully", data: newProduct });
   } catch (err) {
-    res.status(500).json({ message: "Error creating product"});
+    res.status(500).json({ message: "Error creating product" });
   }
 };
 
