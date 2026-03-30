@@ -3,9 +3,8 @@ import type { RootState } from "../../types";
 import { OverView } from "./OverView";
 import { OrdersDashboard } from "./OrdersDashboard";
 import { ProductDashboard } from "./ProductDashboard";
-import { InventoryDashboard } from "./InventoryDashboard";
-import { SelesDashboard } from "./SelesDashboard";
 import { Profile } from "../Profile";
+
 
 export const MainContent = () => {
 
@@ -20,10 +19,6 @@ export const MainContent = () => {
       content === "Orders" && <OrdersDashboard/>
     }{
       content === "Products" && <ProductDashboard/>
-    }{
-      content === "Inventory" && <InventoryDashboard/>
-    }{
-      content === "Sales" && <SelesDashboard/>
     }
     {
       content === "Profile Info" && <Profile/>

@@ -337,7 +337,7 @@ export const Profile: FC = () => {
 
         {/* ── EDIT PROFILE MODAL ──────────────────────────────── */}
         {editProfile && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+          <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
             <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8 relative animate-[fadeUp_0.2s_ease]">
               <button
                 onClick={() => setEditProfile(false)}
@@ -530,7 +530,7 @@ export const Profile: FC = () => {
         {/* ── ADD ADDRESS MODAL ───────────────────────────────── */}
         {addAddresss && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+            className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
             onClick={() => setAddAddress(false)}
           >
             <div
@@ -699,7 +699,7 @@ export const Profile: FC = () => {
         {/* ── EDIT ADDRESS MODAL ──────────────────────────────── */}
         {editAddress && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+            className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
             onClick={() => setEditAddress(false)}
           >
             <div

@@ -158,7 +158,7 @@ export const ProductDashboard: React.FC = () => {
 
           <button
             onClick={() => setCreateProductOpen(true)}
-            className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2 rounded-xl shadow-sm transition"
+            className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2 rounded-xl shadow-sm transition cursor-pointer"
           >
             <Plus size={18} />
             Create Product

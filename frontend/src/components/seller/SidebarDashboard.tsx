@@ -3,7 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../types";
 import { setContent, setToggle } from "../../utils/SideBarDashboardSlice";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useLogout from "../../hooks/useLogout";
+import { removeUser } from "../../utils/userSlice";
+import { removeFavorite } from "../../utils/wishListSlice";
+import { removeCart } from "../../utils/cartItemsSlice";
+import { removeProduct } from "../../utils/productSlice";
+import { removeAddress } from "../../utils/addressSlice";
+import { Loading } from "../Loading";
 
 type MenuItem = {
   id: number;
@@ -25,21 +32,6 @@ const menuData: MenuItem[] = [
   },
   {
     id: 4,
-    title: "Inventory / Stock",
-    children: ["Inventory"],
-  },
-  {
-    id: 5,
-    title: "Sales Analytics",
-    children: ["Sales"],
-  },
-  {
-    id: 6,
-    title: "Payments & Earnings",
-    children: ["Total Earnings"],
-  },
-  {
-    id: 7,
     title: "Settings",
     children: ["Profile Info"],
   },
@@ -55,6 +47,23 @@ export const SidebarDashboard: React.FC = () => {
   );
   const dispatch = useDispatch();
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
+  
+    const {mutate, isPending} = useLogout();
+
+    const handleLogout = (): void=>{
+        mutate(undefined, {
+            onSuccess: ()=>{
+            dispatch(removeUser());
+            dispatch(removeFavorite());
+            dispatch(removeCart());
+            dispatch(removeProduct());
+            dispatch(removeAddress());
+            navigate('/');
+        }
+        });
+    }
 
   const handleToggle = (id: number, title: string) => {
     if (title === "Overview") {
@@ -92,7 +101,7 @@ export const SidebarDashboard: React.FC = () => {
     <>
       {toggleStore && (
         <>
-          <section ref={sidebarRef} className="fixed top-0 left-0 sm:relative min-w-72 h-screen bg-white shadow-xl border-r z-1000">
+          <section ref={sidebarRef} className="fixed top-0 left-0 sm:relative min-w-72 h-screen bg-white shadow-xl border-r z-999">
             <div className="flex flex-col h-full">
               {/* Top Section */}
               <div className="px-4 py-2 flex flex-col gap-1 -mt-2 border-b">
@@ -164,9 +173,13 @@ export const SidebarDashboard: React.FC = () => {
                   ))}
 
                   {/* Logout */}
-                  <li className="px-3 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg cursor-pointer">
-                    Logout
+                  <button disabled={isPending} onClick={handleLogout} className="w-full text-left">
+                    <li className="px-3 py-2 text-sm font-medium text-red-500 hover:bg-red-50 rounded-lg cursor-pointer">
+                    {
+                      isPending ? <Loading color="border-red-500"/> : "Logout"
+                    }
                   </li>
+                  </button>
                 </ul>
               </div>
             </div>

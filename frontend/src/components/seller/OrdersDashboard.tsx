@@ -66,9 +66,9 @@ export const OrdersDashboard = () => {
 
     filteredOrders?.forEach((order: any) => {
       order.items?.forEach((item: any) => {
-        revenue +=
-          (item?.productId?.discountPrice || 0) *
-          (item?.quantity || 0);
+        const basePrice = (item?.productId?.discountPrice || 0) * (item?.quantity || 0);
+        const finalPrice = basePrice * 1.02; // Assuming 2% tax/fees
+      revenue+= finalPrice;
       });
 
       if (order.status === "paid") paid++;
@@ -257,7 +257,7 @@ export const OrdersDashboard = () => {
 
                         <div className="flex justify-between items-center">
                           <span className="font-semibold text-gray-900">
-                            ₹{finalPrice}
+                            ₹{finalPrice} <span className="text-[12px] font-extralight">(incl. taxes)</span>
                           </span>
 
                           <span className="flex items-center gap-2 text-xs font-medium text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
@@ -279,7 +279,7 @@ export const OrdersDashboard = () => {
                             className="w-10 h-10 rounded-md object-cover"
                           />
                           <p className="text-gray-800 truncate">
-                            {item?.productId?.name}
+                            {item?.productId?.name ? (item?.productId?.name.length > 10 ? item?.productId?.name.slice(0,10) + '...more' : item?.productId?.name) : "Product Name"}
                           </p>
                         </div>
 
@@ -292,7 +292,7 @@ export const OrdersDashboard = () => {
                         </span>
 
                         <span className="text-center font-semibold text-gray-900">
-                          ₹{finalPrice}
+                          ₹{finalPrice} <span className="text-[12px] font-extralight">(incl. taxes)</span>
                         </span>
 
                         <div className="flex justify-center">

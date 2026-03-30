@@ -21,7 +21,7 @@ export const HeaderDashboard: React.FC<HeaderProps> = () => {
   }
   
   return (
-    <header className="h-16 bg-white border-b shadow-sm sticky top-0 z-50">
+    <header className="h-16 bg-white border-b shadow-sm sticky top-0 z-50 py-4">
       
       {/* Inner Container */}
       <div className="flex items-center justify-between h-full px-6">

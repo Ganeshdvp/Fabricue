@@ -127,9 +127,32 @@ export const CreateProductDashboard = ({setCreateProductOpen}) => {
     "Yellow",
     "Orange",
   ];
+  const subCategoryOptions = [
+  "T-shirts",
+  "Shirts",
+  "Jeans",
+  "Jackets",
+  "Hoodies",
+  "Blazers",
+  "Shorts",
+  "Sweaters",
+  "Underwears",
+  "Sarees",
+  "Kurtis",
+  "Dresses",
+  "Tops",
+  "Skirts",
+  "Lehengas",
+  "Kids t-shirts",
+  "Kids shirts",
+  "Kids dresses",
+  "Kids hoodies",
+  "Kids jackets",
+  "Kids sweatshirts"
+];
 
   return (
-    <section className="w-full px-4 py-6">
+    <section className="w-full px-4 py-6 z-1000">
       <div className="max-w-5xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm">
         {/* Header */}
         <div className="px-6 md:px-10 py-6 border-b">
@@ -167,7 +190,7 @@ export const CreateProductDashboard = ({setCreateProductOpen}) => {
                 <img
                   key={i}
                   src={img}
-                  className="w-30 h-16 object-cotain rounded-lg border"
+                  className="w-20 h-20 object-cotain rounded-lg border"
                 />
               ))}
             </div>
@@ -195,7 +218,7 @@ export const CreateProductDashboard = ({setCreateProductOpen}) => {
               label="Sub Category"
               value={subCategory}
               setValue={setSubCategory}
-              options={["Shirts", "T-shirts", "Hoodies", "Jeans"]}
+              options={subCategoryOptions}
               required
             />
           </div>
