@@ -82,3 +82,13 @@ export const profileLimit = rateLimit({
     message: "Too many profile attempts. Please try again later."
   }
 })
+
+export const dashboardLimit = rateLimit({
+  ...baseConfig,
+    windowMs: 15 * 60 * 1000,  // 15 minutes
+    max: 200, // only 200 requests
+    message: {
+    success: false,
+    message: "Too many dashboard attempts. Please try again later."
+  }
+})

@@ -7,7 +7,7 @@ import { productRoute } from './routes/productRouter.js';
 import {CRUDProductsRoute} from './routes/crudProducts.js';
 import CartRouter from './routes/cartRouter.js';
 import helmet from 'helmet';
-import { authLimit, productLimit, adminLimit, cartLimit, favoriteLimit, paymentLimit, orderLimit, profileLimit } from './middlewares/rateLimiting.js';
+import { authLimit, productLimit, adminLimit, cartLimit, favoriteLimit, paymentLimit, orderLimit, profileLimit, dashboardLimit } from './middlewares/rateLimiting.js';
 import { rateLimit } from 'express-rate-limit';
 import cors from 'cors';
 import { FavoriteRouter } from './routes/favoriteRouter.js';
@@ -63,7 +63,7 @@ app.use('/cart', cartLimit, CartRouter);
 app.use('/favorite', favoriteLimit, FavoriteRouter);
 app.use('/payment', paymentLimit, paymentRouter);
 app.use('/orders', orderLimit, ordersRouter);
-app.use('/seller', sellerRouter)
+app.use('/seller', dashboardLimit, sellerRouter)
 
 // Database connection
 connectDB().then(()=>{

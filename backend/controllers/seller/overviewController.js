@@ -1,79 +1,63 @@
 import Order from '../../models/Orders.js';
-import Product from '../../models/Products.js';
 
 const overviewController = async (req, res) => {
   try {
     const loggedInUser = req?.user;
+    if (loggedInUser.role !== 'seller') {
+      return res.status(401).json({
+        message: 'Access denied! Only sellers can access this resource.'
+      });
+    }
 
-    // 🔥 Run all queries in parallel (performance boost)
-    const [
-      revenueData,
-      totalOrders,
-      totalProducts,
-      recentOrders,
-      recentProducts
-    ] = await Promise.all([
+    let totalRevenue = 0;
+    let totalProducts = 0;
+    let totalOrders = 0;
 
-      // 💰 Total Revenue (Delivered Orders Only)
-      Order.aggregate([
-        {
-          $match: {
-            status: "Delivered",
-            userId: loggedInUser?._id // optional (if multi-user system)
-          }
-        },
-        {
-          $group: {
-            _id: null,
-            totalRevenue: { $sum: "$amount" }
-          }
+
+    // orders
+    const orders = await Order.find({}).populate('items.productId', 'sellerId name discountPrice stock image').populate('userId', 'fullName').sort({ createdAt: -1 });
+    if(!orders){
+      return res.status(404).json({
+        message: 'No orders found!'
+      });
+    }
+
+    // total Orders logic
+    const totalOrdersForSeller = orders.filter(order => order.items.some(item => item.productId.sellerId.toString() === loggedInUser._id.toString()));
+    totalOrders = totalOrdersForSeller.length;
+
+    // total Products logic
+    const totalProductsForSeller = orders.flatMap(order => order.items.filter(item => item.productId.sellerId.toString() === loggedInUser._id.toString()).map(item => item.productId));
+
+
+    // total Revenue logic
+    let totalRevenueForSeller = totalOrdersForSeller.reduce((acc, order) => {
+      const orderRevenue = order.items.reduce((itemAcc, item) => {
+        if (item.productId.sellerId.toString() === loggedInUser._id.toString()) {
+          return itemAcc + (item.productId.discountPrice * item.quantity);
         }
-      ]),
+        return itemAcc;
+      }, 0);
+      return acc + orderRevenue;
+    }, 0);
+    totalRevenueForSeller = Math.round((totalRevenueForSeller * 1.02) * 100) / 100;
 
-      // 📦 Total Orders
-      Order.countDocuments({
-        userId: loggedInUser?._id
-      }),
+    const filterOrders = orders.filter(order=> order.items.some(item=> item.productId.sellerId.toString() === loggedInUser._id.toString()))
+    const filterProducts = orders.filter(order=> order.items.some(item=> item.productId.sellerId.toString() === loggedInUser._id.toString())).flatMap(order => order.items.map(item => item.productId)).slice(0, 5);
 
-      // 🛍️ Total Products
-      Product.countDocuments({
-        userId: loggedInUser?._id
-      }),
-
-      // 🕒 Recent Orders (latest 5)
-      Order.find({ userId: loggedInUser?._id })
-        .sort({ createdAt: -1 })
-        .limit(5)
-        .select("id customer amount status createdAt"),
-
-      // 🆕 Recent Products (latest 5)
-      Product.find({ userId: loggedInUser?._id })
-        .sort({ createdAt: -1 })
-        .limit(5)
-        .select("name price stock createdAt")
-    ]);
-
-    // 💰 Extract revenue safely
-    const totalRevenue = revenueData[0]?.totalRevenue || 0;
-
-    // 📊 Final Response
-    const overviewData = {
-      totalRevenue,
-      totalOrders,
-      totalProducts,
-      recentProducts,
-      recentOrders
-    };
-
+    // send response
     return res.status(200).json({
       message: 'Successfully fetched data!',
-      data: overviewData
+      totalOrders: totalOrdersForSeller.length,
+      totalRevenue: totalRevenueForSeller,
+      totalProducts: totalProductsForSeller.length,
+      recentOrders: filterOrders.slice(0, 5),
+      recentProducts: filterProducts,
     });
 
   } catch (err) {
-    console.error(err);
     return res.status(500).json({
-      message: 'Failed to fetch data!'
+      message: 'Failed to fetch data!', error: err.message
     });
   }
 };

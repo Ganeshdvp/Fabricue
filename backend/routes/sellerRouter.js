@@ -8,7 +8,7 @@ import ordersBySeller from '../controllers/seller/ordersBySeller.js';
 export const sellerRouter = express.Router();
 
 // fetch overview
-sellerRouter.get('/overview', overviewController);
+sellerRouter.get('/overview', UserAuth, roleAuth("seller"), overviewController);
 
 // get all orders by seller ID
 sellerRouter.get('/orders', UserAuth, roleAuth("seller"), ordersBySeller);

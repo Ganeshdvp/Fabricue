@@ -30,6 +30,7 @@
 - DELETE admin/products/deleteProduct/:id
 - GET admin/products/allProducts
 - GET seller/orders
+- GET seller/overview
 
 -- Cart --
 - GET cart/
@@ -111,6 +112,7 @@
 - created deleteProduct.js
 - created sellerProducts.js
 - created ordersBySeller.js
+- created overviewController.js
 
 -- Cart Items --
 - created addCart.js

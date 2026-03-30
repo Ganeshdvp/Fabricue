@@ -25,7 +25,7 @@ const getAllProducts = async (req, res) => {
     }
 
     // Fetch products by category from the database
-    const products = await Product.find(filter).skip(skip).limit(limit);
+    const products = await Product.find(filter).skip(skip).limit(limit).sort({ createdAt: -1 });
     if (!products) {
       return res.status(404).json({ message: "No products found"});
     }
