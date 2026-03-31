@@ -7,6 +7,7 @@ import { CreateProductDashboard } from "./CreateProductDashboard";
 import { Loading } from "../Loading";
 import { EditProductDashboard } from "./EditProductDashboard";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import ProductDashboardShimmer from "../errorAndLoading/ProductDashboardShimmer";
 
 type Product = {
   _id: string;
@@ -70,10 +71,10 @@ const StatCard = ({
 
 /* MAIN */
 export const ProductDashboard: React.FC = () => {
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState("7days");
-  const [createProductOpen, setCreateProductOpen] = useState(false);
+  const [search, setSearch] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [dateFilter, setDateFilter] = useState<string>("7days");
+  const [createProductOpen, setCreateProductOpen] = useState<boolean>(false);
   const [editProduct, setEditProduct] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
@@ -202,7 +203,7 @@ export const ProductDashboard: React.FC = () => {
 
         {/* Products */}
         {isPending ? (
-          <Loading color="border-amber-500" />
+          <ProductDashboardShimmer />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {productsToRender?.length > 0 ? (

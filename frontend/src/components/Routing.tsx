@@ -4,6 +4,8 @@ import { PublicRoutes } from "./protectedRoutes/PublicRoutes";
 import { lazy, Suspense, type FC } from "react";
 import { TabsShimmer } from "./errorAndLoading/TabsShimmer";
 import { Body } from "./Body";
+import LoginShimmer from "./errorAndLoading/LoginShimmer";
+import ForgotPasswordShimmer from "./errorAndLoading/ForgotPasswordShimmer";
 
 
 
@@ -42,7 +44,7 @@ export const Routing: FC = () => {
       path: "/login",
       element: (
         <PublicRoutes>
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoginShimmer />}>
           <Login />
           </Suspense>
         </PublicRoutes>
@@ -52,7 +54,7 @@ export const Routing: FC = () => {
       path: "/forgot-password",
       element: (
         <PublicRoutes>
-           <Suspense fallback={<p>Loading...</p>}>
+           <Suspense fallback={<ForgotPasswordShimmer />}>
           <ForgotPassword />
           </Suspense>
         </PublicRoutes>

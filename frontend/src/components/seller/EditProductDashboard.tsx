@@ -1,13 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FC } from "react";
 import imageCompression from "browser-image-compression";
 import { BASE_URL } from "../../utils/constants";
 import { Loading } from "../Loading";
 
-export const EditProductDashboard = ({ id, setEditProduct}) => {
+interface EditProductDashboardProps {
+  id: string;
+  setEditProduct: string | null;
+}
 
-  // ✅ SAFE INITIAL STATES
+export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEditProduct}) => {
+
+  // SAFE INITIAL STATES
   const [images, setImages] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [name, setName] = useState<string>("");

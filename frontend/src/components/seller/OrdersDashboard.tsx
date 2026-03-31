@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import OrdersDashboardShimmer from "../errorAndLoading/OrdersDashboardShimmer";
 
 export const OrdersDashboard = () => {
   const [search, setSearch] = useState("");
@@ -111,7 +112,7 @@ export const OrdersDashboard = () => {
   };
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading...</p>;
+    return <OrdersDashboardShimmer />;
   }
 
   return (

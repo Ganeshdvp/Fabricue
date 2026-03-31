@@ -70,13 +70,7 @@ export const Cart:FC = () => {
     }
   };
 
-  if (isPending) {
-    return (
-      <>
-        <CartShimmer />
-      </>
-    );
-  }
+  if (isPending) return <CartShimmer />;
 
   return data?.length > 0 ? (
     <div className="min-h-screen px-4 md:px-8 py-10">

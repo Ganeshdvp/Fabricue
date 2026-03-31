@@ -20,6 +20,8 @@ import {
 import { BASE_URL } from "../../utils/constants";
 import { useDispatch } from "react-redux";
 import { setContent } from "../../utils/SideBarDashboardSlice";
+import OverviewShimmer from "../errorAndLoading/OverviewShimmer";
+
 
 export const OverView: React.FC = () => {
   const dispatch = useDispatch();
@@ -87,7 +89,7 @@ export const OverView: React.FC = () => {
   };
 
   if (isPending) {
-    return <div className="p-6 text-gray-500">Loading...</div>;
+    return <OverviewShimmer />;
   }
 
   return (
@@ -127,9 +129,9 @@ export const OverView: React.FC = () => {
                   {card.value}
                 </h2>
 
-                <div className="flex items-center text-green-600 text-sm mt-3">
+                <div className="flex items-center text-amber-500 text-sm mt-3">
                   <TrendingUp size={16} className="mr-1" />
-                  +12% growth
+                  {Math.floor((data?.totalRevenueChange || 0) * 10) + 1}% growth
                 </div>
               </div>
 

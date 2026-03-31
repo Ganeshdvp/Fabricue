@@ -1,18 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
-import imageCompression from "browser-image-compression"; // ✅ added
+import { useState, type FC } from "react";
+import imageCompression from "browser-image-compression";
 import { BASE_URL } from "../../utils/constants";
 import { Loading } from "../Loading";
 
-export const CreateProductDashboard = ({setCreateProductOpen}) => {
+interface SetCreateProduuctOpenProps {
+  setCreateProductOpen: boolean
+}
+
+export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreateProductOpen}) => {
   const [images, setImages] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]); // ✅ store actual files
-  const [name, setName] = useState("");
-  const [brandName, setBrandName] = useState("");
-  const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [description, setDescription] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [name, setName] = useState<string>("");
+  const [brandName, setBrandName] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
+  const [subCategory, setSubCategory] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [sizes, setSizes] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [price, setPrice] = useState<number | null>(null);
@@ -62,7 +66,7 @@ export const CreateProductDashboard = ({setCreateProductOpen}) => {
     );
   };
 
-  /* ✅ Fixed Image Upload */
+  /* Image Upload */
   const handleFileUpload = async (e: any) => {
     const selectedFiles = Array.from(e.target.files) as File[];
 
@@ -91,7 +95,7 @@ export const CreateProductDashboard = ({setCreateProductOpen}) => {
     }
   };
 
-  /* ✅ Submit */
+  /* Submit */
   const handleSubmit = (e: any) => {
     e.preventDefault();
 

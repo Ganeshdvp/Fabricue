@@ -50,8 +50,8 @@ export interface RootState {
     readonly cartItems: CartItem | null,
     readonly product: ProductData[] | null,
     readonly address: Address | null,
-    cookieToggle: boolean,
-    sidebarDashboard: sidebarDashboard
+    readonly cookieToggle: boolean,
+    readonly sidebarDashboard: sidebarDashboard
 }
 
 // Order

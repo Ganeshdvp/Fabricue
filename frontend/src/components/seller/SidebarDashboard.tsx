@@ -1,4 +1,4 @@
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, Home } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../types";
@@ -95,7 +95,7 @@ export const SidebarDashboard: React.FC = () => {
   return () => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
-}, []);
+}, [dispatch]);
 
   return (
     <>
@@ -106,13 +106,18 @@ export const SidebarDashboard: React.FC = () => {
               {/* Top Section */}
               <div className="px-4 py-2 flex flex-col gap-1 -mt-2 border-b">
                 {/* Logo */}
-                <Link to="/home">
+                <div className="flex items-center justify-between">
+                  <Link to="/home">
                   <img
                     src="https://res.cloudinary.com/dyakynych/image/upload/v1774282219/Fabricue_y4qvws.png"
                     className="h-20 w-45 object-contain"
                     alt="dashboard-logo"
                   />
                 </Link>
+                <Link to="/home">
+                  <Home size={32} className="text-amber-600 hover:bg-amber-100 focus:bg-amber-100 p-2 rounded-2xl"/>
+                </Link>
+                </div>
 
                 {/* Search */}
                 <div className="relative mb-2">

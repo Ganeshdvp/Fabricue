@@ -1,7 +1,8 @@
+import type { FC } from "react";
 import { HeaderDashboard } from "./HeaderDashboard";
 import { MainContent } from "./MainContent";
 
-export const MainDashboard = () => {
+export const MainDashboard:FC = () => {
   return (
     <>
       <div className="flex flex-col w-full max-h-screen overflow-auto no-scrollbar">
