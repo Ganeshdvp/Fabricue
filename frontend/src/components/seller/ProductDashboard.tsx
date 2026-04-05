@@ -8,6 +8,8 @@ import { Loading } from "../Loading";
 import { EditProductDashboard } from "./EditProductDashboard";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import ProductDashboardShimmer from "../errorAndLoading/ProductDashboardShimmer";
+import { toast } from "sonner";
+
 
 type Product = {
   _id: string;
@@ -99,6 +101,17 @@ export const ProductDashboard: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seller-product"] });
+      toast.success("Successfully deleted product", {
+        style: {
+          background: "#fb923c",
+          color: "#ffffff",
+          border: "1px solid #fb923c",
+          borderRadius: "10px",
+          fontSize: "12px",
+          width: "250px",
+          height: "40px",
+        },
+      });
     },
   });
 
@@ -115,6 +128,7 @@ export const ProductDashboard: React.FC = () => {
 
     return true;
   };
+
 
   const productsToRender = useMemo(() => {
     return data.filter((p) => {

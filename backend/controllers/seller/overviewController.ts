@@ -38,7 +38,6 @@ const overviewController = async (req: Request, res: Response): Promise<void> =>
     // total Products logic
     const totalProductsForSeller = orders.flatMap(order => order.items.filter(item => item.productId.sellerId.toString() === loggedInUser._id.toString()).map(item => item.productId)).length;
 
-
     // total Revenue logic
     let totalRevenueForSeller = totalOrdersForSeller.reduce((acc, order) => {
       const orderRevenue = order.items.reduce((itemAcc, item) => {
@@ -59,7 +58,7 @@ const overviewController = async (req: Request, res: Response): Promise<void> =>
       message: 'Successfully fetched data!',
       totalOrders: totalOrdersForSeller.length,
       totalRevenue: totalRevenueForSeller,
-      totalProducts: totalProductsForSeller.length,
+      totalProducts: totalProductsForSeller,
       recentOrders: filterOrders.slice(0, 5),
       recentProducts: filterProducts,
     });

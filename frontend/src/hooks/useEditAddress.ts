@@ -6,7 +6,7 @@ import type { AddAddress } from "../types";
 interface ApiResponse {
   success: boolean;
   message: string;
-  data: AddAddress;
+  data?: AddAddress;
 }
 
 const useEditAddress = () => {

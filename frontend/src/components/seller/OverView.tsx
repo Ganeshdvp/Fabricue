@@ -22,6 +22,26 @@ import { useDispatch } from "react-redux";
 import { setContent } from "../../utils/SideBarDashboardSlice";
 import OverviewShimmer from "../errorAndLoading/OverviewShimmer";
 
+interface Product {
+  image: string;
+  name: string;
+  stock: number;
+  discountPrice: number
+}
+
+// interface Order {
+//   items: {
+//     productId: {
+//       name: string;
+//       discountPrice: number;
+//     };
+//     quantity: number;
+//   }[];
+//   userId: {
+//     fullName: string
+//   };
+//   status: string
+// }
 
 export const OverView: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,6 +77,7 @@ export const OverView: React.FC = () => {
       {
         title: "Total Products",
         value: data?.totalProducts || 0,
+
         icon: Package,
       },
     ];
@@ -190,7 +211,7 @@ export const OverView: React.FC = () => {
                           Order #{label}
                         </p>
                         <p className="text-sm font-semibold text-gray-800">
-                          ₹{payload[0].value.toLocaleString("en-IN")}
+                          ₹{payload[0]?.value?.toLocaleString("en-IN")}
                         </p>
                       </div>
                     );
@@ -227,7 +248,7 @@ export const OverView: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {topProducts?.map((p: any, i: number) => (
+            {topProducts?.map((p: Product, i: number) => (
               <div
                 key={i}
                 className="flex items-center justify-between bg-gray-50 hover:bg-gray-100 p-3 rounded-xl transition"

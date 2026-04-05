@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/constants";
 import type { Address } from "../types";
 
 interface OrderItem {
-  productId: string;
+  productId: string,
   size: string;
   color: string;
   quantity: number;
@@ -14,7 +14,7 @@ interface PaymentPayload {
   items: OrderItem[];
   cancelUrl: string;
   paymentMethod: string;
-  deliveryAddress: Address; // replace with your Address type
+  deliveryAddress: Address | null;
 }
 
 interface PaymentResponse {
@@ -23,8 +23,9 @@ interface PaymentResponse {
   url?: string;
 }
 
+
 const usePayment = () => {
-  const mutation = useMutation<PaymentResponse, Error, PaymentPayload>({
+  const mutation = useMutation<PaymentResponse, AxiosError<{message: string}>, PaymentPayload>({
     mutationFn: async (data: PaymentPayload): Promise<PaymentResponse> => {
       const res = await axios.post<PaymentResponse>(
         `${BASE_URL}/payment`,

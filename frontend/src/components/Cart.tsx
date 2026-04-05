@@ -24,6 +24,7 @@ export const Cart:FC = () => {
 
   // fetching all cart items
   const { data, isPending } = useFetchCart();
+  const hasItems = data ?? [];
 
   // increase quantity
   const { mutate: quantityMutate } = useIncreaseQuantity();
@@ -31,7 +32,7 @@ export const Cart:FC = () => {
   // delete cart item
   const { mutate } = useDeleteCart();
 
-  const totalPrice: number = data?.reduce((acc: number, item: CartItem) => {
+  const totalPrice: number | undefined = data?.reduce((acc: number, item: CartItem) => {
     return acc + item?.productId?.discountPrice * item?.quantity;
   }, 0);
 
@@ -72,7 +73,7 @@ export const Cart:FC = () => {
 
   if (isPending) return <CartShimmer />;
 
-  return data?.length > 0 ? (
+  return hasItems.length > 0 ? (
     <div className="min-h-screen px-4 md:px-8 py-10">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
  

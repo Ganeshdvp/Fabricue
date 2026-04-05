@@ -27,6 +27,10 @@ export interface User {
   readonly email: string,
   readonly passwordChangedAt: string,
   readonly role: "user" | "seller",
+  readonly lockUntil: string | null;
+  readonly failedLoginAttempts: number;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
 // cart items in store
@@ -40,14 +44,15 @@ export interface CartItem {
 }
 
 export interface sidebarDashboard {
-  content: string
+  content: string;
+  toggle: boolean;
 }
 
 // Reduxt State
 export interface RootState {
     readonly user: User | null,
     readonly wishList: ProductData[] | null,
-    readonly cartItems: CartItem | null,
+    readonly cartItems: CartItem[] | null,
     readonly product: ProductData[] | null,
     readonly address: Address | null,
     readonly cookieToggle: boolean,
@@ -74,7 +79,7 @@ export interface Address {
   readonly city: string,
   readonly country: string,
   readonly landMark: string,
-  readonly pinCode: number | null,
+  readonly pinCode: string,
   readonly state: string
 }
 

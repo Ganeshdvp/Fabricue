@@ -1,13 +1,34 @@
 import { BotMessageSquare, CircleX, Send } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type FC } from "react";
 import faqData from "../utils/faq.json";
 
-type Message = {
-  text: any; // upgraded for rich answers
-  sender: "user" | "bot";
-};
+// Types
+interface Answer {
+  title?: string;
+  description?: string;
+  steps?: string[];
+  note?: string;
+  extra?: string;
+}
 
-const ChatBot: React.FC = () => {
+
+interface FAQItem {
+  id: string;
+  category: string;
+  tags: string[];
+  question: string;
+  answer: string | Answer;
+  keywords?: string[];
+  questions?: string[];
+  priority: number;
+}
+
+interface Message {
+  text: string | Answer;
+  sender: "user" | "bot";
+}
+
+const ChatBot: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
@@ -17,66 +38,95 @@ const ChatBot: React.FC = () => {
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ Auto Scroll (same)
+  // Type-safe FAQ data
+  const typedFaqData = faqData as FAQItem[];
+
+  // Sort once (performance optimization)
+  const sortedFaq = useMemo(
+    () => [...typedFaqData].sort((a, b) => a.priority - b.priority),
+    [typedFaqData]
+  );
+
+  // Auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  // 🧠 ADVANCED MATCHING (keywords + questions + priority)
-  const getBotReply = (input: string) => {
+  // Smart matching
+  const getBotReply = (input: string): FAQItem => {
     const lower = input.toLowerCase();
 
-    const match = faqData
-      .sort((a: any, b: any) => a.priority - b.priority)
-      .find(
-        (item: any) =>
-          item.keywords?.some((k: string) => lower.includes(k)) ||
-          item.questions?.some((q: string) => lower.includes(q))
-      );
+    const match = sortedFaq.find(
+      (item) =>
+        item.keywords?.some((k) => lower.includes(k)) ||
+        item.questions?.some((q) => lower.includes(q))
+    );
 
-    return match || faqData.find((item: any) => item.id === "fallback");
+    return (
+      match ||
+      sortedFaq.find((item) => item.id === "fallback") || {
+        id: "fallback",
+        category: "general",
+        tags: [],
+        question: "",
+        answer: "Sorry, I didn’t understand that. Please try again.",
+        priority: 999,
+      }
+    );
   };
 
-  // 🎨 Render Answer (supports both string + object)
-  const renderAnswer = (answer: any) => {
-    if (typeof answer === "string") return answer;
+  // Safe render
+  const renderAnswer = (answer: string | Answer) => {
+    if (typeof answer === "string") {
+      return <p>{answer}</p>;
+    }
 
     return (
       <div>
-        <p className="font-semibold">{answer.title}</p>
-        <p className="text-sm">{answer.description}</p>
+        {answer.title && (
+          <p className="font-semibold">{answer.title}</p>
+        )}
+        {answer.description && (
+          <p className="text-sm">{answer.description}</p>
+        )}
 
         {answer.steps && (
           <ul className="list-disc ml-4 text-sm mt-1">
-            {answer.steps.map((step: string, i: number) => (
+            {answer.steps.map((step, i) => (
               <li key={i}>{step}</li>
             ))}
           </ul>
         )}
 
         {answer.extra && (
-          <p className="text-xs text-gray-500 mt-1">{answer.extra}</p>
+          <p className="text-xs text-gray-500 mt-1">
+            {answer.extra}
+          </p>
         )}
       </div>
     );
   };
 
-  // 📩 Send Message (same flow + upgrade)
+  // Send message
   const handleSend = (text?: string) => {
-    const messageText = text || input;
+    const messageText = text ?? input;
+
     if (!messageText.trim() || isTyping) return;
 
-    const userMsg: Message = { text: messageText, sender: "user" };
+    const userMsg: Message = {
+      text: messageText,
+      sender: "user",
+    };
+
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
-
     setIsTyping(true);
 
     setTimeout(() => {
       const reply = getBotReply(messageText);
 
       const botMsg: Message = {
-        text: reply?.answer || reply,
+        text: reply.answer,
         sender: "bot",
       };
 
@@ -97,7 +147,7 @@ const ChatBot: React.FC = () => {
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-20 right-8 w-85 h-120 bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200 transition-all duration-300 ${
+        className={`fixed bottom-20 right-8 w-85 h-125 bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200 transition-all duration-300 ${
           isOpen
             ? "scale-100 opacity-100"
             : "scale-0 opacity-0 pointer-events-none"
@@ -108,7 +158,7 @@ const ChatBot: React.FC = () => {
           <span>Fabricue Chat Support</span>
           <button
             onClick={() => setIsOpen(false)}
-            className="cursor-pointer hover:scale-120"
+            className="cursor-pointer hover:scale-110"
           >
             <CircleX />
           </button>
@@ -129,7 +179,7 @@ const ChatBot: React.FC = () => {
             </div>
           ))}
 
-          {/* ⏳ Typing Indicator (upgraded animation, same styles container) */}
+          {/* Typing Indicator */}
           {isTyping && (
             <div className="bg-white px-3 py-2 rounded-lg w-fit shadow-sm text-gray-500 text-xs flex gap-1">
               <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
@@ -138,13 +188,12 @@ const ChatBot: React.FC = () => {
             </div>
           )}
 
-          {/* Auto Scroll Anchor */}
           <div ref={chatEndRef} />
         </div>
 
         {/* Suggested Questions */}
-        <div className="px-2 py-2 border-t bg-white max-h-35 overflow-y-auto">
-          {faqData.slice(0, 5).map((item: any, i: number) => (
+        <div className="px-2 py-2 border-t bg-white max-h-32 overflow-y-auto">
+          {sortedFaq.slice(0, 5).map((item, i) => (
             <button
               key={i}
               onClick={() =>
@@ -158,7 +207,7 @@ const ChatBot: React.FC = () => {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t flex gap-2 bg-white">
+        <div className="p-3 border-t flex gap-2 bg-white">
           <input
             type="text"
             value={input}
@@ -171,7 +220,7 @@ const ChatBot: React.FC = () => {
           <button
             onClick={() => handleSend()}
             disabled={isTyping}
-            className="bg-amber-500 hover:bg-amber-600 hover:scale-120 cursor-pointer text-white text-sm p-2 px-3 rounded-full disabled:opacity-50"
+            className="bg-amber-500 hover:bg-amber-600 cursor-pointer text-white text-sm p-2 px-3 rounded-full disabled:opacity-50"
           >
             <Send size={16} />
           </button>

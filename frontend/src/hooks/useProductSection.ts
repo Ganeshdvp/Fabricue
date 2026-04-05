@@ -9,12 +9,6 @@ interface Props {
   page: number;
 }
 
-interface ProductSectionResponse {
-  products: ProductData[];
-  totalPages: number;
-  currentPage: number;
-}
-
 interface ApiResponse {
   message: string,
   data: ProductData[],
@@ -26,9 +20,9 @@ const useProductSection = ({
   activeSubCategory,
   page,
 }: Props) => {
-  const query = useQuery<ProductSectionResponse>({
+  const query = useQuery<ApiResponse>({
     queryKey: ["product", activeCategory, activeSubCategory, page],
-    queryFn: async (): Promise<ProductSectionResponse> => {
+    queryFn: async (): Promise<ApiResponse> => {
       const res = await axios.get<ApiResponse>(
         `${BASE_URL}/product?page=${page}&category=${activeCategory}&subCategory=${activeSubCategory}`,
         { withCredentials: true }

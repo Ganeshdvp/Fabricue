@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/constants";
 
 interface ForgotPasswordData {
@@ -9,11 +9,11 @@ interface ForgotPasswordData {
 interface ApiResponse {
   success: boolean;
   message: string;
-  data?: unknown;
+  data: string
 }
 
 const useForgotPassword = () => {
-  const mutation = useMutation<ApiResponse, Error, ForgotPasswordData>({
+  const mutation = useMutation<ApiResponse, AxiosError<{message: string}>, ForgotPasswordData>({
     mutationFn: async (data: ForgotPasswordData): Promise<ApiResponse> => {
       const res = await axios.post<ApiResponse>(
         `${BASE_URL}/user/send-otp`,

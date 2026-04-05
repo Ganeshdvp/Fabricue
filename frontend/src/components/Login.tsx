@@ -9,6 +9,18 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Loading } from "./Loading";
 import useSignUp from "../hooks/useSignUp";
 import useLogin from "../hooks/useLogin"
+import type { RootState } from "../types";
+
+interface Values {
+  fullName: string;
+  email: string;
+  password: string;
+  role?: "user" | "seller"
+}
+interface LoginValues {
+  email: string;
+  password: string;
+}
 
 export const Login = () => {
 
@@ -18,7 +30,7 @@ export const Login = () => {
   const [toggle, setToggle] = useState(true);
   const [role, setRole] = useState("user");
   const dispatch = useDispatch();
-  const store = useSelector((store) => store?.user);
+  const store = useSelector((store: RootState) => store?.user);
   const navigate = useNavigate();
 
 
@@ -80,7 +92,7 @@ export const Login = () => {
 
 
   // Submittion
-  const handleSignUpSubmit = (values) => {
+  const handleSignUpSubmit = (values: Values) => {
     const data = {
       fullName: values.fullName,
       email: values.email,
@@ -95,11 +107,12 @@ export const Login = () => {
     });
   };
 
-  const handleLoginSubmit = (values) => {
+  const handleLoginSubmit = (values: LoginValues) => {
     // Login api
     loginMutate(values, {
       onSuccess: (data) => {
       queryClient.invalidateQueries({queryKey: ["user"]});
+      console.log(data?.data)
       dispatch(addUser(data?.data));
       navigate("/home");
     },

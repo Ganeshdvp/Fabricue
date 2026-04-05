@@ -4,7 +4,7 @@ import axios from "axios";
 import type { ProductData } from "../types";
 
 interface Props {
-  id: string;
+  id: string | undefined;
 }
 
 interface ApiResponse {

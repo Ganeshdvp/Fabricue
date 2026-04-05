@@ -34,19 +34,20 @@ import useDeleteAddress from "../hooks/useDeleteAddress";
 import useLogout from "../hooks/useLogout";
 import type { Address, RootState, AddAddress } from "../types";
 
+
 interface EditProfile {
   readonly fullName: string;
   readonly image: File | null;
 }
 
 interface EditAddress {
-  readonly id: string;
-  readonly addressType: string;
-  readonly landMark: string;
-  readonly city: string;
-  readonly state: string;
-  readonly pinCode: string;
-  readonly country: string;
+  id: string;
+  addressType: string;
+  landMark: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
 }
 
 interface QuickActions {
@@ -113,6 +114,7 @@ export const Profile: FC = () => {
 
   // profile fetch
   const { data, isPending } = useProfile();
+  const safeAddress = data?.address ?? [];
 
   // edit profile
   const { mutate: editProfileMutate, isPending: editProfilePending } =
@@ -466,7 +468,7 @@ export const Profile: FC = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            {data?.address?.length > 0 ? (
+            {safeAddress.length > 0 ? (
               data?.address?.map((addr: Address) => (
                 <div
                   key={addr._id}
@@ -632,7 +634,7 @@ export const Profile: FC = () => {
                           pinCode: e.target.value,
                         }))
                       }
-                      type="text"
+                      type="number"
                       placeholder="Pincode"
                       required
                       className={inputCls}

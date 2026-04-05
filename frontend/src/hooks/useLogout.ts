@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/constants";
 
 interface ApiResponse {
@@ -8,7 +8,7 @@ interface ApiResponse {
 }
 
 const useLogout = () => {
-  const mutation = useMutation<ApiResponse, Error, void>({
+  const mutation = useMutation<ApiResponse, AxiosError<{message: string}>, void>({
     mutationFn: async (): Promise<ApiResponse> => {
       const res = await axios.post<ApiResponse>(
         `${BASE_URL}/user/logout`,

@@ -4,6 +4,9 @@ import { emailRegex } from '../utils/constants';
 import { Loading } from "./Loading";
 import useForgotPassword from "../hooks/useForgotPassword";
 
+interface Data {
+  data: string;
+}
 
 export const ForgotPassword: FC = () => {
 
@@ -25,7 +28,7 @@ export const ForgotPassword: FC = () => {
       }
 
       mutate({email: email}, {
-         onSuccess: (data: {data: string}): void=>{
+         onSuccess: (data: Data)=>{
         sessionStorage.setItem('token',data?.data);
         navigate('/enter-otp', {state: {email}});
         setEmail("");

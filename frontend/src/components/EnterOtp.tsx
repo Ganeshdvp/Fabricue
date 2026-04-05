@@ -3,6 +3,11 @@ import { Loading } from "./Loading";
 import { useLocation, useNavigate } from "react-router";
 import useEnterOtp from "../hooks/useEnterOtp";
 
+interface Data {
+  token: string;
+  otp: string;
+}
+
 export const EnterOtp:FC = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [otpError, setOtpError] = useState<string | null>(null);
@@ -42,7 +47,7 @@ export const EnterOtp:FC = () => {
     }
 
     // data
-    const data = {
+    const data: Data = {
       token: token,
       otp: otpValue,
     };
@@ -92,7 +97,7 @@ export const EnterOtp:FC = () => {
 
           {(isError || otpError) && (
             <p className="text-red-500 text-[12px] mt-6">
-              {error?.response?.data?.message || otpError}
+              {error?.response?.data.message || otpError}
             </p>
           )}
 

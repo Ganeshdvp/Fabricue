@@ -10,8 +10,8 @@ import useProfile from "../hooks/useProfile";
 import type { CartItem, RootState, PaymentMethod, Address } from "../types";
 
 interface OrderSummaryProps {
-  readonly totalPrice: number,
-  readonly store: CartItem[]
+  readonly totalPrice: number | undefined;
+  readonly store: CartItem[] | null;
 }
 
 interface OrderItem {
@@ -54,7 +54,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ totalPrice, store }) => {
   const handlePlaceOrder = (): void => {
     const itemsModify =
       storeFromBuyNow ??
-      store.map((item: CartItem) => ({
+      store?.map((item: CartItem) => ({
         productId: item.productId._id,
         size: item.size,
         color: item.color,
@@ -67,7 +67,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ totalPrice, store }) => {
       paymentMethod: paymentMethod,
       deliveryAddress: addressStore,
     }, {
-       onSuccess: (data) => {
+      onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["order", userStore?._id] });
       if (data?.url) {
         window.location.href = data?.url;

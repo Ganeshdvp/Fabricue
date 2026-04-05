@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState, type FC } from "react";
+import { useState, type ChangeEvent, type Dispatch, type FC, type FormEvent, type SetStateAction } from "react";
 import imageCompression from "browser-image-compression";
 import { BASE_URL } from "../../utils/constants";
 import { Loading } from "../Loading";
+import { toast } from "sonner";
 
 interface SetCreateProduuctOpenProps {
-  setCreateProductOpen: boolean
+  setCreateProductOpen: ()=> void;
 }
 
 export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreateProductOpen}) => {
@@ -41,6 +42,17 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
     },
     onSuccess: ()=>{
       queryClient.invalidateQueries({ queryKey: ["seller-product"]});
+      toast.success("Successfully created product", {
+        style: {
+          background: "#fb923c",
+          color: "#ffffff",
+          border: "1px solid #fb923c",
+          borderRadius: "10px",
+          fontSize: "12px",
+          width: "250px",
+          height: "40px",
+        },
+      });
       setCreateProductOpen()
       // clear fields
     setName("");
@@ -58,7 +70,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
     }
   });
 
-  const toggleItem = (value: string, state: string[], setState: any) => {
+  const toggleItem = (value: string, state: string[], setState: Dispatch<SetStateAction<string[]>>) => {
     setState((prev: string[]) =>
       prev.includes(value)
         ? prev.filter((i) => i !== value)
@@ -67,10 +79,14 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
   };
 
   /* Image Upload */
-  const handleFileUpload = async (e: any) => {
-    const selectedFiles = Array.from(e.target.files) as File[];
+  const handleFileUpload = async (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!e.target.files) return;
 
-    for (let file of selectedFiles) {
+    const selectedFiles = Array.from(e.target.files);
+
+    for (const file of selectedFiles) {
       try {
         const options = {
           maxSizeMB: 0.5,
@@ -80,13 +96,13 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
 
         const compressedFile = await imageCompression(file, options);
 
-        // store files
         setFiles((prev) => [...prev, compressedFile]);
 
-        // preview
         const reader = new FileReader();
-        reader.onload = (event: any) => {
-          setImages((prev) => [...prev, event.target.result]);
+        reader.onload = (event: ProgressEvent<FileReader>) => {
+          if (event.target?.result) {
+            setImages((prev) => [...prev, event.target!.result as string]);
+          }
         };
         reader.readAsDataURL(compressedFile);
       } catch (err) {
@@ -96,7 +112,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
   };
 
   /* Submit */
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -202,7 +218,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
 
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-6">
-            <Input label="Product Name" value={name} setValue={setName} />
+            <Input label="Product Name" value={name} setValue={setName} required/>
             <Input
               label="Brand Name"
               value={brandName}
@@ -284,7 +300,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
 
           {/* Pricing */}
           <div className="grid md:grid-cols-3 gap-6">
-            <Input label="Price" type="number" value={price} setValue={setPrice} />
+            <Input label="Price" type="number" value={price} setValue={setPrice} required/>
             <Input
               label="Offer Price"
               type="number"
@@ -292,7 +308,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
               setValue={setDiscountPrice}
               required
             />
-            <Input label="Stock" type="number" value={stock} setValue={setStock} />
+            <Input label="Stock" type="number" value={stock} setValue={setStock} required/>
           </div>
 
           {/* Submit */}
@@ -311,15 +327,22 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
 };
 
 /* Reusable Components */
+interface InputProps {
+  label: string;
+  value: string | number | null;
+  setValue: Dispatch<SetStateAction<any>>;
+  type?: string;
+  required?: boolean
+}
 
-const Input = ({ label, value, setValue, type = "text" }: any) => (
+const Input: FC<InputProps> = ({ label, value, setValue, type = "text" }) => (
   <div className="flex flex-col gap-1">
     <label className="text-sm font-medium text-gray-700">{label}</label>
     <input
       type={type}
       value={value ?? ""}
       required
-      onChange={(e) =>
+      onChange={(e: ChangeEvent<HTMLInputElement>) =>
         type === "number"
           ? setValue(Number(e.target.value))
           : setValue(e.target.value)
@@ -329,7 +352,17 @@ const Input = ({ label, value, setValue, type = "text" }: any) => (
   </div>
 );
 
-const Select = ({ label, value, setValue, options }: any) => (
+
+interface SelectProps {
+  label: string;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
+  options: string[];
+  required: true
+}
+
+
+const Select: FC<SelectProps> = ({ label, value, setValue, options }) => (
   <div className="flex flex-col gap-1">
     <label className="text-sm font-medium text-gray-700">{label}</label>
     <select

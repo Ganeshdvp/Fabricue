@@ -9,9 +9,12 @@ import type { Address, RootState } from "../types";
 
 interface Profile {
   _id: string;
-  userId: string,
-  address: Address[];
-  image: string
+  userId?: {
+    fullName: string;
+    email: string;
+  },
+  address: Address[] | undefined;
+  image: string;
 }
 
 interface ApiResponse {

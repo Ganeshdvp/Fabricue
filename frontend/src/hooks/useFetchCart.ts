@@ -9,7 +9,7 @@ import type { RootState, CartItem } from "../types";
 type CartResponse = CartItem[];
 
 interface ApiResponse {
-  data: CartResponse;
+  data?: CartResponse;
 }
 
 
@@ -23,7 +23,7 @@ const useFetchCart = ()=>{
       const res = await axios.get<ApiResponse>(BASE_URL + "/cart", {
         withCredentials: true,
       });
-      return res?.data?.data;
+      return res?.data?.data || [];
     },
      enabled: !!userStore?._id,
     retry: 2,

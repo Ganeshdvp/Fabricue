@@ -11,8 +11,8 @@ import useFetchProduct from "../hooks/useFetchProduct";
 import type { RootState } from "../types";
 
 interface CardData {
-  size: string;
-  selectedColor: string;
+  size: string | undefined;
+  selectedColor: string | undefined;
   quantity: number;
 }
 
@@ -67,13 +67,13 @@ export const ViewProduct: FC = () => {
       state: {
         items: [
           {
-            productId: data._id,
+            productId: data?._id,
             size: size,
             color: selectedColor,
             quantity: quantity,
           },
         ],
-        totalPrice: data?.discountPrice * quantity,
+        totalPrice: (data?.discountPrice ?? 0) * quantity,
       },
     });
   };
@@ -88,7 +88,7 @@ export const ViewProduct: FC = () => {
   };
 
   const increase = (): void => {
-    if (data?.stock > quantity) {
+    if ((data?.stock ?? 0) > quantity) {
       setQuantity(quantity + 1);
     }
   };

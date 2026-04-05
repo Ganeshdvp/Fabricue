@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import OrdersDashboardShimmer from "../errorAndLoading/OrdersDashboardShimmer";
+import type { Order } from "../../types";
+
 
 export const OrdersDashboard = () => {
   const [search, setSearch] = useState("");
@@ -21,6 +23,7 @@ export const OrdersDashboard = () => {
       return res.data?.data || [];
     },
   });
+
 
   /* Date Filter */
   const filterByDate = (date: string) => {
@@ -40,10 +43,10 @@ export const OrdersDashboard = () => {
   const filteredOrders = useMemo(() => {
     const searchText = search.trim().toLowerCase();
 
-    return data?.filter((order: any) => {
+    return data?.filter((order: Order) => {
       const matchesSearch =
         !searchText ||
-        order.items?.some((item: any) => {
+        order.items?.some((item: {productId: {name: string}}) => {
           const name = item?.productId?.name || "";
           return name.toLowerCase().includes(searchText);
         });
@@ -65,7 +68,7 @@ export const OrdersDashboard = () => {
     let failed = 0;
     let COD = 0;
 
-    filteredOrders?.forEach((order: any) => {
+    filteredOrders?.forEach((order: Order) => {
       order.items?.forEach((item: any) => {
         const basePrice = (item?.productId?.discountPrice || 0) * (item?.quantity || 0);
         const finalPrice = basePrice * 1.02; // Assuming 2% tax/fees
@@ -218,7 +221,7 @@ export const OrdersDashboard = () => {
 
           <div className="divide-y divide-gray-100">
             {filteredOrders.length > 0 ? (
-              filteredOrders.map((order: any) =>
+              filteredOrders.map((order: Order) =>
                 order?.items?.map((item: any, index: number) => {
 
                   const price =

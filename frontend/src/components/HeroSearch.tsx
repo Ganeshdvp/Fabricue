@@ -23,10 +23,6 @@ export const HeroSearch: FC = () => {
   // debounce on search
   const { mutate: searchingMutate } = useSearching();
   useEffect(() => {
-    // skip API call if input is empty
-    if (!searchInput.trim()) {
-      return setAutoSuggestion(false);
-    }
     const timer = setTimeout(() => {
       searchingMutate(
         { query: searchInput },

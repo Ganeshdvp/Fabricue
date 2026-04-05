@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState, useEffect, type FC } from "react";
+import { useState, useEffect, type FC, type FormEvent, type ChangeEvent, type SetStateAction, type Dispatch } from "react";
 import imageCompression from "browser-image-compression";
 import { BASE_URL } from "../../utils/constants";
 import { Loading } from "../Loading";
+import { toast } from "sonner";
 
 interface EditProductDashboardProps {
   id: string;
-  setEditProduct: string | null;
+  setEditProduct: Dispatch<SetStateAction<string | null>>;
 }
 
 export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEditProduct}) => {
@@ -56,7 +57,18 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
     },
     onSuccess: ()=>{
       queryClient.invalidateQueries({ queryKey: ["seller-product"]});
-      setEditProduct();
+      toast.success("Successfully updated product", {
+        style: {
+          background: "#fb923c",
+          color: "#ffffff",
+          border: "1px solid #fb923c",
+          borderRadius: "10px",
+          fontSize: "12px",
+          width: "250px",
+          height: "40px",
+        },
+      });
+      setEditProduct(null);
     }
   });
 
@@ -77,7 +89,7 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
     }
   }, [data]);
 
-  const toggleItem = (value: string, state: string[], setState: any) => {
+  const toggleItem = (value: string, state: string[], setState: Dispatch<SetStateAction<string[]>>) => {
     setState((prev: string[]) =>
       prev.includes(value)
         ? prev.filter((i) => i !== value)
@@ -85,10 +97,11 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
     );
   };
 
-  const handleFileUpload = async (e: any) => {
+  const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+     if (!e.target.files) return;
     const selectedFiles = Array.from(e.target.files) as File[];
 
-    for (let file of selectedFiles) {
+    for (const file of selectedFiles) {
       try {
         const options = {
           maxSizeMB: 0.5,
@@ -101,9 +114,13 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
         setFiles((prev) => [...prev, compressedFile]);
 
         const reader = new FileReader();
-        reader.onload = (event: any) => {
-          setImages((prev) => [...prev, event.target.result]);
-        };
+        reader.onload = (event: ProgressEvent<FileReader>) => {
+  const result = event.target?.result;
+
+  if (typeof result === "string") {
+    setImages((prev) => [...prev, result]);
+  }
+};
         reader.readAsDataURL(compressedFile);
       } catch (err) {
         console.error("Image compression error:", err);
@@ -111,7 +128,7 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData();

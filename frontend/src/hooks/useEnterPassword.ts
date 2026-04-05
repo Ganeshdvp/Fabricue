@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/constants";
 
 interface PasswordData {
@@ -14,7 +14,7 @@ interface ApiResponse {
 }
 
 const useEnterPassword = () => {
-  const mutation = useMutation<ApiResponse, Error, PasswordData>({
+  const mutation = useMutation<ApiResponse, AxiosError<{message: string}>, PasswordData>({
     mutationFn: async (data: PasswordData): Promise<ApiResponse> => {
       const res = await axios.post<ApiResponse>(
         `${BASE_URL}/user/change-password`,
