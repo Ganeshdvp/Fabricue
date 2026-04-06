@@ -29,7 +29,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ totalPrice, store }) => {
   const userStore = useSelector((store: RootState) => store?.user);
 
   const location = useLocation();
-  const storeFromBuyNow = location.state?.items as OrderItem | undefined;
+  const storeFromBuyNow = location.state?.items as OrderItem[] | undefined;
   const totalPriceFromBuyNow = location.state?.totalPrice as number;
 
   const addressStore = useSelector((store: RootState) => store?.address);
@@ -52,8 +52,8 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ totalPrice, store }) => {
 
   // place order button
   const handlePlaceOrder = (): void => {
-    const itemsModify =
-      storeFromBuyNow ??
+    const itemsModify: OrderItem[] =
+      (storeFromBuyNow as OrderItem[]) ??
       store?.map((item: CartItem) => ({
         productId: item.productId._id,
         size: item.size,

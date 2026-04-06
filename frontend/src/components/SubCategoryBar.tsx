@@ -1,7 +1,7 @@
 import { memo, type Dispatch, type FC, type SetStateAction } from "react";
 
 
-type CategoryKey = "all" | "men" | "women" | "kids";
+type CategoryKey = string;
 
 interface CategoryItem {
   readonly image: string;

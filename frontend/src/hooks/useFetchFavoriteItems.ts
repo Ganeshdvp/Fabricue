@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addFavorite } from "../utils/wishListSlice";
 import type { ProductData, RootState } from "../types";
+import type { AppDispatch } from "recharts/types/state/store";
 
 
 type FavoriteResponse = ProductData[];
@@ -15,7 +16,7 @@ interface ApiResponse {
 
 const useFetchFavoriteItems = () => {
   const store = useSelector((store: RootState) => store.user);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const query = useQuery<FavoriteResponse>({
     queryKey: ["favorite", store?._id],
@@ -34,10 +35,10 @@ const useFetchFavoriteItems = () => {
   });
 
   useEffect(() => {
-    if (query?.data) {
-      dispatch(addFavorite(query?.data));
+    if (query.data) {
+      dispatch(addFavorite(query.data));
     }
-  }, [query?.data, dispatch]);
+  }, [query.data, dispatch]);
 
   return query;
 };

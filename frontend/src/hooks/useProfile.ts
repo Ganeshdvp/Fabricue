@@ -42,7 +42,7 @@ const useProfile = () => {
   });
 
   useEffect(() => {
-    if (query.data) {
+    if (query.data?.address?.length) {
       dispatch(addAddress(query.data.address[0]));
     }
   }, [query.data, dispatch]);

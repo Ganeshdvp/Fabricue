@@ -1,8 +1,10 @@
 import { BASE_URL } from "../utils/constants";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import type { User } from "../types";
 
 interface LoginData {
+  fullName?: string;
   email: string;
   password: string;
 }
@@ -10,17 +12,7 @@ interface LoginData {
 interface ApiResponse {
   success: boolean;
   message: string;
-  data?: {
-    _id: string;
-    email: string;
-    fullName: string;
-    lockUntil: string | null;
-    passwordChangedAt: string;
-    role: string;
-    failedLoginAttempts: number;
-    createdAt: string;
-    updatedAt: string;
-  };
+  data: User;
 }
 
 const useLogin = () => {

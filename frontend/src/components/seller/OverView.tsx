@@ -21,6 +21,7 @@ import { BASE_URL } from "../../utils/constants";
 import { useDispatch } from "react-redux";
 import { setContent } from "../../utils/SideBarDashboardSlice";
 import OverviewShimmer from "../errorAndLoading/OverviewShimmer";
+import type { OrderStatus } from "../../types";
 
 interface Product {
   image: string;
@@ -28,20 +29,6 @@ interface Product {
   stock: number;
   discountPrice: number
 }
-
-// interface Order {
-//   items: {
-//     productId: {
-//       name: string;
-//       discountPrice: number;
-//     };
-//     quantity: number;
-//   }[];
-//   userId: {
-//     fullName: string
-//   };
-//   status: string
-// }
 
 export const OverView: React.FC = () => {
   const dispatch = useDispatch();
@@ -324,7 +311,7 @@ export const OverView: React.FC = () => {
 
                 <span
                   className={`text-xs px-3 py-1 rounded-full ${
-                    statusStyles[order?.status] || "bg-gray-200"
+                    statusStyles[order?.status as OrderStatus] || "bg-gray-200"
                   }`}
                 >
                   {order?.status || "Pending"}

@@ -70,7 +70,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
     }
   });
 
-  const toggleItem = (value: string, state: string[], setState: Dispatch<SetStateAction<string[]>>) => {
+  const toggleItem = (value: string, setState: Dispatch<SetStateAction<string[]>>) => {
     setState((prev: string[]) =>
       prev.includes(value)
         ? prev.filter((i) => i !== value)
@@ -251,7 +251,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
                 <button
                   type="button"
                   key={size}
-                  onClick={() => toggleItem(size, sizes, setSizes)}
+                  onClick={() => toggleItem(size, setSizes)}
                   className={`px-3 py-1 rounded-lg border text-sm ${
                     sizes.includes(size)
                       ? "bg-amber-500 text-white border-amber-500"
@@ -272,7 +272,7 @@ export const CreateProductDashboard:FC<SetCreateProduuctOpenProps> = ({setCreate
                 <button
                   type="button"
                   key={color}
-                  onClick={() => toggleItem(color, colors, setColors)}
+                  onClick={() => toggleItem(color, setColors)}
                   className={`px-3 py-1 rounded-lg border text-sm ${
                     colors.includes(color)
                       ? "bg-gray-800 text-white border-gray-800"

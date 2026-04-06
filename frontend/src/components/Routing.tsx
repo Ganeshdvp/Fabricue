@@ -94,7 +94,7 @@ export const Routing: FC = () => {
         { path: "cart", element: <Cart /> },
         { path: "wishlist", element: <WishList /> },
         { path: "view/:id", element: <ViewProduct /> },
-        { path: 'payment', element: <OrderSummary/>},
+        { path: 'payment', element: <OrderSummary store={null} totalPrice={undefined}/>},
         { path: "orders", element: <Orders /> },
         { path: "profile", element: <Profile/>},
         { path: "about", element: <HomeAbout/>},

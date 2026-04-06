@@ -10,6 +10,7 @@ import { Loading } from "./Loading";
 import useSignUp from "../hooks/useSignUp";
 import useLogin from "../hooks/useLogin"
 import type { RootState } from "../types";
+import type { AppDispatch } from "recharts/types/state/store";
 
 interface Values {
   fullName: string;
@@ -18,8 +19,16 @@ interface Values {
   role?: "user" | "seller"
 }
 interface LoginValues {
+  fullName?: string;
   email: string;
   password: string;
+}
+
+interface FormValues {
+  fullName: string;
+  email: string;
+  password: string;
+  role?: "user" | "seller"
 }
 
 export const Login = () => {
@@ -27,22 +36,22 @@ export const Login = () => {
   const queryClient = useQueryClient();
 
    const location = useLocation();
-  const [toggle, setToggle] = useState(true);
-  const [role, setRole] = useState("user");
-  const dispatch = useDispatch();
+  const [toggle, setToggle] = useState<boolean>(true);
+  const [role, setRole] = useState<string>("user");
+  const dispatch = useDispatch<AppDispatch>();
   const store = useSelector((store: RootState) => store?.user);
   const navigate = useNavigate();
 
 
   // Initial Signup data
-  const initialSignUpData = {
+  const initialSignUpData: Values = {
     fullName: "",
     email: "",
     password: "",
   };
 
   // Initial Login data
-  const initialLoginData = {
+  const initialLoginData: LoginValues = {
     email: location?.state?.heroPageEmail || store?.email || "",
     password: "",
   };
@@ -112,7 +121,6 @@ export const Login = () => {
     loginMutate(values, {
       onSuccess: (data) => {
       queryClient.invalidateQueries({queryKey: ["user"]});
-      console.log(data?.data)
       dispatch(addUser(data?.data));
       navigate("/home");
     },
@@ -127,7 +135,7 @@ export const Login = () => {
           <Formik
             key={toggle ? "Login" : "Sign up"}
             enableReinitialize
-            initialValues={toggle ? initialLoginData : initialSignUpData}
+            initialValues={(toggle ? initialLoginData : initialSignUpData) as FormValues}
             validationSchema={toggle ? LoginSchema : SignupSchema}
             onSubmit={toggle ? handleLoginSubmit : handleSignUpSubmit}
           >

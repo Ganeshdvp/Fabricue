@@ -89,7 +89,7 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
     }
   }, [data]);
 
-  const toggleItem = (value: string, state: string[], setState: Dispatch<SetStateAction<string[]>>) => {
+  const toggleItem = (value: string, setState: Dispatch<SetStateAction<string[]>>) => {
     setState((prev: string[]) =>
       prev.includes(value)
         ? prev.filter((i) => i !== value)
@@ -164,6 +164,31 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
     "Orange",
   ];
 
+  const subCategoryOptions = [
+  "T-shirts",
+  "Shirts",
+  "Jeans",
+  "Jackets",
+  "Hoodies",
+  "Blazers",
+  "Shorts",
+  "Sweaters",
+  "Underwears",
+  "Sarees",
+  "Kurtis",
+  "Dresses",
+  "Tops",
+  "Skirts",
+  "Lehengas",
+  "Kids t-shirts",
+  "Kids shirts",
+  "Kids dresses",
+  "Kids hoodies",
+  "Kids jackets",
+  "Kids sweatshirts"
+];
+
+
   return (
     <section className="w-full px-4 py-6">
       <div className="max-w-5xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm">
@@ -231,7 +256,7 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
               label="Sub Category"
               value={subCategory}
               setValue={setSubCategory}
-              options={["Shirts", "T-shirts", "Hoodies", "Jeans"]}
+              options={subCategoryOptions}
               required
             />
           </div>
@@ -244,7 +269,7 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
                 <button
                   type="button"
                   key={size}
-                  onClick={() => toggleItem(size, sizes, setSizes)}
+                  onClick={() => toggleItem(size, setSizes)}
                   className={`px-3 py-1 rounded-lg border text-sm ${
                     sizes.includes(size)
                       ? "bg-amber-500 text-white border-amber-500"
@@ -265,7 +290,7 @@ export const EditProductDashboard:FC<EditProductDashboardProps> = ({ id, setEdit
                 <button
                   type="button"
                   key={color}
-                  onClick={() => toggleItem(color, colors, setColors)}
+                  onClick={() => toggleItem(color, setColors)}
                   className={`px-3 py-1 rounded-lg border text-sm ${
                     colors.includes(color)
                       ? "bg-gray-800 text-white border-gray-800"

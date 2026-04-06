@@ -1,13 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../types';
+import type { ProductData } from '../types';
 
-const initialState = null as RootState | null;
+const initialState = null as ProductData[] | null;
 
 const wishListSlice = createSlice({
     name: 'favorite',
     initialState,
     reducers: {
-        addFavorite: (_state, action: PayloadAction<RootState>)=>{
+        addFavorite: (_state, action: PayloadAction<ProductData[]>)=>{
             return action.payload;
         },
         removeFavorite: ()=>{
