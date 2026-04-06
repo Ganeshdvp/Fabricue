@@ -30,7 +30,7 @@ const createProduct = async (req: Request<{}, {}, ReqBody>, res: Response): Prom
       sizes,
       colors,
     } = req?.body;
-    const files = req.files;
+    const files = req.files as Express.Multer.File[];
     const loggedInUser = req.user;
 
     // validate

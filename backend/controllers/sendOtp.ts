@@ -24,6 +24,10 @@ const SendOtp = async(req: Request, res: Response): Promise<void>=>{
         const otp: string = generateOTP();
     
         // create jwt token
+        if(!process.env.JWT_SECRET_CODE){
+          res.status(400).json({message: 'Something went wrong on server!'})
+          return;
+        }
         const token = jwt.sign({email,otp}, process.env.JWT_SECRET_CODE, {
           expiresIn: "5m"
         });

@@ -55,7 +55,7 @@ export const stripeWebhook = async (req: Request, res: Response): Promise<void> 
 
         // reduce stock
         await Promise.all(
-          order.items?.map(async (item: { productId: string; quantity: number }) => {
+          order.items?.map(async (item: any) => {
             await Product.findByIdAndUpdate(item.productId, {
               $inc: { stock: -item.quantity },
             });

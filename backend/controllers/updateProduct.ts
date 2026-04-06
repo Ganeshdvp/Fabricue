@@ -74,7 +74,7 @@ const updateProduct = async (req: Request<Params, {}, Reqbody>, res: Response): 
     // upload images ONLY if provided
     const uploadedImages = [];
 
-    if (files && files.length > 0) {
+    if (Array.isArray(files) && files.length > 0) {
       for (const file of files) {
         const base64 = `data:${file.mimetype};base64,${file.buffer.toString(
           "base64",
@@ -89,9 +89,13 @@ const updateProduct = async (req: Request<Params, {}, Reqbody>, res: Response): 
     }
 
     const existingProduct = await Product.findById(id);
+    if (!existingProduct) {
+  res.status(404).json({ message: "Product not found" });
+  return;
+}
 
     // update object
-    const updateData = {
+    const updateData: any = {
       name,
       brand,
       category: categoryCase,

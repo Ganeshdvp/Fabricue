@@ -19,7 +19,7 @@ const getAllFavoriteItems = async (req: Request, res: Response): Promise<void> =
             return;
         }
 
-        const data = products.map((f: { productId: string }) => f.productId);
+        const data = products.map((f: any) => f.productId);
 
         // return response
         res.status(200).json({message: 'Successfully fetched favorite items!', data: data})

@@ -11,6 +11,11 @@ const increaseQuantity = async (req: Request<{}, {}, ReqBody>, res: Response): P
      try{
         const {id, type} = req.body;
         const loggedInUser = req.user?._id;
+
+        if (!loggedInUser) {
+  res.status(401).json({ message: "Unauthorized" });
+  return;
+}
         
         // validate id
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -42,7 +47,7 @@ const increaseQuantity = async (req: Request<{}, {}, ReqBody>, res: Response): P
          cartItem.quantity -= 1;
         }
 
-        await cartItem .save();
+        await cartItem.save();
 
       res.status(200).json({
       message: "Cart quantity updated successfully",

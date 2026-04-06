@@ -19,7 +19,7 @@ const searchingProduct = async(req: Request, res: Response): Promise<void>=>{
     const products = await Product.find({
         name : { $regex: sanitizedQuery, $options: "i" }
     });
-    if(!products && !products.length){
+    if(!products || products.length === 0){
         res.status(404).json({message: 'No products found!'})
         return;
     }

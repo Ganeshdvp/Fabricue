@@ -33,7 +33,7 @@ const ordersBySeller = async (req: Request, res: Response): Promise<void> => {
     const filteredOrders = orders
       .map((order) => {
         const sellerItems = order.items.filter(
-          (item: { productId?: { sellerId?: string } }) =>
+          (item: any) =>
             item.productId?.sellerId?.toString() ===
             loggedInUser._id.toString()
         );

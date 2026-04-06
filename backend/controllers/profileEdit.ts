@@ -21,7 +21,7 @@ const profileEdit = async (req: Request<{}, {}, Reqbody>, res: Response): Promis
     }
 
     // find profile db
-    const profile = await Profile.findOne({userId: loggedInUser._id});
+    const profile = await Profile.findOne({userId: loggedInUser._id as any});
     if(!profile){
       res.status(404).json({message: 'Profile not found!'});
       return;

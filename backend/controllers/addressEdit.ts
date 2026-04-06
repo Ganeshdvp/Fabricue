@@ -28,7 +28,7 @@ const addressEdit = async (req: Request<{}, {}, ReqBody>, res: Response): Promis
     }
 
     // fetch address in db
-    const address = await Profile.findOneAndUpdate({userId: loggedInUser._id, "address._id" : id}, {
+    const address = await Profile.findOneAndUpdate({userId: loggedInUser._id as any, "address._id" : id}, {
       $set: {
           "address.$.addressType": addressType,
           "address.$.landMark": landMark,

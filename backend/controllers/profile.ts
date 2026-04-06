@@ -14,7 +14,7 @@ const profile = async (req: Request, res: Response): Promise<void> => {
 
         // fetch orders from db
         const profile = await Profile.find({
-            userId : loggedInUser._id
+            userId : loggedInUser._id as any
         }).populate('userId', 'fullName email')
         if(!profile || !profile.length){
             res.status(404).json({message: 'Profile not found!'});

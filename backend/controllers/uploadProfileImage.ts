@@ -4,6 +4,11 @@ import streamifier from "streamifier";
 
 const uploadProfileImage = async (file: Request["file"]): Promise<string> => {
   return new Promise((resolve, reject) => {
+     if (!file) {
+      reject(new Error("No file provided!"));
+      return;
+    }
+    
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: "ProfileImages",
@@ -11,7 +16,7 @@ const uploadProfileImage = async (file: Request["file"]): Promise<string> => {
           { width: 300, height: 300, crop: "fill", quality: "auto" }
         ],
       },
-      (error: Error | null, result: any) => {
+      (error: any, result: any) => {
         if (result) resolve(result.secure_url);
         else reject(new Error("Failed to upload Image!"));
       }

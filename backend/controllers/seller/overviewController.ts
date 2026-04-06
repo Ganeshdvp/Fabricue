@@ -33,7 +33,7 @@ const overviewController = async (req: Request, res: Response): Promise<void> =>
     }
 
     // total Orders logic
-    const totalOrdersForSeller = orders.filter(order => order.items.some(item => item.productId.sellerId.toString() === loggedInUser._id.toString()));
+    const totalOrdersForSeller = orders.filter(order => order.items.some(item => (item.productId as any).sellerId.toString() === loggedInUser._id.toString()));
     totalOrders = totalOrdersForSeller.length;
 
     // total Products logic
@@ -44,8 +44,8 @@ const overviewController = async (req: Request, res: Response): Promise<void> =>
     // total Revenue logic
     let totalRevenueForSeller = totalOrdersForSeller.reduce((acc, order) => {
       const orderRevenue = order.items.reduce((itemAcc, item) => {
-        if (item.productId.sellerId.toString() === loggedInUser._id.toString()) {
-          return itemAcc + (item.productId.discountPrice * item.quantity);
+        if ((item.productId as any).sellerId.toString() === loggedInUser._id.toString()) {
+          return itemAcc + ((item.productId as any).discountPrice * item.quantity);
         }
         return itemAcc;
       }, 0);
@@ -53,8 +53,8 @@ const overviewController = async (req: Request, res: Response): Promise<void> =>
     }, 0);
     totalRevenueForSeller = Math.round((totalRevenueForSeller * 1.02) * 100) / 100;
 
-    const filterOrders = orders.filter(order=> order.items.some(item=> item.productId.sellerId.toString() === loggedInUser._id.toString()))
-    const filterProducts = orders.filter(order=> order.items.some(item=> item.productId.sellerId.toString() === loggedInUser._id.toString())).flatMap(order => order.items.map(item => item.productId)).slice(0, 5);
+    const filterOrders = orders.filter(order=> order.items.some(item=> (item.productId as any).sellerId.toString() === loggedInUser._id.toString()))
+    const filterProducts = orders.filter(order=> order.items.some(item=> (item.productId as any).sellerId.toString() === loggedInUser._id.toString())).flatMap(order => order.items.map(item => item.productId)).slice(0, 5);
 
     // send response
     res.status(200).json({

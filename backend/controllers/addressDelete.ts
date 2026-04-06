@@ -19,8 +19,9 @@ const addressDelete = async (
     }
 
     // validate and find id in DB
+    const userId = loggedInUser._id as any;
     const address = await Profile.findOneAndUpdate(
-      { userId: loggedInUser._id },
+      { userId},
       {
         $pull: {
           address: { _id: id },

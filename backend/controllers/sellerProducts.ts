@@ -20,7 +20,7 @@ const getSellerProducts = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    const sellerId = req.user?._id;
+    const sellerId = loggedInUser._id;
 
     // fetch products from database
     const products = await Product.find({ sellerId }).populate(

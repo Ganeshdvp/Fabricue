@@ -14,6 +14,10 @@ const VerifyOtp = async(req: Request<{}, {}, Reqbody>, res: Response): Promise<v
         if(!token) throw new Error("Otp not found!");
     
         // decode token
+        if (!process.env.JWT_SECRET_CODE) {
+  res.status(500).json({ message: "Server configuration error" });
+  return;
+}
         const decoded = jwt.verify(token, process.env.JWT_SECRET_CODE);
         if(!decoded){
           res.status(400).json({ message: "Failed to verify otp!" });
@@ -21,7 +25,7 @@ const VerifyOtp = async(req: Request<{}, {}, Reqbody>, res: Response): Promise<v
         }
     
         // checking otp
-        if(decoded.otp !== otp){
+        if((decoded as any).otp !== otp){
            res.status(400).json({ message: "Invalid OTP" });
           return;
         }

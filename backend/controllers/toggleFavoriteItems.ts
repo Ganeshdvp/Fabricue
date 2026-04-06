@@ -8,6 +8,7 @@ interface Params {
 }
 
 const toggleFavoriteItems = async (req: Request<Params, {}, {}>, res: Response): Promise<void> => {
+  const { type, id } = req.params;
   try {
     
     if (!req.user) {
@@ -16,7 +17,6 @@ const toggleFavoriteItems = async (req: Request<Params, {}, {}>, res: Response):
     }
 
     const userId = req.user._id;
-    const { type, id } = req.params;
 
     const isValidType = ["add", "remove"].includes(type);
     if (!isValidType) {

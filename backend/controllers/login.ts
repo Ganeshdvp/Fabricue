@@ -35,7 +35,7 @@ const Login = async(req: Request<{}, {}, ReqBody>, res: Response): Promise<void>
         if (!isPasswordValid){
           user.failedLoginAttempts += 1;
           if(user.failedLoginAttempts >= MAX_ATTEMPTS){
-            user.lockUntil = Date.now() + LOCK_TIME;
+            user.lockUntil = new Date(Date.now() + LOCK_TIME);
           }
           await user.save();
 
@@ -50,6 +50,10 @@ const Login = async(req: Request<{}, {}, ReqBody>, res: Response): Promise<void>
 
     
         // create jwt
+        if(!process.env.JWT_SECRET_CODE){
+          res.status(400).json({message: 'Something went wrong on server!'})
+          return;
+        }
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_CODE, {
           expiresIn: "1d",
         });

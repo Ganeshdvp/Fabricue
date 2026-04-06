@@ -66,7 +66,7 @@ export const payment = async (req: Request<{}, {}, Reqbody>, res: Response): Pro
 
           // reduce stock
                 await Promise.all(
-                  order.items?.map(async (item: Items) => {
+                  order.items?.map(async (item: any) => {
                     await Product.findByIdAndUpdate(item.productId, {
                       $inc: { stock: -item.quantity },
                     });
@@ -90,16 +90,16 @@ export const payment = async (req: Request<{}, {}, Reqbody>, res: Response): Pro
     // build stripe line items
     const line_items = items.map((item) => {
       const product = products.find(
-        (p: {_id: string}) => p._id.toString() === item.productId
+        (p: any) => p._id.toString() === item.productId
       );
       return {
         price_data: {
           currency: "inr",
           product_data: {
-            name: product.name,
-            images: product.image ? [product.image[0]] : [],
+            name: product?.name,
+            images: product?.image ? [product.image[0]] : [],
           },
-          unit_amount: Math.round(product.discountPrice * 1.02 * 100),
+          unit_amount: Math.round((product?.discountPrice ?? 0) * 1.02 * 100),
         },
         quantity: item.quantity,
       };

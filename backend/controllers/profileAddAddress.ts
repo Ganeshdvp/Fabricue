@@ -32,7 +32,7 @@ const profileAddAddress = async (req: Request<{}, {}, Reqbody>, res: Response): 
     }
 
     // find profile from db
-    let profile = await Profile.findOne({ userId: loggedInUser._id });
+    let profile = await Profile.findOne({ userId: loggedInUser._id as any});
     if (!profile) {
       res.status(404).json({ message: "Profile not found!" });
       return;
@@ -59,7 +59,7 @@ const profileAddAddress = async (req: Request<{}, {}, Reqbody>, res: Response): 
       country,
     };
 
-    profile.address.push(newAddress);
+    profile.address.push(newAddress as any);
 
     await profile.save();
 
