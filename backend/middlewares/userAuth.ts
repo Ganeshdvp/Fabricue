@@ -47,7 +47,7 @@ const UserAuth = async (
     }
 
     // find user
-    const user = await User.findById(_id);
+    const user = await User.findById(_id).select("_id fullName email role lockUntil passwordChangedAt failedLoginAttempts createdAt updatedAt")
     if (!user) {
       throw new Error("User not Exists!");
     }

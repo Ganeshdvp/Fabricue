@@ -60,9 +60,20 @@ const Login = async(req: Request<{}, {}, ReqBody>, res: Response): Promise<void>
           sameSite: "none",
           path: "/",
         });
+
+        // sending this data to FE
+        const userData = {
+          _id: user._id,
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role,
+          failedLoginAttempts: user.failedLoginAttempts,
+          lockUntil: user.lockUntil,
+          passwordChangedAt: user.passwordChangedAt,
+        }
     
         // send response
-        res.json({ message: "Login Successfull", data: user });
+        res.json({ message: "Login Successfull", data: userData });
       } catch (err) {
         res.status(500).json({ message: err instanceof Error ? err.message : 'Internal Server Error' });
       }
