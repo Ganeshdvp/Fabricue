@@ -23,4 +23,4 @@ profileRouter.post('/address-add', UserAuth as RequestHandler, profileAddAddress
 profileRouter.patch('/address-edit', UserAuth as RequestHandler, addressEdit);
 
 // delete address
-profileRouter.delete('/address-delete/:id', UserAuth as RequestHandler, addressDelete);
+profileRouter.delete<{id: string}>('/address-delete/:id', UserAuth as RequestHandler, addressDelete);

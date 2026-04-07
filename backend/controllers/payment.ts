@@ -92,12 +92,13 @@ export const payment = async (req: Request<{}, {}, Reqbody>, res: Response): Pro
       const product = products.find(
         (p: any) => p._id.toString() === item.productId
       );
+      const image = product?.image?.[0];
       return {
         price_data: {
           currency: "inr",
           product_data: {
-            name: product?.name,
-            images: product?.image ? [product.image[0]] : [],
+            name: product?.name ?? "Product",
+            images: image ? [image] : [],
           },
           unit_amount: Math.round((product?.discountPrice ?? 0) * 1.02 * 100),
         },

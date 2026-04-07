@@ -46,13 +46,16 @@ const UserAuth = async (
       throw new Error("token not valid!");
     }
 
-    // find user
-    const user = await User.findById(_id).select("_id fullName email role lockUntil passwordChangedAt failedLoginAttempts createdAt updatedAt")
+    // find user as a plain object so it matches our AuthenticatedRequest type
+    const user = await User.findById(_id)
+      .select("_id fullName email role lockUntil passwordChangedAt failedLoginAttempts createdAt updatedAt")
+      .lean<AuthenticatedRequest["user"]>();
+
     if (!user) {
       throw new Error("User not Exists!");
     }
 
-    // asign the user!
+    // assign the user
     req.user = user;
     next();
   } catch (err) {

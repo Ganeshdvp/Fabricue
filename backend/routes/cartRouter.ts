@@ -11,10 +11,10 @@ const CartRouter: Router = express.Router();
 CartRouter.get("/", UserAuth as RequestHandler, getAllCartItems);
 
 // add items in cart
-CartRouter.post('/add/:id', UserAuth as RequestHandler, addItemToCart);
+CartRouter.post<{id: string}>('/add/:id', UserAuth as RequestHandler, addItemToCart);
 
 // remove items in cart
-CartRouter.delete('/remove/:id', UserAuth as RequestHandler, deleteItemCart);
+CartRouter.delete<{id: string}>('/remove/:id', UserAuth as RequestHandler, deleteItemCart);
 
 // increase quantity
 CartRouter.post('/quantity', UserAuth as RequestHandler, increaseQuantity);

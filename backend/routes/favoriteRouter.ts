@@ -10,4 +10,4 @@ export const FavoriteRouter: Router = express.Router();
 FavoriteRouter.get('/', UserAuth as RequestHandler, getAllFavoriteItems);
 
 // add and remove(toggle) favorite item
-FavoriteRouter.post('/:type/:id', UserAuth as RequestHandler, toggleFavoriteItems);
+FavoriteRouter.post<{type: string; id: string}>('/:type/:id', UserAuth as RequestHandler, toggleFavoriteItems);
