@@ -21,7 +21,7 @@ export const AlertBanner: FC = () => {
 
   return (
     <div
-      className={`fixed bottom-40 sm:bottom-4 right-14 sm:right-4 z-100 max-w-sm sm:max-w-md transition-all duration-500 ${
+      className={`fixed bottom-25 sm:bottom-4 right-14 sm:right-4 z-100 max-w-sm sm:max-w-md transition-all duration-500 ${
         fadeOut
           ? "opacity-0 translate-y-4"
           : fadeIn

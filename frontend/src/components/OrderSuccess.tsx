@@ -56,7 +56,7 @@ export const OrderSuccess: FC = () => {
     disabled={isRedirecting}
     className="mt-6 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-amber-500 text-white rounded-lg shadow-md hover:bg-amber-600 transition disabled:opacity-50 w-full max-w-xs sm:w-auto"
   >
-    {isRedirecting && "Redirecting to orders..."}
+    {"Redirecting to orders..."}
   </button>
 
 </div>

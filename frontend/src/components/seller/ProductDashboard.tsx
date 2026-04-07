@@ -75,9 +75,10 @@ const StatCard = ({
 export const ProductDashboard: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [dateFilter, setDateFilter] = useState<string>("7days");
+  const [dateFilter, setDateFilter] = useState<string>("year");
   const [createProductOpen, setCreateProductOpen] = useState<boolean>(false);
   const [editProduct, setEditProduct] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null)
 
   const queryClient = useQueryClient();
 
@@ -101,6 +102,7 @@ export const ProductDashboard: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seller-product"] });
+      setIsDeleting(null);
       toast.success("Successfully deleted product", {
         style: {
           background: "#fb923c",
@@ -233,11 +235,11 @@ export const ProductDashboard: React.FC = () => {
                   />
 
                   {deleteLoading ? (
-                    <Loading color="border-red-500" />
+                    isDeleting === product._id && <Loading color="border-red-500" />
                   ) : (
                     <Trash
                       size={28}
-                      onClick={() => mutate(product._id)}
+                      onClick={() => {mutate(product._id); setIsDeleting(product._id)}}
                       className="p-2 bg-white border rounded-xl hover:bg-red-50 cursor-pointer"
                     />
                   )}
@@ -290,7 +292,7 @@ export const ProductDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* ✅ GLOBAL EDIT MODAL FIX */}
+        {/* GLOBAL EDIT MODAL FIX */}
         {editProduct && (
           <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-scroll no-scrollbar rounded-2xl">

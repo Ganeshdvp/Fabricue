@@ -140,7 +140,7 @@ const ChatBot: FC = () => {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="fixed bottom-8 right-12 z-50 bg-amber-500 hover:bg-amber-600 text-white p-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-110 cursor-pointer"
+        className="fixed bottom-4 right-6 sm:bottom-8 sm:right-12 z-50 bg-amber-500 hover:bg-amber-600 text-white p-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-110 cursor-pointer animate-float"
       >
         <BotMessageSquare />
       </button>

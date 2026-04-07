@@ -6,11 +6,11 @@ import type { FC } from "react";
 import { Dashboard } from "./seller/Dashboard";
 
 export const Home: FC = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <>
-      <Toaster position="top-right" richColors />
+      <Toaster position="top-right" richColors duration={2000}/>
       {location.pathname === "/home/dashboard" ? (
         <Dashboard />
       ) : (

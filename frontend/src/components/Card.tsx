@@ -77,7 +77,7 @@ export const Card:FC<CardProps> = ({ productData }) => {
       {/* Favorite button */}
       <button
         onClick={() => handleFavorite(favorite ? "remove" : "add")}
-        className="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm border border-gray-100 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 cursor-pointer"
+        className="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm border border-gray-100 flex items-center justify-center opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 cursor-pointer"
       >
         {favoritePending ? (
           <Loading color={'border-amber-500'}/>
