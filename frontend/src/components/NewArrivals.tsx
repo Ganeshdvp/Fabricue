@@ -49,6 +49,7 @@ const products: Product[] = [
 export const NewArrivals: FC = () => {
   return (
     <section
+    id="new-arrivals"
       className="mt-36 px-4"
       aria-labelledby="new-arrivals-heading"
     >

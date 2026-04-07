@@ -62,6 +62,7 @@ const collections: Collection[] = [
 export const LatestCollections: FC = () => {
   return (
     <section
+    id="latest-collections"
       className="mt-32 px-4"
       aria-labelledby="latest-collections-heading"
     >
