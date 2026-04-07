@@ -40,7 +40,6 @@
     "mongodb": "^7.1.1",
     "mongoose": "^9.3.3",
     "multer": "^2.1.1",
-    "node": "^25.9.0",
     "nodemon": "^3.1.14",
     "resend": "^6.9.3",
     "streamifier": "^0.1.1",
