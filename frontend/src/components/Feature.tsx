@@ -1,46 +1,88 @@
-import { ChartNoAxesColumnDecreasing, ChevronsUp, ShieldCheck } from "lucide-react"
-import type { FC } from "react"
+import {
+  ChartNoAxesColumnDecreasing,
+  ChevronsUp,
+  ShieldCheck,
+} from "lucide-react";
+import type { FC } from "react";
 
 export const Feature: FC = () => {
   return (
-    <>
-        <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-                * {
-                    font-family: 'Poppins', sans-serif;
-                }
-            `}</style>
-            <h2 className="text-2xl font-semibold text-center mt-36">What we provided</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-18">
-                <div className="size-130 top-0 left-1/2 -translate-x-1/2 rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]/70"></div>
-                <div className="flex flex-col items-center justify-center max-w-80 mx-auto">
-                    <div className="p-6 aspect-square bg-amber-100 rounded-full">
-                        <ChartNoAxesColumnDecreasing/>
-                    </div>
-                    <div className="mt-5 space-y-2 text-center">
-                        <h3 className="text-base font-semibold text-slate-700">Premium Quality & Comfort</h3>
-                        <p className="text-sm text-slate-600">Crafted with high-grade fabrics and attention to detail, every GIHEAF piece delivers lasting comfort and durability.</p>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center justify-center max-w-80 mx-auto">
-                    <div className="p-6 aspect-square bg-amber-100 rounded-full">
-                        <ChevronsUp/>
-                    </div>
-                    <div className="mt-5 space-y-2 text-center">
-                        <h3 className="text-base font-semibold text-slate-700">Fast Delivery & Easy Returns</h3>
-                        <p className="text-sm text-slate-600">Quick shipping and hassle-free returns ensure a smooth, worry-free shopping experience every time.</p>
-                    </div>
-                </div>
-                <div className="flex flex-col items-center justify-center max-w-80 mx-auto">
-                    <div className="p-6 aspect-square bg-amber-100 rounded-full">
-                        <ShieldCheck/>
-                    </div>
-                    <div className="mt-5 space-y-2 text-center">
-                        <h3 className="text-base font-semibold text-slate-700">Secure & Seamless Checkout</h3>
-                        <p className="text-sm text-slate-600">Shop confidently with encrypted payments and a fast, user-friendly checkout process.</p>
-                    </div>
-                </div>
+    <section
+      aria-labelledby="features-heading"
+      className="relative mt-36 px-4 max-w-6xl mx-auto"
+    >
+      {/* Background blur */}
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-125 h-125 rounded-full blur-[200px] -z-10 bg-[#FBFFE1]/70" />
+
+      {/* Heading */}
+      <h2
+        id="features-heading"
+        className="text-2xl md:text-3xl font-semibold text-center"
+      >
+        What We Provide
+      </h2>
+
+      {/* Features list */}
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
+        
+        {/* Item 1 */}
+        <li>
+          <article className="flex flex-col items-center text-center max-w-xs mx-auto">
+            <div className="p-6 bg-amber-100 rounded-full">
+              <ChartNoAxesColumnDecreasing
+                aria-hidden="true"
+                className="w-6 h-6"
+              />
             </div>
-    </>
-  )
-}
+            <div className="mt-5 space-y-2">
+              <h3 className="text-base font-semibold text-slate-700">
+                Premium Quality & Comfort
+              </h3>
+              <p className="text-sm text-slate-600">
+                Crafted with high-grade fabrics and attention to detail, every
+                piece delivers lasting comfort and durability.
+              </p>
+            </div>
+          </article>
+        </li>
+
+        {/* Item 2 */}
+        <li>
+          <article className="flex flex-col items-center text-center max-w-xs mx-auto">
+            <div className="p-6 bg-amber-100 rounded-full">
+              <ChevronsUp aria-hidden="true" className="w-6 h-6" />
+            </div>
+            <div className="mt-5 space-y-2">
+              <h3 className="text-base font-semibold text-slate-700">
+                Fast Delivery & Easy Returns
+              </h3>
+              <p className="text-sm text-slate-600">
+                Quick shipping and hassle-free returns ensure a smooth,
+                worry-free shopping experience every time.
+              </p>
+            </div>
+          </article>
+        </li>
+
+        {/* Item 3 */}
+        <li>
+          <article className="flex flex-col items-center text-center max-w-xs mx-auto">
+            <div className="p-6 bg-amber-100 rounded-full">
+              <ShieldCheck aria-hidden="true" className="w-6 h-6" />
+            </div>
+            <div className="mt-5 space-y-2">
+              <h3 className="text-base font-semibold text-slate-700">
+                Secure & Seamless Checkout
+              </h3>
+              <p className="text-sm text-slate-600">
+                Shop confidently with encrypted payments and a fast,
+                user-friendly checkout process.
+              </p>
+            </div>
+          </article>
+        </li>
+
+      </ul>
+    </section>
+  );
+};

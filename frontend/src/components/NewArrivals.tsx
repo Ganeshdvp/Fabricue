@@ -1,78 +1,103 @@
 import type { FC } from "react";
 import { Link } from "react-router";
 
-
-interface Products {
-  id: number,
-  name: string,
-  price: number,
-  image: string
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
 }
 
-const products: Products[] = [
+const products: Product[] = [
   {
     id: 1,
     name: "Polyester Winter Jacket",
-    price: 22.00,
-    image: "https://tiimg.tistatic.com/fp/1/008/342/comfortable-double-pocket-sleeves-daily-wear-plain-jacket-for-mens-836.jpg",
+    price: 22.0,
+    image:
+      "https://res.cloudinary.com/dyakynych/image/upload/f_auto,q_auto,w_300/v1775571580/comfortable-double-pocket-sleeves-daily-wear-plain-jacket-for-mens-836_jxuxlc.jpg",
   },
   {
     id: 2,
     name: "Red Dress for Females",
-    price: 29.00,
-    image: "https://png.pngtree.com/png-clipart/20250420/original/pngtree-elegant-red-evening-gown-for-special-occasions-png-image_20743177.png",
+    price: 29.0,
+    image:
+      "https://res.cloudinary.com/dyakynych/image/upload/f_auto,q_auto,w_300/v1775571581/pngtree-elegant-red-evening-gown-for-special-occasions-png-image_20743177_airsgp.png",
   },
   {
     id: 3,
     name: "Kids Pant Shirt",
-    price: 17.00,
-    image: "https://5.imimg.com/data5/SELLER/Default/2022/7/WW/JF/NS/118920094/boys-shirt-pant-set.png",
+    price: 17.0,
+    image:
+      "https://res.cloudinary.com/dyakynych/image/upload/f_auto,q_auto,w_300/v1775571582/boys-shirt-pant-set_mi4mkr.png",
   },
   {
     id: 4,
     name: "Red & Yellow Lehenga",
-    price: 32.00,
-    image: "https://wallpapers.com/images/hd/traditional-yellow-blouse-red-lehenga-gold-trim-yipf2tuvnd0v4m43-2.png",
+    price: 32.0,
+    image:
+      "https://res.cloudinary.com/dyakynych/image/upload/f_auto,q_auto,w_300/v1775571584/traditional-yellow-blouse-red-lehenga-gold-trim-yipf2tuvnd0v4m43-yipf2tuvnd0v4m43_c9puz0.png",
   },
   {
     id: 5,
     name: "Hoodie for Men",
-    price: 19.00,
-    image: "https://s.alicdn.com/@sc04/kf/H742e968a789e4ab1b0baefcde5ff964fp/Moq-1-Free-Shipping-Streetwear-Blank-Eco-260gsm-Wholesale-100-Polyester-Black-Men-Hooded-Breathable-Plain-Hoodies-Printing-Back.jpg",
+    price: 19.0,
+    image:
+      "https://res.cloudinary.com/dyakynych/image/upload/f_auto,q_auto,w_300/v1775571579/Moq-1-Free-Shipping-Streetwear-Blank-Eco-260gsm-Wholesale-100-Polyester-Black-Men-Hooded-Breathable-Plain-Hoodies-Printing-Back_iidcf9.avif",
   },
 ];
 
 export const NewArrivals: FC = () => {
   return (
-    <section className="mt-36 px-4">
-      <h1 className="text-3xl font-medium text-slate-800 text-center mb-2">
+    <section
+      className="mt-36 px-4"
+      aria-labelledby="new-arrivals-heading"
+    >
+      {/* Heading */}
+      <h2
+        id="new-arrivals-heading"
+        className="text-3xl font-medium text-slate-800 text-center mb-2"
+      >
         New Arrivals
-      </h1>
+      </h2>
+
+      {/* Description */}
       <p className="text-slate-500 text-center mb-10">
-        Explore the latest additions to our collection.
+        Explore the latest additions to our fashion collection.
       </p>
 
-      <div className="flex flex-wrap items-center justify-center gap-6">
-        {products.map((product: Products) => (
-          <Link to="/login" key={product.id}>
-            <div className="w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-105 hover:shadow-lg transition-all duration-300 cursor-pointer">
+      {/* Product Grid */}
+      <ul className="flex flex-wrap items-center justify-center gap-6">
+        {products.map((product) => (
+          <li key={product.id}>
+            <Link
+              to="/login"
+              aria-label={`View details for ${product.name}`}
+              className="block w-56 border border-amber-600 px-4 py-6 rounded-2xl hover:scale-105 hover:shadow-lg transition-all duration-300"
+            >
+              {/* Product Image */}
               <img
                 loading="lazy"
-                decoding="async" //  Delays image decoding so it doesn't block the main thread
+                decoding="async"
                 className="rounded-lg w-full h-50 object-cover"
                 src={product.image}
-                alt={product.name}
+                alt={`${product.name} - premium fashion product`}
+                width="224"
+                height="200"
               />
-              <p className="text-sm mt-3 text-slate-700 font-medium truncate">
+
+              {/* Product Name */}
+              <h3 className="text-sm mt-3 text-slate-700 font-medium truncate">
                 {product.name}
-              </p>
+              </h3>
+
+              {/* Price */}
               <p className="text-sm bg-amber-600 w-fit text-white px-3 py-0.5 rounded mt-1">
-                $ {product.price.toFixed(2)}
+                ${product.price.toFixed(2)}
               </p>
-            </div>
-          </Link>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 };
