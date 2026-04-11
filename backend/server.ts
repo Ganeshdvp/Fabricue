@@ -54,6 +54,11 @@ app.use(express.json());
 // cookie read
 app.use(cookieParser())
 
+// ping route for uptimeRobot
+app.get("/ping", (req, res) => {
+  res.status(200).send("OK");
+});
+
 // routes
 app.use('/user', authLimit, authRoute);
 app.use('/profile', profileLimit, profileRouter);
