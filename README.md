@@ -1,5 +1,6 @@
 # 📦Fabricue - Clothing E-Commerce MERN Stack Application
 
+
 # Fabricue 👕
 
 Fabricue is a production-ready MERN Stack clothing e-commerce platform that delivers a fast, secure, and intelligent online shopping experience.
@@ -8,6 +9,7 @@ track their orders, while sellers can efficiently manage products and analytics 
 Built with scalability, performance, security, and maintainability in mind.
 
 The application follows modern software engineering best practices and supports 100+ concurrent users.
+
 
 
 ## 📖 About
@@ -30,17 +32,17 @@ environment variable management, input validation and sanitization, centralized 
 Fabricue is deployed with Vercel (Frontend), Render (Backend), and MongoDB Atlas (Database) and has been load-tested(k6) to reliably handle more than 100 concurrent users.
 
 
+
 ## 🚀 Live Demo
 
 Frontend:
 [https://your-frontend-url.com](https://fabricue.vercel.app/)
 
 Backend for API's:
-[https://your-api-url.com](https://fabricue.onrender.com)
+[https://fabricue.onrender.com](https://fabricue.onrender.com)
 
 
 ## 📸 Screenshots
-
 
 
 
@@ -74,11 +76,14 @@ Backend for API's:
 ### Frontend
 - Vite + React
 - TypeScript
-- Tailwind CSS
+- Tailwind CSS (Pre-built ui)
+- Shadcn/ui
 - TanStack Query
 - React Router
+- Redux Toolkit
+- Formik & yup
 - Axios
-- React Hook Form
+- Recharts
 
 ### Backend
 - Node.js
@@ -88,6 +93,10 @@ Backend for API's:
 - JWT
 - bcrypt
 - validators.js
+- date-fns
+- resend
+- multer
+- groq-sdk
 - express-rate-limiter
 - helmet
 
@@ -112,17 +121,34 @@ Backend for API's:
 ```text
 fabricue/
 │
-├── client/
+├── frontend/
 │   ├── src/
+        ├── components/
+        ├── hooks/
+        ├── lib/
+        ├── types/
+        ├── utils/
+        ├── App.tsx
+        ├── index.css
+        └── main.tsx
+
 │   ├── public/
+    ├── index.html
+    ├── components.json
+    ├── vite.config.ts
 │   └── package.json
 │
-├── server/
+├── backend/
+    ├── config/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
 │   ├── routes/
 │   ├── utils/
+    ├── types/
+    ├── .gitignore
+    ├── package.json
+    ├── ts.config.json
 │   └── server.js
 │
 └── README.md
@@ -253,10 +279,11 @@ GET /seller/orders
 
 ## 📊 Performance
 
-- Lighthouse Performance: 96
-- Accessibility: 100
-- SEO: 100
-- Best Practices: 100
+- Lighthouse Performance: 99
+- Accessibility: 94
+- SEO: 83
+- Best Practices: 96
+- Agentic Browsering - 2/3
 
 ### Optimizations
 
@@ -307,10 +334,10 @@ GET /seller/orders
 Cherupalli Ganesh
 
 GitHub:
-[https://github.com/yourusername](https://github.com/Ganeshdvp/Ganeshdvp.git)
+[https://github.com/Ganeshdvp/Ganeshdvp.git](https://github.com/Ganeshdvp/Ganeshdvp.git)
 
 LinkedIn:
-[https://linkedin.com/in/yourprofile](https://www.linkedin.com/in/cherupalli-ganesh)
+[https://www.linkedin.com/in/cherupalli-ganesh](https://www.linkedin.com/in/cherupalli-ganesh)
 
 
 
