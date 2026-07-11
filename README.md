@@ -44,6 +44,19 @@ Backend for API's:
 
 ## 📸 Screenshots
 
+![Hero Page](./screenshots/HeroPage.webp);
+![Home Page](./screenshots/HomePage.webp);
+![Login Page](./screenshots/LoginPage.webp);
+![About Page](./screenshots/AboutPage.webp);
+![Cart Page](./screenshots/CartPage.webp);
+![Chatbot Page](./screenshots/ChatbotPage.webp);
+![Contact Page](./screenshots/ContactPage.webp);
+![Dashboard Page](./screenshots/DashboardPage.webp);
+![FAQ Page](./screenshots/FaqPage.webp);
+![Orders Page](./screenshots/OrdersPage.webp);
+![Product Page](./screenshots/ProductPage.webp);
+![Profile Page](./screenshots/ProfilePage.webp);
+![WishList Page](./screenshots/WishlistPage.webp);
 
 
 ## ✨ Features
