@@ -44,19 +44,37 @@ Backend for API's:
 
 ## 📸 Screenshots
 
-![Hero Page](./screenshots/HeroPage.webp);
-![Home Page](./screenshots/HomePage.webp);
-![Login Page](./screenshots/LoginPage.webp);
-![About Page](./screenshots/AboutPage.webp);
-![Cart Page](./screenshots/CartPage.webp);
-![Chatbot Page](./screenshots/ChatbotPage.webp);
-![Contact Page](./screenshots/ContactPage.webp);
-![Dashboard Page](./screenshots/DashboardPage.webp);
-![FAQ Page](./screenshots/FaqPage.webp);
-![Orders Page](./screenshots/OrdersPage.webp);
-![Product Page](./screenshots/ProductPage.webp);
-![Profile Page](./screenshots/ProfilePage.webp);
-![WishList Page](./screenshots/WishlistPage.webp);
+<p align="center">
+  <img src="./screenshots/HeroPage.webp" alt="Hero Page" width="48%">
+  <img src="./screenshots/HomePage.webp" alt="Home Page" width="48%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/LoginPage.webp" alt="Login Page" width="48%">
+  <img src="./screenshots/ContactPage.webp" alt="Contact Page" width="48%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/ProductPage.webp" alt="Product Page" width="48%">
+  <img src="./screenshots/CartPage.webp" alt="Cart Page" width="48%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/AboutPage.webp" alt="About Page" width="48%">
+  <img src="./screenshots/ChatbotPage.webp" alt="Chatbot Page" width="48%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/WishlistPage.webp" alt="Wishlist Page" width="48%">
+  <img src="./screenshots/OrdersPage.webp" alt="Orders Page" width="48%">
+  <img src="./screenshots/DashboardPage.webp" alt="Dashboard Page" width="48%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/FaqPage.webp" alt="Faq Page" width="48%">
+  <img src="./screenshots/ProfilePage.webp" alt="Profile Page" width="48%">
+</p>
+
 
 
 ## ✨ Features
